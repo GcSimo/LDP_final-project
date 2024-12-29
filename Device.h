@@ -4,8 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
-
-short IDCounter = 0;
+#include <memory>
 
 struct Interval
 {
@@ -13,30 +12,42 @@ struct Interval
     unsigned short timeOff;
     Interval(unsigned short time1,unsigned short time2) : timeOn{time1},timeOff{time2}{}
     Interval() : timeOn{0},timeOff{0}{}
+    short getOffset(){
+        return timeOff - timeOn;
+    }
+    bool isBetween(unsigned short t){
+        return (timeOff > t && timeOn < t);
+    }
 };
 
 class Device{
     protected:
         short ID;
-        short powerConsumption;
+        float powerConsumption;
         bool state;
         std::string name;
+        short lastOn;
         std::map<short, Interval*> deviceCycles;
-        Interval* nextTimer;
+        std::unique_ptr<Interval> nextTimer;
     public:
         Device();
-        Device(std::string,short,bool=false);
-        void ON(unsigned short timenow);
-        void OFF(unsigned short);
+        Device(std::string,float,bool=false);
+        std::string getName();
+        bool getState();
+        void ON(unsigned short);
+        void refreshTimers(unsigned short);
+        float getConsumptionAt(short=1440);
+        virtual void OFF(unsigned short);
         virtual void setTimer(unsigned short,unsigned short);
 };
 
-class CycleDevice : private Device{
+class CycleDevice : public Device{
     private:
         unsigned short cycleTime;
     public:
         CycleDevice();
-        CycleDevice(std::string,short,unsigned short,bool=false);
+        CycleDevice(std::string,float,unsigned short,bool=false);
+        virtual void ON(unsigned short);
         void setTimer(unsigned short);
 };
 
