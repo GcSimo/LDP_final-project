@@ -22,9 +22,26 @@ Device::Device(std::string s, float pc, bool ses)
     return;
 }
 
+std::string ShortToDate(short s){
+    std::string str = "";
+    short first = s/60;
+    short second = s%60;
+    if(first < 10)
+        str += "0";
+    str += std::to_string(first)+":"+std::to_string(second);
+    if(second < 10)
+        str += "0";
+    return str;
+}
+
 std::string Device::getName()
 {
     return std::string(this->name);
+}
+
+float Device::getPowerCons()
+{
+    return this->powerConsumption;
 }
 
 bool Device::getState()
@@ -40,25 +57,17 @@ void Device::ON(unsigned short timenow)
 
 void Device::refreshTimers(unsigned short timet)
 {
-    if(nextTimer == nullptr){
-        std::cout<<lastOn<<"diocane";
+    if(nextTimer == nullptr)return;
+    if(this->state){
+        if(nextTimer->timeOff < timet){
+            OFF(this->nextTimer->timeOff);
+        }
     }else{
-        if(this->state){
-            std::cout<<"XXk7";
-            if(nextTimer->timeOff < timet){
-                std::cout<<"ok3";
-                OFF(this->nextTimer->timeOff);
-            }
-        }else{
-            std::cout<<"XXk8";
-            if((*nextTimer).isBetween(timet)){
-                std::cout<<"ok4";
-                ON(this->nextTimer->timeOn);
-            }else if((*nextTimer).timeOff < timet){
-                std::cout<<"ok5";
-                ON(this->nextTimer->timeOn);
-                OFF(this->nextTimer->timeOff);
-            }
+        if((*nextTimer).isBetween(timet)){
+            ON(this->nextTimer->timeOn);
+        }else if((*nextTimer).timeOff < timet){
+            ON(this->nextTimer->timeOn);
+            OFF(this->nextTimer->timeOff);
         }
     }
     return;
@@ -120,7 +129,6 @@ CycleDevice::CycleDevice(std::string s, float pc, unsigned short ct, bool ses ) 
 
 void CycleDevice::setTimer(unsigned short time1)
 {
-    this->nextTimer->timeOn = time1;
-    this->nextTimer->timeOff = time1+this->cycleTime;
+    this->nextTimer = std::make_unique<Interval>(time1, time1 + this->cycleTime);
     return;
 }

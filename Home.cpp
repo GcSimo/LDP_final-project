@@ -2,8 +2,10 @@
 #include <iostream>
 #include <sstream>
 
+std::string ShortToDate(short);
+
 std::vector<CycleDevice*> CycleDeviceList = {new CycleDevice("Lavatrice",-2,110,false),new CycleDevice("Lavastoviglie",-1.5,195,false),new CycleDevice("Tapparelle elettriche",-0.3,1,false),new CycleDevice("Forno a microonde",-0.8,2,false),new CycleDevice("Asciugatrice",-0.5,60,false),new CycleDevice("Televisore", -0.2 ,60,false)};
-std::vector<Device*> ManualDeviceList = {new Device("impianto fotovoltaico",1.5),new Device("Pompa di calore e termostato",-2),new Device("Scaldabagno",-1),new Device("Frigorifero",-0.4)};
+std::vector<Device*> ManualDeviceList = {new Device("Impianto_Fotovoltaico",1.5),new Device("PompaDiCaloreETermostato",-2),new Device("Scaldabagno",-1),new Device("Frigorifero",-0.4)};
 
 void Home::listen(std::string s)
 {
@@ -19,10 +21,9 @@ void Home::listen(std::string s)
         if(commandLines[1] == "time"){
             if(commandLines[2].empty())return;
             int timeto = std::stoi(commandLines[2]);
-            std::cout<<"\n\nTempo : "<<time<<" ---> "<<timeto<<"\n\n";
+            std::cout<<"\n\nTempo : "<<ShortToDate(time)<<" ---> "<<ShortToDate(timeto)<<"\n\n";
             time = timeto;
             this->goForward(timeto);
-            std::cout<<"ok";
         }else if(!commandLines[1].empty()){
             if(commandLines[2] == "on"){
                 if(devices.count(commandLines[1])){
@@ -43,32 +44,44 @@ void Home::listen(std::string s)
                     std::cout<<"dispositivo "<<commandLines[1]<<" OFF";
                 }
             }else{
-
+                int timefromtimer = std::stoi(commandLines[2]);
+                if(devices.count(commandLines[1])){
+                    int timetotimer = std::stoi(commandLines[3]);
+                    devices.at(commandLines[1])->setTimer(timefromtimer,timetotimer);
+                }
+                if(cycleDevices.count(commandLines[1])){
+                    cycleDevices.at(commandLines[1])->setTimer(timefromtimer);
+                }
             }
         }
     }
     if(commandLines[0] == "rm"){
-        printf("hai selezionato removeve :3\n");
 
     }
     if(commandLines[0] == "show"){
         float cons = 0;
-        std::cout<<"Show al tempo "<<time<<" :\n";
+        float actualcons = 0;
+        std::cout<<"Show al tempo "<<ShortToDate(time)<<" :\n";
         for(auto &d : devices){
             float thiscons = d.second->getConsumptionAt(time);
             std::cout<<d.first<<" : "<<(d.second)->getState()<<", ha consumato "<<thiscons<<"KW fino ad ora\n";
+            if((d.second)->getState()){
+                actualcons += d.second->getPowerCons();
+            }
             cons += thiscons;
         }
         for(auto &d : cycleDevices){
             float thiscos = d.second->getConsumptionAt(time);
             std::cout<<d.first<<" : "<<(d.second)->getState()<<", ha consumato "<<thiscos<<"KW fino ad ora\n";
+            if((d.second)->getState()){
+                actualcons += d.second->getPowerCons();
+            }
             cons += thiscos;
         }
-        std::cout<<"Consumo totale della casa fino alle "<<time<<" : "<<cons<<"\n\n";
+        std::cout<<"\nConsumo totale della casa fino alle "<<ShortToDate(time)<<" : "<<cons<<"Kw/h\nE con un attuale consumo di "<<actualcons<<"Kw\n\n";
         return;
     }
     if(commandLines[0] == "reset"){
-        printf("hai selezionato reseette te :3\n");
 
     }
 }
@@ -82,7 +95,6 @@ void Home::goForward(short ti)
     for (CycleDevice* c : CycleDeviceList)
     {
         c->refreshTimers(ti);
-        std::cout<<"ok2";
     }
     this->time = ti;
     return;

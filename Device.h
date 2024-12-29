@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 
+
 struct Interval
 {
     unsigned short timeOn;
@@ -33,6 +34,7 @@ class Device{
         Device();
         Device(std::string,float,bool=false);
         std::string getName();
+        float getPowerCons();
         bool getState();
         void ON(unsigned short);
         void refreshTimers(unsigned short);
