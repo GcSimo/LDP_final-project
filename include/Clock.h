@@ -71,6 +71,7 @@ namespace my_clock {
 			// Ridefinizione operatore + e -
 			Clock operator+(const Clock &) const;
 			Clock operator-(const Clock &) const;
+			Clock operator=(std::string);
 
 			// Eccezioni disponibili
 			class HourRangeError{};     // Errori da far derivare?
