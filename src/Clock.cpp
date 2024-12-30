@@ -30,6 +30,8 @@ namespace my_clock {
         	set_minute(stoi(str.substr(str.find(":") + 1)));
     	}
 
+	Clock::Clock(const char ch[]) : Clock(static_cast<std::string>(ch)) { }
+
 	void Clock::set_hour(int h) {
 		if (h < DEFAULT_VALUE || h > MAX_HOUR) throw HourRangeError();
 		hour = h;
