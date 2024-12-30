@@ -78,6 +78,10 @@ namespace my_clock {
 		return Clock(h, m);
 	}
 
+	Clock Clock::operator=(std::string str) {
+		return Clock(str);
+	}
+
 	bool operator==(const Clock &t1, const Clock &t2) {
 		if (t1.get_hour() == t2.get_hour() && t1.get_minute() == t2.get_minute()) return true;
 		/*else*/ return false;
