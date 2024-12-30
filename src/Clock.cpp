@@ -15,14 +15,6 @@ namespace my_clock {
         	if (str.length() < MIN_LENGTH || str.length() > MAX_LENGTH) throw StringFormatError();
         
        		// Verifica del numero del separatore ":" presente nella stringa
-
-        	/*int numOfColons = 0;
-        	for (int i = 0; i < str.length(); i++) {
-            		if (str[i] == ':') numOfColons++;
-        	}
-        	if (numOfColons != 1) throw StringFormatError();*/
-
-        	// Il precedente blocco di istruzioni può essere sostiuito con:
         	if (std::count(str.begin(), str.end(), ':') != MAX_COLONS) throw StringFormatError();
 
         	// Setto l'ora e i minuti ricevuti con le apposite funzioni
