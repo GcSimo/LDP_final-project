@@ -33,16 +33,21 @@ namespace my_clock {
     class Clock {
 		private:
 			static constexpr int DEFAULT_VALUE = 0;
-			static constexpr int MAX_HOUR = 24;  // N.B.!
+			static constexpr int MAX_HOUR = 23;
 			static constexpr int MAX_MINUTE = 59;
 			static constexpr int INVALID_HOUR = 24;
+			// Costanti di utilità per il costruttore avente parametro Stringa
+        		static constexpr int MIN_LENGTH = 3;
+        		static constexpr int MAX_LENGTH = 5;
+        		static constexpr int MAX_COLONS = 1;
 
 			int hour;
 			int minute;
 
 		public:
-			// Costruttore
+			// Costruttori
 			Clock(int h = DEFAULT_VALUE, int m = DEFAULT_VALUE);
+			Clock(std::string);
 
 			// Accessors / get functions
 			int get_hour() const { return hour; }
@@ -68,6 +73,7 @@ namespace my_clock {
 			// Eccezioni disponibili
 			class HourRangeError{};     // Errori da far derivare?
 			class MinuteRangeError{};
+			class StringFormatError{};
     };
 
     // Ridefinizioni operatori
