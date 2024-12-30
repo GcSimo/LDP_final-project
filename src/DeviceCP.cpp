@@ -36,8 +36,7 @@ DeviceCP::DeviceCP(std::string name, double energy) {
 	this->cycle = cycle;
 }*/
 
-DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) {
-	DeviceCP(name, energy);
+DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) : DeviceCP(name, energy) {
 	this->cycle = cycle;
 }
 
