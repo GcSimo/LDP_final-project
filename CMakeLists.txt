@@ -12,19 +12,22 @@ include_directories(test)
 set(CMAKE_CXX_STANDARD 11)
 
 # definizione eseguibili
-add_executable(main src/main.cpp)
-add_executable(testCompiler test/test_compiler.cpp)
+add_executable(main src/main.cpp) # programma completo
+add_executable(test_compiler test/test_compiler.cpp) #  test del compilatore usato
+add_executable(test_static_ID test/test_static_ID.cpp) # test funzionamento variabili statiche
 
 # definizione librerie
 add_library(clock include/Clock.h src/Clock.cpp) # libreria Clock
 add_library(device include/Device.h src/Device.cpp) # libreria Device
 add_library(deviceM include/DeviceM.h src/DeviceM.cpp) # libreria DeviceM
 add_library(deviceCP include/DeviceCP.h src/DeviceCP.cpp) # libreria DeviceCP
+add_library(home include/Home.h src/Home.cpp) # libreria Home
 
 # dipendenze tra librerie
 target_link_libraries(device clock) # link libreria Clock a Device
-target_link_libraries(deviceM device) # link librerie Clock e Device a DeviceM
-target_link_libraries(deviceCP device) # link librerie Clock e Device a DeviceCP
+target_link_libraries(deviceM device) # link libreria Device a DeviceM
+target_link_libraries(deviceCP device) # link libreria Device a DeviceCP
+target_link_libraries(home deviceM deviceCP) # link librerie DeviceM e DeviceCP a Home
 
 # dipendenze tra eseguibili e librerie
-target_link_libraries(main deviceM deviceCP)
+target_link_libraries(main home)

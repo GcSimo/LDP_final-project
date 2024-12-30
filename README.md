@@ -5,23 +5,29 @@
 - Giacomo:
 
 ## TO-DO List
-Generale:
-- uniformare lingua di variabili e classi in inglese
+**Generale**
+- [ ] uniformare lingua di variabili e classi in inglese
 
-MyClock
-- ereditarietà eccezioni
-- limite MAX_HOUR a 23 al posto che a 24
+**MyClock**
+- [ ] ereditarietà eccezioni
+- [ ] limite MAX_HOUR a 23 al posto che a 24
 
-Dispostivi
-- creare namespace per dispositivi
-- aggiungere ``toString`` e ``operator<<`` a ``Device.h``, eventualmente virtual
-- sistemare valori iniziali di onTime, offTime, cycle nei costruttori di default a invalidHour 24:00
-- trasformare turnOn in virtual:
-  - se ho un dispositivo M e faccio turnOn, è come è stata implementata
-  - se ho un dispositivo CP e faccio il turnOn, bisogna anche inserire l'orario di terminazione
-  - nota, il turnOff è uguale perché non ho timer da modificare
-- trasformare set_OnTime in virtual come per il caso di turnOn se ho dispositivi CP
-- si potrebbe aggiungere la variabile offTime alla classe generale:
-  - entrambi i dispositivi hanno un orario di spegnimento
-  - la classe DeviceM lo implementa già
-  - la classe Device CP avrà in più una variabile per la durata del ciclo che verrà usata per impostare l'offTime, quando viene impostato l'onTime
+**Dispostivi**
+- [ ] creare namespace per dispositivi
+- [ ] aggiungere ``toString`` e ``operator<<`` a ``Device.h``, eventualmente virtual
+- [ ] sistemare valori iniziali di onTime, offTime, cycle nei costruttori di default a invalidHour 24:00
+- [ ] trasformare turnOn in virtual:
+  - [ ] se ho un dispositivo M e faccio turnOn, è come è stata implementata
+  - [ ] se ho un dispositivo CP e faccio il turnOn, bisogna anche inserire l'orario di terminazione
+  - [ ] nota, il turnOff è uguale perché non ho timer da modificare
+- [ ] trasformare set_OnTime in virtual come per il caso di turnOn se ho dispositivi CP
+- [ ] si potrebbe aggiungere la variabile offTime alla classe generale:
+  - [ ] entrambi i dispositivi hanno un orario di spegnimento
+  - [ ] la classe DeviceM lo implementa già
+  - [ ] la classe Device CP avrà in più una variabile per la durata del ciclo che verrà usata per impostare l'offTime, quando viene impostato l'onTime
+- [ ] correggere il funzionamento di ID_Counter e ID con variabili statiche -> dichiarare variabile statica e inizializzarla nel file .cpp
+- [ ] eliminare i costruttori di default?
+- [ ] aggiungere una funzione refreshDevice (come ha fatto Andrea) che riceve un orario e accende/spegne il dispositivo quando l'orario ricevuto supera quello di accensione/spegnimento, utilizzata per evitare di fare la multimappa...
+
+**Casa**
+- [ ] ...
