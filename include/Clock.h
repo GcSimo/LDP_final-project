@@ -39,10 +39,6 @@ namespace my_clock {
 			static constexpr int MAX_HOUR = 23;
 			static constexpr int MAX_MINUTE = 59;
 			static constexpr int INVALID_HOUR = 24;
-			// Costanti di utilità per il costruttore avente parametro Stringa
-        		static constexpr int MIN_LENGTH = 3;
-        		static constexpr int MAX_LENGTH = 5;
-        		static constexpr int MAX_COLONS = 1;
 
 			int hour;
 			int minute;
