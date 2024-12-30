@@ -3,8 +3,6 @@
 	Autore:     Giovanni Bordignon
 */
 
-#include <algorithm>
-
 #include "Clock.h"
 
 namespace my_clock {
