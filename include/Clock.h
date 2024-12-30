@@ -29,6 +29,8 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <regex>
+//#include <exception>
 
 namespace my_clock {
     class Clock {
@@ -74,9 +76,23 @@ namespace my_clock {
 			Clock operator=(std::string);
 
 			// Eccezioni disponibili
-			class HourRangeError{};     // Errori da far derivare?
-			class MinuteRangeError{};
-			class StringFormatError{};
+			class HourRangeError : public std::logic_error {
+				public:
+					HourRangeError() : std::logic_error("") {}
+ 					const char* what() const noexcept override { return "Errore: l'ora passata come parametro non rientra nell'intervallo richiesto!"; }
+			};
+
+			class MinuteRangeError : public std::logic_error {
+				public:
+					MinuteRangeError() : std::logic_error("") {}
+ 					const char* what() const noexcept override { return "Errore: i minuti passati come parametro non rientrano nell'intervallo richiesto!"; }
+			};
+
+			class StringFormatError : public std::logic_error {
+				public:
+					StringFormatError() : std::logic_error("") {}
+ 					const char* what() const noexcept override { return "Errore: la stringa non e' formattata correttamente!"; }
+			};
     };
 
     // Ridefinizioni operatori
