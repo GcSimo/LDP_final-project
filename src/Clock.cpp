@@ -6,23 +6,25 @@
 #include "Clock.h"
 
 namespace my_clock {
+	Clock::Clock()
+		: hour { DEFAULT_VALUE }, minute { DEFAULT_VALUE } { }
+	
 	Clock::Clock(int h, int m) : hour { h }, minute { m } {
 		if (h < DEFAULT_VALUE || h > MAX_HOUR) throw HourRangeError(); // Viene resa disponibile un'ora fuori range, come valore non valido.
 		if (m < DEFAULT_VALUE || m > MAX_MINUTE) throw MinuteRangeError();
 	}
 
 	Clock::Clock(std::string str) {
-        	if (str.length() < MIN_LENGTH || str.length() > MAX_LENGTH) throw StringFormatError();
-        
-       		// Verifica del numero del separatore ":" presente nella stringa
-        	if (std::count(str.begin(), str.end(), ':') != MAX_COLONS) throw StringFormatError();
+		// controllo che la stringa sia formattata correttamente
+		if (!std::regex_match(str,std::regex("^([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])$")))
+			throw StringFormatError();
+	
+		// Setto l'ora e i minuti ricevuti con le apposite funzioni
+		set_hour(stoi(str.substr(0, str.find(":"))));
+		set_minute(stoi(str.substr(str.find(":") + 1)));
+	}
 
-        	// Setto l'ora e i minuti ricevuti con le apposite funzioni
-        	set_hour(stoi(str.substr(0, str.find(":"))));   // 0 magic number? Da mettere costante?
-        	set_minute(stoi(str.substr(str.find(":") + 1)));
-    	}
-
-	Clock::Clock(const char ch[]) : Clock(static_cast<std::string>(ch)) { }
+	Clock::Clock(const char* s) : Clock(std::string(s)) { }
 
 	void Clock::set_hour(int h) {
 		if (h < DEFAULT_VALUE || h > MAX_HOUR) throw HourRangeError();
@@ -41,7 +43,7 @@ namespace my_clock {
 		return str;
 	}
 
-	int Clock::toSeconds() {
+	int Clock::toSeconds() const {
 		return hour * 3600 + minute * 60;
 	}
 
@@ -78,13 +80,9 @@ namespace my_clock {
 		return Clock(h, m);
 	}
 
-	Clock Clock::operator=(std::string str) {
-		return Clock(str);
-	}
-
 	bool operator==(const Clock &t1, const Clock &t2) {
 		if (t1.get_hour() == t2.get_hour() && t1.get_minute() == t2.get_minute()) return true;
-		/*else*/ return false;
+		return false;
 	}
 
 	bool operator>(const Clock &t1, const Clock &t2) {
