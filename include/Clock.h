@@ -49,9 +49,10 @@ namespace my_clock {
 
 		public:
 			// Costruttori
-			Clock(int h = DEFAULT_VALUE, int m = DEFAULT_VALUE);
+			Clock();
+			Clock(int h, int m);
 			Clock(std::string);
-			Clock(const char[]);
+			Clock(const char*);
 
 			// Accessors / get functions
 			int get_hour() const { return hour; }
@@ -65,7 +66,7 @@ namespace my_clock {
 			std::string toString() const;
 
 			// Conversione in secondi (usato per il calcolo della potenza)
-			int toSeconds();
+			int toSeconds() const;
 
 			// Imposta l'ora invalida 24:00 all'oggetto
 			void set24();
@@ -73,19 +74,19 @@ namespace my_clock {
 			// Ridefinizione operatore + e -
 			Clock operator+(const Clock &) const;
 			Clock operator-(const Clock &) const;
-			Clock operator=(std::string);
+			// Rimosse le ridefinizioni degli operatori =
 
 			// Eccezioni disponibili
 			class HourRangeError : public std::logic_error {
 				public:
 					HourRangeError() : std::logic_error("") {}
- 					const char* what() const noexcept override { return "Errore: l'ora passata come parametro non rientra nell'intervallo richiesto!"; }
+ 					const char* what() const noexcept override { return "Errore: l'ora passata come parametro non rientra nell'intervallo corretto!"; }
 			};
 
 			class MinuteRangeError : public std::logic_error {
 				public:
 					MinuteRangeError() : std::logic_error("") {}
- 					const char* what() const noexcept override { return "Errore: i minuti passati come parametro non rientrano nell'intervallo richiesto!"; }
+ 					const char* what() const noexcept override { return "Errore: i minuti passati come parametro non rientrano nell'intervallo corretto!"; }
 			};
 
 			class StringFormatError : public std::logic_error {
