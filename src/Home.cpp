@@ -8,17 +8,17 @@
 #include <sstream>
 
 // elenco dispositivi della casa
-std::vector<Device *> DeviceList = {
+std::vector<Device *> deviceList = {
 	new DeviceM("Impianto_Fotovoltaico", 1.5),
-	new DeviceCP("Lavatrice", -2, 110),
-	new DeviceCP("Lavastoviglie", -1.5, 195),
+	new DeviceCP("Lavatrice", -2, "1:50"),
+	new DeviceCP("Lavastoviglie", -1.5, "3:15"),
 	new DeviceM("Pompa di calore + termostato", -2),
-	new DeviceCP("Tapparelle elettriche", -0.3, 1),
+	new DeviceCP("Tapparelle elettriche", -0.3, "0:01"),
 	new DeviceM("Scaldabagno", -1),
 	new DeviceM("Frigorifero", -0.4),
-	new DeviceCP("Forno a microonde", -0.8, 2),
-	new DeviceCP("Asciugatrice", -0.5, 60),
-	new DeviceCP("Televisore", -0.2, 60),
+	new DeviceCP("Forno a microonde", -0.8, "0:02"),
+	new DeviceCP("Asciugatrice", -0.5, "1:00"),
+	new DeviceCP("Televisore", -0.2, "1:00"),
 };
 
 Home::Home() {
@@ -26,17 +26,16 @@ Home::Home() {
 	time = my_clock::Clock();
 
 	// inserisce i dispositivi nella casa
-	for (Device* d : DeviceList)
+	for (Device* d : deviceList)
 		devices.insert({d->get_name(), d});
 }
 
-
-void Home::listen(std::string s) {
+void Home::listen(const std::string &s) {
 	std::vector<std::string> commandLines;
 	std::istringstream stream(s);
 	std::string line;
 
-	// separa il comando in un vettore di stringhe
+	// separa il comando ricevuto come stringa in un vettore di stringhe
 	while (std::getline(stream, line, ' ')) {
 		commandLines.push_back(line);
 	}
@@ -45,12 +44,8 @@ void Home::listen(std::string s) {
 	if (commandLines[0] == "set") {
 		// -- set time ...
 		if (commandLines[1] == "time") {
-		   if (commandLines[2].empty())
-				throw ParserError(); // orario non specificato
-			int timeto = std::stoi(commandLines[2]);
-			std::cout << "\n\nTempo : " << time << " ---> " << timeto << "\n\n";
-			time = timeto;
-			this->goForward(timeto);
+			std::cout << "\n\nTempo : " << time << " ---> " << commandLines[2] << "\n\n";
+			this->goForward(commandLines[2]);
 		}
 		
 		// --- set devicename ... (devicename valido)
@@ -67,13 +62,11 @@ void Home::listen(std::string s) {
 			}
 			// --- set devicename start [stop]
 			else {
-				int timefromtimer = std::stoi(commandLines[2]);
-				devices.at(commandLines[1])->set_onTime(timefromtimer);
+				devices.at(commandLines[1])->set_onTime(commandLines[2]);
 				// nel caso di un dispositivo manuale, imposto orario di spegnimento
-				//if (devices.at(commandLines[1])->isManual()) {
-   				//	int timetotimer = std::stoi(commandLines[3]);
-				//	devices.at(commandLines[1])->set_offTime(timetotimer);
-				//}
+				// if (devices.at(commandLines[1])->isManual()) {
+				// 	devices.at(commandLines[1])->set_offTime(commandLines[3]);
+				// }
 			}
 		}
 
@@ -117,7 +110,7 @@ void Home::listen(std::string s) {
 }
 
 // funzione per far proseguire il tempo
-void Home::goForward(short ti) {
+void Home::goForward(const my_clock::Clock &t) {
 	//for (auto &d : devices)
 	//	(d.second)->refreshTimers(ti);
 	//this->time = ti;

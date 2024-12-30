@@ -18,8 +18,8 @@ class Home{
 		std::map<std::string, Device*> devices;
 	public:
 		Home();
-		void listen(std::string);
-		void goForward(short);
+		void listen(const std::string &);
+		void goForward(const my_clock::Clock&);
 
 		class ParserError {};
 };
