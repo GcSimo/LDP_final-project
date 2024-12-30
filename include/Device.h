@@ -22,7 +22,7 @@ class Device {
 
 		// Variabili membro
 		std::string name;         // Nome del dispositivo
-		static int id;            // Codice ID del dispositivo
+		int id;                   // Codice ID del dispositivo
 		bool status;              // Stato del dispositivo: 1 --> ON, 0 --> OFF
 		double energy;            // Valore di consumo / produzione energetica istantanea del dispositivo
 		double totalEnergy;       // Valore di consumo / produzione energetica complessiva del dispositivo

@@ -1,20 +1,28 @@
 #include <iostream>
 using namespace std;
 
-struct A {
-    A() {++A_count;}
-    A(const A&) {++A_count;}
-    A(A&&) {++A_count;}
-    ~A() {--A_count;}
+class A {
+	private:
+		static int A_count;
+		int a;
+	public:
+		A() { a = A_count++; }
 
-    static int get_count() {return A_count;}
-private:
-    static int A_count;
+		static int get_count() { return A_count; }
+		int get_id() { return a; }
 };
 
-int main() {
-    A var;
+int A::A_count = 0;
 
-    int c0 = var.get_count(); //some compilers give a warning, but it's ok.
-    int c1 = A::get_count(); //normal way
+int main() {
+	cout << "ok" << endl;
+	A a1;
+	cout << a1.get_id() << " - " << a1.get_count() << endl;
+
+	A a2;
+	cout << a2.get_id() << " - " << a2.get_count() << endl;
+
+	A a3;
+	cout << a3.get_id() << " - " << a3.get_count() << endl;
+	cout << "fine" << endl;
 }

@@ -1,5 +1,5 @@
 /*
-	FILE HEADER DEVICECP.H
+	FILE HEADER DEVICECP.CPP
 	Autore:     Giovanni Bordignon
 */
 
