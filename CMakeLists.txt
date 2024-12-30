@@ -14,7 +14,9 @@ set(CMAKE_CXX_STANDARD 11)
 # definizione eseguibili
 add_executable(main src/main.cpp) # programma completo
 add_executable(test_compiler test/test_compiler.cpp) #  test del compilatore usato
-add_executable(test_static_ID test/test_static_ID.cpp) # test funzionamento variabili statiche
+add_executable(test_clock test/test_clock.cpp) # test classe clock
+add_executable(test_device test/test_device.cpp) # test classi device
+add_executable(test_static_ID test/test_static_ID.cpp) # test variabili statiche
 
 # definizione librerie
 add_library(clock include/Clock.h src/Clock.cpp) # libreria Clock
@@ -31,3 +33,5 @@ target_link_libraries(home deviceM deviceCP) # link librerie DeviceM e DeviceCP 
 
 # dipendenze tra eseguibili e librerie
 target_link_libraries(main home)
+target_link_libraries(test_clock clock)
+target_link_libraries(test_device deviceM deviceCP)

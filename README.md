@@ -9,8 +9,10 @@
 - [ ] uniformare lingua di variabili e classi in inglese
 
 **MyClock**
+- [x] limite MAX_HOUR a 23 al posto che a 24
+- [ ] eliminare costruttore con ``const char[]`` perché viene eseguito il cast implicito da ``const char[]`` a ``string``
+- [ ] bug quando si inserisce orario invalido del tipo ``:56`` o ``08:`` -> utilizzare le regex? ``^([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])$``
 - [ ] ereditarietà eccezioni
-- [ ] limite MAX_HOUR a 23 al posto che a 24
 
 **Dispostivi**
 - [ ] creare namespace per dispositivi
@@ -28,6 +30,8 @@
 - [ ] correggere il funzionamento di ID_Counter e ID con variabili statiche -> dichiarare variabile statica e inizializzarla nel file .cpp
 - [ ] eliminare i costruttori di default?
 - [ ] aggiungere una funzione refreshDevice (come ha fatto Andrea) che riceve un orario e accende/spegne il dispositivo quando l'orario ricevuto supera quello di accensione/spegnimento, utilizzata per evitare di fare la multimappa...
+- [ ] rimovere costruttore senza ciclo nei dispositivi CP -> ciclo deve essere impostato nel costruttore e mai più modificato
+- [ ] riuovere funzione set_cycle nei dispositivi CP -> ciclo deve essere impostato nel costruttore e mai più modificato
 
 **Casa**
 - [ ] ...
