@@ -14,8 +14,8 @@ class DeviceM : public Device {
 		my_clock::Clock offTime;
 	public:
 		// Costruttori
-		DeviceM();
-		DeviceM(std::string, double); // string --> name, double --> energy
+		//DeviceM();
+		DeviceM(std::string name = DEFAULT_NAME, double energy = DEFAULT_ENERGY); // string --> name, double --> energy
 		
 		// Funzioni per il settaggio dell'ora di spegnimento
 		void set_offTime(int, int);
