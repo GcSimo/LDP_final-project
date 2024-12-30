@@ -28,6 +28,7 @@
 
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 namespace my_clock {
     class Clock {
