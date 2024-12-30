@@ -10,16 +10,16 @@ DeviceM::DeviceM() {
 	id = ID_Counter++;
 	status = DEFAULT_STATUS;
 	energy = DEFAULT_ENERGY;
-	totalEnergy = 0;
+	totalEnergy = DEFAULT_ENERGY;	// Uso la medesima costante di energy anche per totalEnergy
 	lastOn = onTime = offTime = my_clock::Clock(24, 0);
 }
 
 DeviceM::DeviceM(std::string name, double energy) {
 	this->name = name;
 	id = ID_Counter++;
-	status = 0;
+	status = DEFAULT_STATUS;
 	this->energy = energy;
-	totalEnergy = 0;
+	totalEnergy = DEFAULT_ENERGY;	// Uso la medesima costante di energy anche per totalEnergy
 	lastOn = onTime = offTime = my_clock::Clock(24, 0);
 }
 
