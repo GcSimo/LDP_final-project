@@ -5,58 +5,45 @@
 
 #include "DeviceCP.h"
 
-/*DeviceCP::DeviceCP() {
-	name = DEFAULT_NAME;
-	id = ID_Counter++;
-	status = DEFAULT_STATUS;
-	energy = DEFAULT_ENERGY;
-	totalEnergy = DEFAULT_ENERGY;	// Uso la medesima costante di energy anche per totalEnergy
-	lastOn.set24();
-	onTime.set24();
-	//cycle = my_clock::Clock(0, 0);	--> NON Necessario --> Costruttore default
-}*/
-
-DeviceCP::DeviceCP(std::string name, double energy) {
+DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) {
 	this->name = name;
-	id = ID_Counter++;
-	status = DEFAULT_STATUS;
+	id = ID_Counter++;;
 	this->energy = energy;
-	totalEnergy = DEFAULT_ENERGY;	// Uso la medesima costante di energy anche per totalEnergy
+	totalEnergy = DEFAULT_TOTALT_ENERGY;
+	status = DEFAULT_STATUS;
+	onTime.set24();
 	lastOn.set24();
-	onTime.set24();
-	//cycle = my_clock::Clock(0, 0);	--> NON Necessario --> Costruttore default
-}
-
-/*DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) {
-	this->name = name;
-	id++;
-	this->energy = energy;
-	status = DEFAULT_STATUS;
-	onTime.set24();
-	this->cycle = cycle;
-}*/
-
-DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) : DeviceCP(name, energy) {
 	this->cycle = cycle;
 }
 
-void DeviceCP::set_cycle(int m) {
-	//cycle = Clock(0, m);
-	set_cycle(0, m);
+void DeviceCP::turnOn(const my_clock::Clock & t) {
+	// se prima il dispositivo prima era spento, aggiorno l'orario dell'ultima accensione
+	if (!status)
+		lastOn = t;
+	status = 1;
+	offTime = onTime + cycle;
 }
 
-void DeviceCP::set_cycle(int h, int m) {
-	cycle = my_clock::Clock(h, m);
-}
-
-void DeviceCP::set_cycle(const my_clock::Clock& cycle) {
-	this->cycle = cycle;
+void DeviceCP::set_onTime(const my_clock::Clock & onTime) /*override*/ {
+    this->onTime = onTime;
+	offTime = onTime + cycle;
 }
 
 my_clock::Clock DeviceCP::get_cycle() const {
 	return cycle;
 }
 
-my_clock::Clock DeviceCP::get_offTime() const {
-	return onTime + cycle;
+std::string DeviceCP::toString() const {
+	std::string str = "Dispositivo: " + name + "\nID: " + std::to_string(id) + "\nStato attuale: Dispositivo ";
+	if (status) str += "acceso\n";
+	else str += "spento\n";
+	if (energy > 0) str += "Produzione: " + std::to_string(energy) + "kW\nTot. produzione: " + std::to_string(totalEnergy) + " kWh\n";
+	else str += "Consumo: " + std::to_string(energy) + "kW\nTot. consumo: " + std::to_string(totalEnergy) + " kWh\n";
+	str += "Ultima accensione: " + lastOn.toString() + "\nAccensione programmata: " + onTime.toString() + "\nCiclo funzionamento: " + cycle.toString() + "\nSpegnimento programmato: " + offTime.toString() + "\n";
+	return str;
+	// Togliere ultima accensione ore 24:00
+}
+
+std::ostream &operator<<(std::ostream &os, const DeviceCP &t) {
+		return os << t.toString();
 }
