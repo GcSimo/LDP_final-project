@@ -10,22 +10,24 @@
 
 class DeviceCP : public Device {
 	private:
-		static constexpr char DEFAULT_NAME[] = "DispositivoCP";
 		my_clock::Clock cycle;
 	public:
-		// Costruttori
-		//DeviceCP();
-		//DeviceCP(std::string, double);
-		DeviceCP(std::string name = DEFAULT_NAME, double  energy = DEFAULT_ENERGY);
-		DeviceCP(std::string, double, const my_clock::Clock&);
+		// Costruttore
+		DeviceCP(std::string, double, const my_clock::Clock& cycle);
 
-		// Funzioni per il settaggio del ciclo di funzionamento
-		void set_cycle(int);                        // Setta ciclo fornendo i minuti di funzionamento
-		void set_cycle(int, int);                   // Setta ciclo fornendo ore e minuti di funzionamento
-		void set_cycle(const my_clock::Clock&);     // Setta ciclo fornendo un oggetto Clock
+		// Funzione per l'accensione del Dispositivo
+		void turnOn(const my_clock::Clock &) override;
 
-		my_clock::Clock get_cycle() const;          // Ritorna l'oggetto Clock del ciclo di funzionamento
-		my_clock::Clock get_offTime() const;        // Calcola l'ora di spegnimento del dispositivo
+		// Funzione per il settaggio dell'ora di accensione del Dispositivo
+		void set_onTime(const my_clock::Clock &) override;
+
+		// Funzione per ottenere il ciclo di funzionamento del dispositivo
+		my_clock::Clock get_cycle() const;
+
+		// Funzione per ottenere una stringa contenente i dati del Dispositivo
+		std::string toString() const override;
 };
+
+std::ostream &operator<<(std::ostream &, const DeviceCP &);
 
 #endif // DEVICECP_H
