@@ -5,12 +5,7 @@
 
 #include "Device.h"
 
-void Device::turnOn(const my_clock::Clock &t) {
-	// se prima il dispositivo prima era spento, aggiorno l'orario dell'ultima accensione
-	if (!status)
-		lastOn = t;
-	status = 1;
-}
+int Device::ID_Counter = 0;
 
 void Device::turnOff(const my_clock::Clock &t) {
 	// se il dispositivo prima era acceso, aggiorno il consumo complessivo
@@ -26,12 +21,11 @@ void Device::changeStatus(const my_clock::Clock &t) {
 		this->turnOn(t);
 }
 
-void Device::set_onTime(int h, int m) {
-    onTime = my_clock::Clock(h, m);
-}
-
-void Device::set_onTime(const my_clock::Clock &t) {
-    onTime = t;
+void Device::refreshDevice(const my_clock::Clock &t) {
+	if (t >= onTime)
+		this->turnOn(onTime);
+	if (t >= offTime)
+		this->turnOff(offTime);
 }
 
 std::string Device::get_name() const {
@@ -52,6 +46,10 @@ double Device::get_energy() const {
 
 my_clock::Clock Device::get_onTime() const {
     return onTime;
+}
+
+my_clock::Clock Device::get_offTime() const {
+    return offTime;
 }
 
 double Device::get_totalEnergy(const my_clock::Clock &t) {
