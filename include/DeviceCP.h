@@ -14,8 +14,9 @@ class DeviceCP : public Device {
 		my_clock::Clock cycle;
 	public:
 		// Costruttori
-		DeviceCP();
-		DeviceCP(std::string, double);
+		//DeviceCP();
+		//DeviceCP(std::string, double);
+		DeviceCP(std::string name = DEFAULT_NAME, double  energy = DEFAULT_ENERGY);
 		DeviceCP(std::string, double, const my_clock::Clock&);
 
 		// Funzioni per il settaggio del ciclo di funzionamento
