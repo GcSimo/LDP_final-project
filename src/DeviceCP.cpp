@@ -10,27 +10,29 @@ DeviceCP::DeviceCP() {
 	id = ID_Counter++;
 	status = DEFAULT_STATUS;
 	energy = DEFAULT_ENERGY;
-	totalEnergy = 0;
-	lastOn = onTime = my_clock::Clock(24, 0);
-	cycle = my_clock::Clock(0, 0);
+	totalEnergy = DEFAULT_ENERGY;	// Uso la medesima costante di energy anche per totalEnergy
+	lastOn.set24();
+	onTime.set24();
+	//cycle = my_clock::Clock(0, 0);	--> NON Necessario --> Costruttore default
 }
 
 DeviceCP::DeviceCP(std::string name, double energy) {
 	this->name = name;
 	id = ID_Counter++;
-	status = 0;
+	status = DEFAULT_STATUS;
 	this->energy = energy;
-	totalEnergy = 0;
-	lastOn = onTime = my_clock::Clock(24, 0);
-	cycle = my_clock::Clock(0, 0);
+	totalEnergy = DEFAULT_ENERGY;	// Uso la medesima costante di energy anche per totalEnergy
+	lastOn.set24();
+	onTime.set24();
+	//cycle = my_clock::Clock(0, 0);	--> NON Necessario --> Costruttore default
 }
 
 DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) {
 	this->name = name;
 	id++;
 	this->energy = energy;
-	status = 0;
-	onTime = my_clock::Clock(24, 0);
+	status = DEFAULT_STATUS;
+	onTime.set24();
 	this->cycle = cycle;
 }
 
