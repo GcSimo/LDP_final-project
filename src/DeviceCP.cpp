@@ -5,7 +5,7 @@
 
 #include "DeviceCP.h"
 
-DeviceCP::DeviceCP() {
+/*DeviceCP::DeviceCP() {
 	name = DEFAULT_NAME;
 	id = ID_Counter++;
 	status = DEFAULT_STATUS;
@@ -14,7 +14,7 @@ DeviceCP::DeviceCP() {
 	lastOn.set24();
 	onTime.set24();
 	//cycle = my_clock::Clock(0, 0);	--> NON Necessario --> Costruttore default
-}
+}*/
 
 DeviceCP::DeviceCP(std::string name, double energy) {
 	this->name = name;
@@ -27,12 +27,17 @@ DeviceCP::DeviceCP(std::string name, double energy) {
 	//cycle = my_clock::Clock(0, 0);	--> NON Necessario --> Costruttore default
 }
 
-DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) {
+/*DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) {
 	this->name = name;
 	id++;
 	this->energy = energy;
 	status = DEFAULT_STATUS;
 	onTime.set24();
+	this->cycle = cycle;
+}*/
+
+DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) {
+	DeviceCP(name, energy);
 	this->cycle = cycle;
 }
 
