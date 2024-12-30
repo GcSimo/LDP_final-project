@@ -49,6 +49,7 @@ namespace my_clock {
 			// Costruttori
 			Clock(int h = DEFAULT_VALUE, int m = DEFAULT_VALUE);
 			Clock(std::string);
+			Clock(const char[]);
 
 			// Accessors / get functions
 			int get_hour() const { return hour; }
