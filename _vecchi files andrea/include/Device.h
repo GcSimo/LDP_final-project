@@ -4,8 +4,10 @@
 #include <string>
 #include <map>
 #include <vector>
+#include "Home.h"
 #include <memory>
 
+class Home;
 
 struct Interval
 {
@@ -37,8 +39,9 @@ class Device{
         float getPowerCons();
         bool getState();
         void ON(unsigned short);
-        void refreshTimers(unsigned short);
+        void refreshTimers(unsigned short,Home);
         float getConsumptionAt(short=1440);
+        bool getStateAt(short);
         virtual void OFF(unsigned short);
         virtual void setTimer(unsigned short,unsigned short);
 };
