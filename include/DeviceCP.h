@@ -31,5 +31,4 @@ namespace device {
 
 	std::ostream &operator<<(std::ostream &, const DeviceCP &);
 }
-
 #endif // DEVICECP_H

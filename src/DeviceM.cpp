@@ -12,9 +12,9 @@ namespace device {
 		status = DEFAULT_STATUS;
 		this->energy = energy;
 		totalEnergy = DEFAULT_TOTALT_ENERGY;
-		lastOn.setInvalid();
 		onTime.setInvalid();
-    		offTime.setInvalid();
+		offTime.setInvalid();
+		lastOn.setInvalid();
 	}
 
 	void DeviceM::turnOn(const my_clock::Clock & t) {
@@ -49,5 +49,4 @@ namespace device {
 	std::ostream &operator<<(std::ostream &os, const DeviceM &t) {
 			return os << t.toString();
 	}
-
 }

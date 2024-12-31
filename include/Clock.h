@@ -28,12 +28,10 @@
 
 #include <iostream>
 #include <string>
-#include <algorithm>
-#include <regex>
 //#include <exception>
 
 namespace my_clock {
-    class Clock {
+	class Clock {
 		private:
 			static constexpr int DEFAULT_VALUE = 0;
 			static constexpr int MAX_HOUR = 23;
@@ -46,9 +44,9 @@ namespace my_clock {
 		public:
 			// Costruttori
 			Clock();
-			Clock(int h, int m);
+			Clock(int, int);
 			Clock(std::string);
-			Clock(const char*);
+			Clock(const char *);
 
 			// Accessors / get functions
 			int get_hour() const { return hour; }
@@ -61,41 +59,39 @@ namespace my_clock {
 			// Ritorno stringa formattata dell'orario
 			std::string toString() const;
 
-			// Conversione in secondi (usato per il calcolo della potenza)
-			int toSeconds() const;
+			// Conversione in ore (usato per il calcolo della energia consumata)
+			double toHours() const;
 
 			// Imposta l'ora invalida 24:00 all'oggetto
 			void setInvalid();
-
 			// Controllo validità della funzione
 			bool isValid() const;
 
 			// Ridefinizione operatore + e -
 			Clock operator+(const Clock &) const;
 			Clock operator-(const Clock &) const;
-			// Rimosse le ridefinizioni degli operatori =
 
 			// Eccezioni disponibili
 			class HourRangeError : public std::logic_error {
 				public:
 					HourRangeError() : std::logic_error("") {}
- 					const char* what() const noexcept override { return "Errore: l'ora passata come parametro non rientra nell'intervallo corretto!"; }
+					const char *what() const noexcept override { return "Errore: l'ora passata come parametro non rientra nell'intervallo corretto!"; }
 			};
 
 			class MinuteRangeError : public std::logic_error {
 				public:
 					MinuteRangeError() : std::logic_error("") {}
- 					const char* what() const noexcept override { return "Errore: i minuti passati come parametro non rientrano nell'intervallo corretto!"; }
+					const char *what() const noexcept override { return "Errore: i minuti passati come parametro non rientrano nell'intervallo corretto!"; }
 			};
 
 			class StringFormatError : public std::logic_error {
 				public:
 					StringFormatError() : std::logic_error("") {}
- 					const char* what() const noexcept override { return "Errore: la stringa non e' formattata correttamente!"; }
+					const char *what() const noexcept override { return "Errore: la stringa non e' formattata correttamente!"; }
 			};
-    };
+	};
 
-    // Ridefinizioni operatori
+	// Ridefinizioni operatori
 	bool operator==(const Clock &, const Clock &);
 	bool operator>(const Clock &, const Clock &);
 	bool operator>=(const Clock &, const Clock &);

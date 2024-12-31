@@ -6,15 +6,15 @@
 #include "DeviceCP.h"
 
 namespace device {
-	DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) {
+		DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) {
 		this->name = name;
 		id = ID_Counter++;;
+		status = DEFAULT_STATUS;
 		this->energy = energy;
 		totalEnergy = DEFAULT_TOTALT_ENERGY;
-		status = DEFAULT_STATUS;
 		onTime.setInvalid();
-		lastOn.setInvalid();
 		offTime.setInvalid();
+		lastOn.setInvalid();
 		this->cycle = cycle;
 	}
 
@@ -23,11 +23,13 @@ namespace device {
 		if (!status)
 			lastOn = t;
 		status = 1;
-		offTime = onTime + cycle;
+
+		// imposto l'orario di spegnimento
+		offTime = lastOn + cycle;
 	}
 
-	void DeviceCP::set_onTime(const my_clock::Clock & onTime) /*override*/ {
-    		this->onTime = onTime;
+	void DeviceCP::set_onTime(const my_clock::Clock & onTime) {
+		this->onTime = onTime;
 		offTime = onTime + cycle;
 	}
 

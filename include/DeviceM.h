@@ -14,7 +14,7 @@ namespace device {
 			// Nulla
 		public:
 			// Costruttore
-			DeviceM(std::string name, double energy); // string --> name, double --> energy
+			DeviceM(std::string, double); // string --> name, double --> energy
 		
 			// Funzione per l'accensione del Dispositivo
 			void turnOn(const my_clock::Clock &) override;
@@ -31,5 +31,4 @@ namespace device {
 
 	std::ostream &operator<<(std::ostream &, const DeviceM &);
 }
-
 #endif // DEVICEM_H

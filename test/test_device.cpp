@@ -20,12 +20,31 @@ int main () {
 		new DeviceCP("Televisore", -0.2, "1:00"),
 	};
 
-	for (Device *d : deviceList) {
-		cout << d->get_name() << endl
-			 << " - id: " << d->get_id() << endl
-			 << " - en: " << d->get_energy() << endl
-			 << " - st: " << d->get_status() << endl
-			 << " - oT: " << d->get_onTime() << endl;
-			// << " - tE: " << d->get_totalEnergy(time) << endl;
-	}
+	// ore 0:00
+	cout << " -------------------- ORE: " << time << " -------------------- " << endl;
+	for (Device *d : deviceList)
+		cout << *d << endl;
+	cout << endl << endl;
+
+	// ore 8:00
+	time = "8:00";
+	cout << " -------------------- ORE: " << time << " -------------------- " << endl;
+	for (Device *d : deviceList)
+		cout << *d << endl;
+	cout << endl << endl;
+
+	// ore 8:00
+	cout << " ---------- accensione dispositivi ------------------ " << endl;
+	for (Device *d : deviceList)
+		d->turnOn(time);
+	for (Device *d : deviceList)
+		cout << *d << endl;
+	cout << endl << endl;
+
+	// ore 12:00
+	time = "12:00";
+	cout << " -------------------- ORE: " << time << " -------------------- " << endl;
+	for (Device *d : deviceList)
+		cout << *d << endl;
+	cout << endl << endl;
 }
