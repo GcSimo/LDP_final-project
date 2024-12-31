@@ -55,7 +55,7 @@ void Device::ON(unsigned short timenow)
     this->lastOn = timenow;
 }
 
-void Device::refreshTimers(unsigned short timet)
+void Device::refreshTimers(unsigned short timet,Home h)
 {
     if(nextTimer == nullptr)return;
     if(this->state){
@@ -64,10 +64,18 @@ void Device::refreshTimers(unsigned short timet)
         }
     }else{
         if((*nextTimer).isBetween(timet)){
-            ON(this->nextTimer->timeOn);
+            if(h.checkMax(this->powerConsumption,timet) > -3.5){
+                ON(this->nextTimer->timeOn);
+            }else{
+                std::cout<<"\n\nPROBLEMA\n\n";
+            }
         }else if((*nextTimer).timeOff < timet){
-            ON(this->nextTimer->timeOn);
-            OFF(this->nextTimer->timeOff);
+            if(h.checkMax(this->powerConsumption,timet) > -3.5){
+                ON(this->nextTimer->timeOn);
+                OFF(this->nextTimer->timeOff);
+            }else{
+                std::cout<<"\n\nPROBLEMA\n\n";
+            }
         }
     }
     return;
@@ -85,6 +93,18 @@ float Device::getConsumptionAt(short ntime)
         consumption += (ntime - lastOn) * powerConsumption / 60;
     }
     return consumption;
+}
+
+bool Device::getStateAt(short t)
+{
+    for(auto x : deviceCycles){
+        if(x.second->timeOn < t && x.second->timeOff > t){
+            return true;
+        }
+    }
+    if(lastOn < t && lastOn != 0)
+        return true;
+    return false;
 }
 
 void Device::OFF(unsigned short timenow)
