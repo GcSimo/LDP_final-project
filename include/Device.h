@@ -6,9 +6,8 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
-#include <iostream>
-
 #include "Clock.h"
+#include <iostream>
 
 class Device {
 	protected:
@@ -31,11 +30,11 @@ class Device {
 
 	public:
 		// Funzioni deputate all'accensione e allo spegnimento del dispositivo (--> viene modificata variabile booleana "status")
-		void turnOn(const my_clock::Clock &);
+		virtual void turnOn(const my_clock::Clock &) = 0;
 		void turnOff(const my_clock::Clock &);
 		void changeStatus(const my_clock::Clock &);
 
-		// Funzione atta al settaggio dell'orario di accensione del dispositivo.			Rimossa set_onTime(int, int);
+		// Funzione atta al settaggio dell'orario di accensione del dispositivo
 		virtual void set_onTime(const my_clock::Clock &) = 0;
 
 		// Funzione atta ad aggiornare lo stato del dispositivo all'orario passato come parametro
@@ -55,5 +54,7 @@ class Device {
 		// Funzione per ottenere una stringa contenente i dati del Dispositivo
 		virtual std::string toString() const = 0;
 };
+
+std::ostream &operator<<(std::ostream &, const Device &);
 
 #endif // DEVICE_H

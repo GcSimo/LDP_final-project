@@ -4,12 +4,13 @@
 */
 
 #include "Clock.h"
+#include <algorithm>
+#include <regex>
 
 namespace my_clock {
-	Clock::Clock()
-		: hour { DEFAULT_VALUE }, minute { DEFAULT_VALUE } { }
-	
-	Clock::Clock(int h, int m) : hour { h }, minute { m } {
+	Clock::Clock() : hour{DEFAULT_VALUE}, minute{DEFAULT_VALUE} { }
+
+	Clock::Clock(int h, int m) : hour{h}, minute { m } {
 		if (h < DEFAULT_VALUE || h > MAX_HOUR) throw HourRangeError(); // Viene resa disponibile un'ora fuori range, come valore non valido.
 		if (m < DEFAULT_VALUE || m > MAX_MINUTE) throw MinuteRangeError();
 	}
@@ -24,7 +25,7 @@ namespace my_clock {
 		set_minute(stoi(str.substr(str.find(":") + 1)));
 	}
 
-	Clock::Clock(const char* s) : Clock(std::string(s)) { }
+	Clock::Clock(const char *s) : Clock(std::string(s)) { }
 
 	void Clock::set_hour(int h) {
 		if (h < DEFAULT_VALUE || h > MAX_HOUR) throw HourRangeError();
@@ -43,13 +44,17 @@ namespace my_clock {
 		return str;
 	}
 
-	int Clock::toSeconds() const {
-		return hour * 3600 + minute * 60;
+	double Clock::toHours() const {
+		return static_cast<double>(hour) + static_cast<double>(minute)/60;
 	}
 
-	void Clock::set24() {
+	void Clock::setInvalid() {
 		hour = INVALID_HOUR;
 		minute = DEFAULT_VALUE;
+	}
+
+	bool Clock::isValid() const {
+		return hour != INVALID_HOUR;
 	}
 
 	Clock Clock::operator+(const Clock &t) const {
@@ -60,12 +65,11 @@ namespace my_clock {
 			m -= 60;
 		}
 
-		if (h >= 24) {
-            		Clock temp;
-            		temp.set24();
-            		return temp;
-        	}
-		
+		if (h > MAX_HOUR) {
+			Clock temp;
+			temp.setInvalid();
+			return temp;
+		}
 		return Clock(h, m);
 	}
 
@@ -77,6 +81,11 @@ namespace my_clock {
 			m += 60;
 		}
 		
+		if (h < DEFAULT_VALUE) {
+			Clock temp;
+			temp.setInvalid();
+			return temp;
+		}
 		return Clock(h, m);
 	}
 

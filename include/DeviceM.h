@@ -13,7 +13,7 @@ class DeviceM : public Device {
 		// Nulla
 	public:
 		// Costruttore
-		DeviceM(std::string name, double energy); // string --> name, double --> energy
+		DeviceM(std::string, double); // string --> name, double --> energy
 		
 		// Funzione per l'accensione del Dispositivo
 		void turnOn(const my_clock::Clock &) override;
@@ -27,7 +27,5 @@ class DeviceM : public Device {
 		// Funzione per ottenere una stringa contenente i dati del Dispositivo
 		std::string toString() const override;
 };
-
-std::ostream &operator<<(std::ostream &, const DeviceM &);
 
 #endif // DEVICEM_H

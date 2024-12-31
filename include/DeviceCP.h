@@ -28,6 +28,4 @@ class DeviceCP : public Device {
 		std::string toString() const override;
 };
 
-std::ostream &operator<<(std::ostream &, const DeviceCP &);
-
 #endif // DEVICECP_H

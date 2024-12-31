@@ -11,9 +11,9 @@ DeviceM::DeviceM(std::string name, double energy) {
 	status = DEFAULT_STATUS;
 	this->energy = energy;
 	totalEnergy = DEFAULT_TOTALT_ENERGY;
-	lastOn.set24();
-	onTime.set24();
-    offTime.set24();
+	onTime.setInvalid();
+    offTime.setInvalid();
+	lastOn.setInvalid();
 }
 
 void DeviceM::turnOn(const my_clock::Clock & t) {
@@ -40,8 +40,4 @@ std::string DeviceM::toString() const {
 	str += "Ultima accensione: " + lastOn.toString() + "\nAccensione programmata: " + onTime.toString() + "\nSpegnimento programmato: " + offTime.toString() + "\n";
 	return str;
 	// Togliere ultima accensione ore 24:00
-}
-
-std::ostream &operator<<(std::ostream &os, const DeviceM &t) {
-		return os << t.toString();
 }

@@ -8,11 +8,12 @@
 DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) {
 	this->name = name;
 	id = ID_Counter++;;
+	status = DEFAULT_STATUS;
 	this->energy = energy;
 	totalEnergy = DEFAULT_TOTALT_ENERGY;
-	status = DEFAULT_STATUS;
-	onTime.set24();
-	lastOn.set24();
+	onTime.setInvalid();
+	offTime.setInvalid();
+	lastOn.setInvalid();
 	this->cycle = cycle;
 }
 
@@ -21,10 +22,12 @@ void DeviceCP::turnOn(const my_clock::Clock & t) {
 	if (!status)
 		lastOn = t;
 	status = 1;
-	offTime = onTime + cycle;
+
+	// imposto l'orario di spegnimento
+	offTime = lastOn + cycle;
 }
 
-void DeviceCP::set_onTime(const my_clock::Clock & onTime) /*override*/ {
+void DeviceCP::set_onTime(const my_clock::Clock & onTime) {
     this->onTime = onTime;
 	offTime = onTime + cycle;
 }
@@ -42,8 +45,4 @@ std::string DeviceCP::toString() const {
 	str += "Ultima accensione: " + lastOn.toString() + "\nAccensione programmata: " + onTime.toString() + "\nCiclo funzionamento: " + cycle.toString() + "\nSpegnimento programmato: " + offTime.toString() + "\n";
 	return str;
 	// Togliere ultima accensione ore 24:00
-}
-
-std::ostream &operator<<(std::ostream &os, const DeviceCP &t) {
-		return os << t.toString();
 }
