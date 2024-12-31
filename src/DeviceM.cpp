@@ -12,9 +12,9 @@ namespace device {
 		status = DEFAULT_STATUS;
 		this->energy = energy;
 		totalEnergy = DEFAULT_TOTALT_ENERGY;
-		lastOn.set24();
-		onTime.set24();
-    		offTime.set24();
+		lastOn.setInvalid();
+		onTime.setInvalid();
+    		offTime.setInvalid();
 	}
 
 	void DeviceM::turnOn(const my_clock::Clock & t) {
