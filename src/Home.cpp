@@ -8,17 +8,17 @@
 #include <sstream>
 
 // elenco dispositivi della casa
-std::vector<Device *> deviceList = {
-	new DeviceM("Impianto_Fotovoltaico", 1.5),
-	new DeviceCP("Lavatrice", -2, "1:50"),
-	new DeviceCP("Lavastoviglie", -1.5, "3:15"),
-	new DeviceM("Pompa di calore + termostato", -2),
-	new DeviceCP("Tapparelle elettriche", -0.3, "0:01"),
-	new DeviceM("Scaldabagno", -1),
-	new DeviceM("Frigorifero", -0.4),
-	new DeviceCP("Forno a microonde", -0.8, "0:02"),
-	new DeviceCP("Asciugatrice", -0.5, "1:00"),
-	new DeviceCP("Televisore", -0.2, "1:00"),
+std::vector<device::Device *> deviceList = {
+	new device::DeviceM("Impianto_Fotovoltaico", 1.5),
+	new device::DeviceCP("Lavatrice", -2, "1:50"),
+	new device::DeviceCP("Lavastoviglie", -1.5, "3:15"),
+	new device::DeviceM("Pompa di calore + termostato", -2),
+	new device::DeviceCP("Tapparelle elettriche", -0.3, "0:01"),
+	new device::DeviceM("Scaldabagno", -1),
+	new device::DeviceM("Frigorifero", -0.4),
+	new device::DeviceCP("Forno a microonde", -0.8, "0:02"),
+	new device::DeviceCP("Asciugatrice", -0.5, "1:00"),
+	new device::DeviceCP("Televisore", -0.2, "1:00"),
 };
 
 Home::Home() {
@@ -26,7 +26,7 @@ Home::Home() {
 	time = my_clock::Clock();
 
 	// inserisce i dispositivi nella casa
-	for (Device* d : deviceList)
+	for (device::Device* d : deviceList)
 		devices.insert({d->get_name(), d});
 }
 

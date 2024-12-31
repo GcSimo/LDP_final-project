@@ -15,7 +15,7 @@
 class Home{
 	private:
 		my_clock::Clock time;
-		std::map<std::string, Device*> devices;
+		std::map<std::string, device::Device*> devices;
 	public:
 		Home();
 		void listen(const std::string &);

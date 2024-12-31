@@ -1,6 +1,6 @@
 /*
-    FILE HEADER DEVICE.CPP
-    Autore:     Giovanni Bordignon
+	FILE HEADER DEVICE.CPP
+	Autore:     Giovanni Bordignon
 */
 
 #include "Device.h"
@@ -30,27 +30,27 @@ namespace device {
 	}
 
 	std::string Device::get_name() const {
-    		return name;
+		return name;
 	}
 
 	int Device::get_id() const {
-    		return id;
+		return id;
 	}
 
 	bool Device::get_status() const {
-    		return status;
+		return status;
 	}
 
 	double Device::get_energy() const {
-    		return energy;
+		return energy;
 	}
 
 	my_clock::Clock Device::get_onTime() const {
-    		return onTime;
+		return onTime;
 	}
 
 	my_clock::Clock Device::get_offTime() const {
-    		return offTime;
+		return offTime;
 	}
 
 	double Device::get_totalEnergy(const my_clock::Clock &t) {
