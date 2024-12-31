@@ -47,9 +47,13 @@ namespace my_clock {
 		return hour * 3600 + minute * 60;
 	}
 
-	void Clock::set24() {
+	void Clock::setInvalid() {
 		hour = INVALID_HOUR;
 		minute = DEFAULT_VALUE;
+	}
+
+	bool Clock::isValid() const {
+		return hour != INVALID_HOUR;
 	}
 
 	Clock Clock::operator+(const Clock &t) const {
