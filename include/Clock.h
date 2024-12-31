@@ -64,6 +64,7 @@ namespace my_clock {
 
 			// Imposta l'ora invalida 24:00 all'oggetto
 			void setInvalid();
+			// Controllo validità della funzione
 			bool isValid() const;
 
 			// Ridefinizione operatore + e -
