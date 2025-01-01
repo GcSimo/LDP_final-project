@@ -30,10 +30,39 @@
 - [x] aggiungere una funzione refreshDevice (come ha fatto Andrea) che riceve un orario e accende/spegne il dispositivo quando l'orario ricevuto supera quello di accensione/spegnimento, utilizzata per evitare di fare la multimappa...
 - [x] rimovere costruttore senza ciclo nei dispositivi CP -> ciclo deve essere impostato nel costruttore e mai più modificato
 - [x] riuovere funzione set_cycle nei dispositivi CP -> ciclo deve essere impostato nel costruttore e mai più modificato
-- [ ] creare namespace per dispositivi
+- [x] creare namespace per dispositivi
 - [ ] verificare slicing operator<<
 - [ ] sistemare consumi
 
 **Casa**
 - [ ] ultimare parser con comandi mancanti
 - [ ] riscrivere funzione per far avanzare il tempo con una multimappa/priority queue
+- [ ] controllare eventuali errori nel parser
+- [ ] (in caso suddividere il parser dalla classe home)
+
+## REGEX
+### Regex parser comandi
+- ``set devicename on/off``: \
+``^set [a-zA-Z0-9]* (on|off)$``
+
+- ``set devicename _:__ [_:__]``: \
+``^set [a-zA-Z0-9]* ([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])( ([0-1]?[0-9]|2[0-3]):([0-5]?[0-9]))?$``
+
+- ``set time _:__``: \
+``^set time ([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])$``
+
+- ``rm devicename``: \
+``^rm [a-zA-Z0-9]*$``
+
+- ``show``: \
+``^show$``
+
+- ``show devicename``: \
+``^show [a-zA-Z0-9]*$``
+
+- ``reset time, timer, all``: \
+``^reset (time|timers|all)$``
+
+### Regex orario
+per casting da string a clock: \
+``^([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])$``
