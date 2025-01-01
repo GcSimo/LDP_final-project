@@ -29,6 +29,9 @@ Home::Home() {
 	// inserisce i dispositivi nella casa
 	for (device::Device *d : deviceList)
 		devices.insert({d->get_name(), d});
+
+	// esegue eventuali accensioni da svolgere all'ora 0:00
+	goForward("0:00");
 }
 
 void Home::listen(const std::string &s) {
@@ -41,12 +44,15 @@ void Home::listen(const std::string &s) {
 		commandLines.push_back(line);
 	}
 
+	// stampa orario di inizio comando
+	std::cout << "[" << time << "] L'orario attuale è " << time << std::endl;
+
 	// comando set
 	if (commandLines[0] == "set") {
 		// -- set time ...
 		if (commandLines[1] == "time") {
-			std::cout << "\n\nTempo : " << time << " ---> " << commandLines[2] << "\n\n";
 			this->goForward(commandLines[2]);
+			std::cout << "[" << time << "] L'orario attuale è " << time << std::endl;
 		}
 		
 		// --- set devicename ... (devicename valido)
@@ -54,12 +60,12 @@ void Home::listen(const std::string &s) {
 			// --- set devicename on
 			if (commandLines[2] == "on") {
 				devices.at(commandLines[1])->turnOn(time);
-				std::cout << "dispositivo " << commandLines[1] << " ON";
+				std::cout << "[" << time << "] Il dispositivo " << commandLines[1] << " si è acceso" << std::endl;
 			}
 			// --- set devicename off
 			else if (commandLines[2] == "off") {
 				devices.at(commandLines[1])->turnOff(time);
-				std::cout << "dispositivo " << commandLines[1] << " OFF";
+				std::cout << "[" << time << "] Il dispositivo " << commandLines[1] << " si è spento" << std::endl;
 			}
 			// --- set devicename start [stop]
 			else {
@@ -68,6 +74,7 @@ void Home::listen(const std::string &s) {
 				// if (devices.at(commandLines[1])->isManual()) {
 				// 	devices.at(commandLines[1])->set_offTime(commandLines[3]);
 				// }
+				std::cout << "[" << time << "] Impostato un timer per il dispositivo " << commandLines[1] << " dalle " << devices.at(commandLines[1])->get_onTime() << " alle " << devices.at(commandLines[1])->get_offTime() << std::endl;
 			}
 		}
 
@@ -78,36 +85,42 @@ void Home::listen(const std::string &s) {
 
 	// comando rm
 	else if (commandLines[0] == "rm") {
-
+		std::cout << "[" << time << "] Rimosso il timer per il dispositivo " << commandLines[1] << std::endl;
 	}
 
 	// comando show
 	else if (commandLines[0] == "show") {
-		float cons = 0;
-		float actualcons = 0;
-		std::cout << "Show al tempo " << time << " :\n";
+		double cons = 0; // consumo complessimo
+		double prod = 0; // produzione complessiva
+		
+		// calcolo consumo, produzione complessiva e consumo istantaneo
+		for (device::Device *d : deviceList) {
+			if (d->get_totalEnergy(time) < 0)
+				cons -= d->get_totalEnergy(time);
+			else
+				prod += d->get_totalEnergy(time);
+		}
+
+		// stampo consumo e produzione del sistema
+		std::cout  << "[" << time << "] Attualmente il sistema ha prodotto " << prod << " kWh e consumato " << cons << " kWh. Nello specifico:" << std::endl;
+		
 		// stampo nome, status e consumo individuale dei dispositivi
 		// calcolo consumo complessivo e consumo istantaneo
-		for (auto &d : devices) {
-			float thiscons = d.second->get_totalEnergy(time);
-			std::cout << d.first << " : " << (d.second)->get_status() << ", ha consumato " << thiscons << "KW fino ad ora\n";
-			cons += thiscons;
-			if((d.second)->get_status())
-				actualcons += d.second->get_energy();
+		for (device::Device *d : deviceList) {
+			std::cout << " - il dispositivo " << d->get_name() << " ha " << (d->get_totalEnergy(time) > 0 ? "prodotto " : "consumato ")  << std::abs(d->get_totalEnergy(time)) << " kWh" << std::endl;
 		}
-		// stampo consumo complessivo e consumo istantaneo
-		std::cout << "\nConsumo totale della casa fino alle " << time << " : " << cons << "Kw/h\nE con un attuale consumo di " << actualcons << "Kw\n\n";
-		return;
 	}
 
 	// comando reset
 	else if (commandLines[0] == "reset") {
-
+		std::cout << "[" << time << "] L'orario attuale è " << time << std::endl;
 	}
 	
 	// comando inesistente
 	else
 		throw ParserError(); // comando non valido
+
+	std::cout << std::endl << std::endl;
 }
 
 
