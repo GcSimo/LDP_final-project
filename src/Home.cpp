@@ -6,17 +6,18 @@
 #include "Home.h"
 #include <iostream>
 #include <sstream>
+#include <queue>
 
 // elenco dispositivi della casa
 std::vector<device::Device *> deviceList = {
-	new device::DeviceM("Impianto_Fotovoltaico", 1.5),
+	new device::DeviceM("Impianto_fotovoltaico", 1.5),
 	new device::DeviceCP("Lavatrice", -2, "1:50"),
 	new device::DeviceCP("Lavastoviglie", -1.5, "3:15"),
-	new device::DeviceM("Pompa di calore + termostato", -2),
-	new device::DeviceCP("Tapparelle elettriche", -0.3, "0:01"),
+	new device::DeviceM("Pompa_di_calore_+_termostato", -2),
+	new device::DeviceCP("Tapparelle_elettriche", -0.3, "0:01"),
 	new device::DeviceM("Scaldabagno", -1),
 	new device::DeviceM("Frigorifero", -0.4),
-	new device::DeviceCP("Forno a microonde", -0.8, "0:02"),
+	new device::DeviceCP("Forno_a_microonde", -0.8, "0:02"),
 	new device::DeviceCP("Asciugatrice", -0.5, "1:00"),
 	new device::DeviceCP("Televisore", -0.2, "1:00"),
 };
@@ -26,7 +27,7 @@ Home::Home() {
 	time = my_clock::Clock();
 
 	// inserisce i dispositivi nella casa
-	for (device::Device* d : deviceList)
+	for (device::Device *d : deviceList)
 		devices.insert({d->get_name(), d});
 }
 
@@ -109,9 +110,52 @@ void Home::listen(const std::string &s) {
 		throw ParserError(); // comando non valido
 }
 
+
+// struct evento da memorizzare nella priority queue
+struct event {
+	my_clock::Clock time; // orario dell'evento
+	device::Device *dev; // puntatore al dispositivo su cui agire
+	bool command; // true -> turnOn, false -> turnOff
+};
+
+
+// funciton object per ordinamento eventi nella priority queue: l'orario minore è quello con priorità più alta
+struct eventCompare {
+	bool operator()(const event &e1, const event &e2) const { return e1.time > e2.time; }
+};
+
 // funzione per far proseguire il tempo
-void Home::goForward(const my_clock::Clock &t) {
-	//for (auto &d : devices)
-	//	(d.second)->refreshTimers(ti);
-	//this->time = ti;
+void Home::goForward(const my_clock::Clock &endTime) {
+	/**
+	 * priority queue eventList
+	 * - memorizza oggetti di tipo event (struct <time,device>)
+	 * - usa come container un vector (impostazione di default)
+	 * - usa la function object eventCompare come criterio di ordinamento
+	 */
+	std::priority_queue<event, std::vector<event>, eventCompare> eventList;
+	my_clock::Clock &startTime = time; // così il nome è più esplicito
+
+	// inserisco i dati nella priority queue
+	for (device::Device *d : deviceList) {
+		if (d->get_onTime() > startTime || d->get_onTime() <=  endTime)
+			eventList.push({d->get_onTime(), d, true});
+		if (d->get_offTime() > startTime || d->get_offTime() <=  endTime)
+			eventList.push({d->get_offTime(), d, false});
+	}
+
+	// estraggo i dati dalla priority queue
+	while (!eventList.empty()) {
+		if(eventList.top().command) // dispositivo da accendere
+			eventList.top().dev->turnOn(eventList.top().time);
+		else // dispositivo da spegnere
+			eventList.top().dev->turnOff(eventList.top().time);
+		eventList.pop();
+	}
+
+	// aggiorno i consumi
+	//for (device::Device *d : deviceList) {
+	//	d->update_energy();
+	//}
+
+	startTime = endTime;
 }
