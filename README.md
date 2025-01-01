@@ -31,14 +31,23 @@
 - [x] rimovere costruttore senza ciclo nei dispositivi CP -> ciclo deve essere impostato nel costruttore e mai più modificato
 - [x] riuovere funzione set_cycle nei dispositivi CP -> ciclo deve essere impostato nel costruttore e mai più modificato
 - [x] creare namespace per dispositivi
+- [ ] aggiungere un valore di ritorno booleano alle funzioni turnOn e turnOff:
+  - [ ] quando il dispositivo è già spento o già acceso, si comunica al chiamante che non è stata fatta nessuna modifica e il chiamante capisce che non deve mandare nessun messaggio in stampa
+  - [ ] la funzionalità sopra è particolarmente utile nella funzione goForward quando è programmata l'accensione di un dispositivo che supererebbe il consumo massimo e che quindi non viene acceso; in aternativa si dovrebbe eliminare l'evento di spegnimento, ma non è facile eliminare un evento nel mezzo di una priority queue
 - [ ] verificare slicing operator<<
 - [ ] sistemare consumi
 
 **Casa**
 - [ ] ultimare parser con comandi mancanti
+- [ ] gestire eventuali errori nel parser
+- [ ] fare attenzione nel parser, se i dispositivi hanno uno spazio all'interno del loro nome
 - [ ] riscrivere funzione per far avanzare il tempo con una multimappa/priority queue
-- [ ] controllare eventuali errori nel parser
-- [ ] (in caso suddividere il parser dalla classe home)
+- [ ] sistemare formattazione output
+- [ ] sistemare i foreach che devono scorrere la mappa dei dispositivi e non la lista di inizializzazione
+- [ ] suggerimento: restituire i messaggi di output al posto di stamparli direttamente:
+  - [ ] inserirli in una stringa che verrà restituita dalle funzioni come valore di ritorno
+  - [ ] non ci sono 10 funzioni diverse che devono incastrarsi con i messaggi di output, ma il messaggio viene stampato solo alla fine
+- [ ] suggerimento: in caso suddividere il parser dalla classe home
 
 ## REGEX
 ### Regex parser comandi
