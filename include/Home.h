@@ -14,6 +14,10 @@
 
 class Home{
 	private:
+		static constexpr double DEFAULT_POWER_ABSORPTION = 0;
+		static constexpr double MAX_POWER_ABSORPTION = 3.5;
+		
+		double power_absorption;
 		my_clock::Clock time;
 		std::map<std::string, device::Device*> devices;
 	public:

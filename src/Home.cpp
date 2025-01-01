@@ -26,6 +26,9 @@ Home::Home() {
 	// inizializza ora del giorno a 0
 	time = my_clock::Clock();
 
+	// inizializzazione potenza assorbita dalla rete a 0
+	power_absorption = DEFAULT_POWER_ABSORPTION;
+
 	// inserisce i dispositivi nella casa
 	for (device::Device *d : deviceList)
 		devices.insert({d->get_name(), d});
@@ -59,21 +62,29 @@ void Home::listen(const std::string &s) {
 		else if (devices.count(commandLines[1]) != 0) {
 			// --- set devicename on
 			if (commandLines[2] == "on") {
-				devices.at(commandLines[1])->turnOn(time);
-				std::cout << "[" << time << "] Il dispositivo " << commandLines[1] << " si è acceso" << std::endl;
+				if (power_absorption - devices.at(commandLines[1])->get_energy() > MAX_POWER_ABSORPTION) {
+					std::cout << "[" << time << "] Il dispositivo " << devices.at(commandLines[1])->get_name() << " non si è acceso perché si supererebbe la potenza massima asorbibile dalla rete" << std::endl;
+				}
+				else {
+					devices.at(commandLines[1])->turnOn(time);
+					power_absorption -= devices.at(commandLines[1])->get_energy();
+					std::cout << "[" << time << "] Il dispositivo " << commandLines[1] << " si è acceso" << std::endl;
+				}
 			}
 			// --- set devicename off
 			else if (commandLines[2] == "off") {
 				devices.at(commandLines[1])->turnOff(time);
+				power_absorption += devices.at(commandLines[1])->get_energy();
 				std::cout << "[" << time << "] Il dispositivo " << commandLines[1] << " si è spento" << std::endl;
 			}
 			// --- set devicename start [stop]
 			else {
 				devices.at(commandLines[1])->set_onTime(commandLines[2]);
+				
 				// nel caso di un dispositivo manuale, imposto orario di spegnimento
-				// if (devices.at(commandLines[1])->isManual()) {
-				// 	devices.at(commandLines[1])->set_offTime(commandLines[3]);
-				// }
+				if (device::DeviceM *temp= dynamic_cast<device::DeviceM *>(devices.at(commandLines[1]))) {
+					temp->set_offTime(commandLines[3]);
+				}
 				std::cout << "[" << time << "] Impostato un timer per il dispositivo " << commandLines[1] << " dalle " << devices.at(commandLines[1])->get_onTime() << " alle " << devices.at(commandLines[1])->get_offTime() << std::endl;
 			}
 		}
@@ -95,10 +106,10 @@ void Home::listen(const std::string &s) {
 		
 		// calcolo consumo, produzione complessiva e consumo istantaneo
 		for (device::Device *d : deviceList) {
-			if (d->get_totalEnergy(time) < 0)
-				cons -= d->get_totalEnergy(time);
+			if (d->get_totalEnergy() < 0)
+				cons -= d->get_totalEnergy();
 			else
-				prod += d->get_totalEnergy(time);
+				prod += d->get_totalEnergy();
 		}
 
 		// stampo consumo e produzione del sistema
@@ -107,7 +118,7 @@ void Home::listen(const std::string &s) {
 		// stampo nome, status e consumo individuale dei dispositivi
 		// calcolo consumo complessivo e consumo istantaneo
 		for (device::Device *d : deviceList) {
-			std::cout << " - il dispositivo " << d->get_name() << " ha " << (d->get_totalEnergy(time) > 0 ? "prodotto " : "consumato ")  << std::abs(d->get_totalEnergy(time)) << " kWh" << std::endl;
+			std::cout << " - il dispositivo " << d->get_name() << " ha " << (d->get_totalEnergy() > 0 ? "prodotto " : "consumato ")  << std::abs(d->get_totalEnergy()) << " kWh" << std::endl;
 		}
 	}
 
@@ -150,25 +161,35 @@ void Home::goForward(const my_clock::Clock &endTime) {
 
 	// inserisco i dati nella priority queue
 	for (device::Device *d : deviceList) {
-		if (d->get_onTime() > startTime || d->get_onTime() <=  endTime)
+		if (d->get_onTime() > startTime && d->get_onTime() <=  endTime)
 			eventList.push({d->get_onTime(), d, true});
-		if (d->get_offTime() > startTime || d->get_offTime() <=  endTime)
+		if (d->get_offTime() > startTime && d->get_offTime() <=  endTime)
 			eventList.push({d->get_offTime(), d, false});
 	}
 
 	// estraggo i dati dalla priority queue
 	while (!eventList.empty()) {
-		if(eventList.top().command) // dispositivo da accendere
+		// impossibile accendere il dispositivo perché la potenza assorbita dalla rete supera la potenza massima della rete
+		if (eventList.top().command && power_absorption - eventList.top().dev->get_energy() > MAX_POWER_ABSORPTION) {
+			std::cout << "[" << eventList.top().time << "] Il dispositivo " << eventList.top().dev->get_name() << " non si è acceso perché si supererebbe la potenza massima asorbibile dalla rete" << std::endl;
+		}
+		else if (eventList.top().command) { // dispositivo da accendere
 			eventList.top().dev->turnOn(eventList.top().time);
-		else // dispositivo da spegnere
+			power_absorption -= eventList.top().dev->get_energy();
+			std::cout << "[" << eventList.top().time << "] Il dispositivo " << eventList.top().dev->get_name() << " si è acceso" << std::endl;
+		}
+		else { // dispositivo da spegnere
 			eventList.top().dev->turnOff(eventList.top().time);
+			power_absorption += eventList.top().dev->get_energy();
+			std::cout << "[" << eventList.top().time << "] Il dispositivo " << eventList.top().dev->get_name() << " si è spento" << std::endl;
+		}
 		eventList.pop();
 	}
 
 	// aggiorno i consumi
-	//for (device::Device *d : deviceList) {
-	//	d->update_energy();
-	//}
+	for (device::Device *d : deviceList) {
+		d->refreshDevice(endTime);
+	}
 
 	startTime = endTime;
 }
