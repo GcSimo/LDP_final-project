@@ -8,20 +8,22 @@
 namespace device {
 	int Device::ID_Counter = 0;
 
-	void Device::turnOff(const my_clock::Clock &t) {
+	bool Device::turnOff(const my_clock::Clock &t) {
 		// se il dispositivo prima era acceso, aggiorno il consumo complessivo e l'orario dell'ultimo aggiornamento del consumo
 		if (status) {
 			totalEnergy += (t - lastEnergyUpdate).toHours() * energy;
 			lastEnergyUpdate = t;
+			status = 0;
+			return true;
 		}
-		status = 0;
+		return false;
 	}
 
-	void Device::changeStatus(const my_clock::Clock &t) {
+	bool Device::changeStatus(const my_clock::Clock &t) {
 		if (status)
-			this->turnOff(t);
+			return this->turnOff(t);
 		else
-			this->turnOn(t);
+			return this->turnOn(t);
 	}
 
 	void Device::refreshDevice(const my_clock::Clock &t) {
