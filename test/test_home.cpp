@@ -37,13 +37,12 @@ int main () {
 		"show"
 	};
 
+	for(string s : inputs)
+		h.listen(s);
+	
 	/* while(true){
 		std::string str;
 		std::getline(std::cin,str);
 		h.listen(str);
 	} */
-
-	for(string s : inputs) {
-		h.listen(s);
-	}
 }

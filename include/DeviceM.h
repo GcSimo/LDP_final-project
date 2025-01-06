@@ -28,7 +28,5 @@ namespace device {
 			// Funzione per ottenere una stringa contenente i dati del Dispositivo
 			std::string toString() const override;
 	};
-
-	std::ostream &operator<<(std::ostream &, const DeviceM &);
 }
 #endif // DEVICEM_H

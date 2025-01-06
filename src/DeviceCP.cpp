@@ -51,8 +51,4 @@ namespace device {
 		str += "\n";
 		return str;
 	}
-
-	std::ostream &operator<<(std::ostream &os, const DeviceCP &t) {
-			return os << t.toString();
-	}
 }

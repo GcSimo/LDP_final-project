@@ -105,11 +105,11 @@ void Home::listen(const std::string &s) {
 		double prod = 0; // produzione complessiva
 		
 		// calcolo consumo, produzione complessiva e consumo istantaneo
-		for (device::Device *d : deviceList) {
-			if (d->get_totalEnergy() < 0)
-				cons -= d->get_totalEnergy();
+		for (auto d : devices) { // auto = std::pair<std::string,device::Device*>
+			if (d.second->get_totalEnergy() < 0)
+				cons -= d.second->get_totalEnergy();
 			else
-				prod += d->get_totalEnergy();
+				prod += d.second->get_totalEnergy();
 		}
 
 		// stampo consumo e produzione del sistema
@@ -117,8 +117,8 @@ void Home::listen(const std::string &s) {
 		
 		// stampo nome, status e consumo individuale dei dispositivi
 		// calcolo consumo complessivo e consumo istantaneo
-		for (device::Device *d : deviceList) {
-			std::cout << " - il dispositivo " << d->get_name() << " ha " << (d->get_totalEnergy() > 0 ? "prodotto " : "consumato ")  << std::abs(d->get_totalEnergy()) << " kWh" << std::endl;
+		for (auto d : devices) { // auto = std::pair<std::string,device::Device*>
+			std::cout << " - il dispositivo " << d.first << " ha " << (d.second->get_totalEnergy() > 0 ? "prodotto " : "consumato ")  << std::abs(d.second->get_totalEnergy()) << " kWh" << std::endl;
 		}
 	}
 
@@ -160,11 +160,11 @@ void Home::goForward(const my_clock::Clock &endTime) {
 	my_clock::Clock &startTime = time; // così il nome è più esplicito
 
 	// inserisco i dati nella priority queue
-	for (device::Device *d : deviceList) {
-		if (d->get_onTime() > startTime && d->get_onTime() <=  endTime)
-			eventList.push({d->get_onTime(), d, true});
-		if (d->get_offTime() > startTime && d->get_offTime() <=  endTime)
-			eventList.push({d->get_offTime(), d, false});
+	for (auto d : devices) { // auto = std::pair<std::string,device::Device*>
+		if (d.second->get_onTime() > startTime && d.second->get_onTime() <=  endTime)
+			eventList.push({d.second->get_onTime(), d.second, true});
+		if (d.second->get_offTime() > startTime && d.second->get_offTime() <=  endTime)
+			eventList.push({d.second->get_offTime(), d.second, false});
 	}
 
 	// estraggo i dati dalla priority queue
@@ -187,8 +187,8 @@ void Home::goForward(const my_clock::Clock &endTime) {
 	}
 
 	// aggiorno i consumi
-	for (device::Device *d : deviceList) {
-		d->refreshDevice(endTime);
+	for (auto d : devices) { // auto = std::pair<std::string,device::Device*>
+		d.second->refreshDevice(endTime);
 	}
 
 	startTime = endTime;
