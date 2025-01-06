@@ -31,9 +31,10 @@ namespace device {
 
 		public:
 			// Funzioni deputate all'accensione e allo spegnimento del dispositivo (--> viene modificata variabile booleana "status")
-			virtual void turnOn(const my_clock::Clock &) = 0;
-			void turnOff(const my_clock::Clock &);
-			void changeStatus(const my_clock::Clock &);
+			// Le funzioni ritornano TRUE se lo stato del Dispositivo viene effettivamente modificato, altrimenti FALSE.
+			virtual bool turnOn(const my_clock::Clock &) = 0;
+			bool turnOff(const my_clock::Clock &);
+			bool changeStatus(const my_clock::Clock &);
 
 			// Funzione atta al settaggio dell'orario di accensione del dispositivo
 			virtual void set_onTime(const my_clock::Clock &) = 0;
