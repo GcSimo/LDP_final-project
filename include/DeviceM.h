@@ -17,7 +17,7 @@ namespace device {
 			DeviceM(std::string, double); // string --> name, double --> energy
 		
 			// Funzione per l'accensione del Dispositivo
-			void turnOn(const my_clock::Clock &) override;
+			bool turnOn(const my_clock::Clock &) override;
 		
 			// Funzione per il settaggio dell'ora di accensione del Dispositivo
 			void set_onTime(const my_clock::Clock &) override;
