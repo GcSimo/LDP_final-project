@@ -14,10 +14,10 @@ namespace device {
 			my_clock::Clock cycle;
 		public:
 			// Costruttore
-			DeviceCP(std::string, double, const my_clock::Clock& cycle);
+			DeviceCP(std::string, double, const my_clock::Clock &);
 
 			// Funzione per l'accensione del Dispositivo
-			void turnOn(const my_clock::Clock &) override;
+			bool turnOn(const my_clock::Clock &) override;
 
 			// Funzione per il settaggio dell'ora di accensione del Dispositivo
 			void set_onTime(const my_clock::Clock &) override;
