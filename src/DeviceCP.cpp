@@ -18,15 +18,21 @@ namespace device {
 		this->cycle = cycle;
 	}
 
-	void DeviceCP::turnOn(const my_clock::Clock & t) {
+	bool DeviceCP::turnOn(const my_clock::Clock & t) {
 		// se prima il dispositivo prima era spento, aggiorno l'orario dell'ultimo aggiornamento del consumo
 		// infatti se prima era spento, il consumo non è cambiato dall'ultima volta in cui è stato aggiornato
-		if (!status)
+		if (!status) {
 			lastEnergyUpdate = t;
-		status = 1;
+			status = 1;
+			// Imposto l'orario di spegnimento
+			offTime = t + cycle;
+			return true;
+		}
 
 		// imposto l'orario di spegnimento
 		offTime = t + cycle;
+
+		return false;
 	}
 
 	void DeviceCP::set_onTime(const my_clock::Clock & onTime) {
