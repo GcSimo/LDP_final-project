@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <regex>
 
-namespace my_clock {
+namespace robotic_home {
 	Clock::Clock() : hour{DEFAULT_VALUE}, minute{DEFAULT_VALUE} { }
 
 	Clock::Clock(int h, int m) : hour{h}, minute { m } {

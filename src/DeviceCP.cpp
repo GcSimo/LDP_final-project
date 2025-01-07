@@ -5,8 +5,8 @@
 
 #include "DeviceCP.h"
 
-namespace device {
-		DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) {
+namespace robotic_home {
+	DeviceCP::DeviceCP(std::string name, double energy, const Clock& cycle) {
 		this->name = name;
 		id = ID_Counter++;;
 		status = DEFAULT_STATUS;
@@ -18,7 +18,7 @@ namespace device {
 		this->cycle = cycle;
 	}
 
-	bool DeviceCP::turnOn(const my_clock::Clock & t) {
+	bool DeviceCP::turnOn(const Clock & t) {
 		// se prima il dispositivo prima era spento, aggiorno l'orario dell'ultimo aggiornamento del consumo
 		// infatti se prima era spento, il consumo non è cambiato dall'ultima volta in cui è stato aggiornato
 		if (!status) {
@@ -35,12 +35,12 @@ namespace device {
 		return false;
 	}
 
-	void DeviceCP::set_onTime(const my_clock::Clock & onTime) {
+	void DeviceCP::set_onTime(const Clock & onTime) {
 		this->onTime = onTime;
 		offTime = onTime + cycle;
 	}
 
-	my_clock::Clock DeviceCP::get_cycle() const {
+	Clock DeviceCP::get_cycle() const {
 		return cycle;
 	}
 

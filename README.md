@@ -6,8 +6,8 @@
 
 ## TO-DO List
 **Generale**
+- [x] creare un unico namespace per tutte le classi della casa
 - [ ] uniformare lingua di variabili e classi in inglese
-- [ ] creare un unico namespace per tutte le classi della casa
 
 **MyClock**
 - [x] limite MAX_HOUR a 23 al posto che a 24
@@ -33,9 +33,10 @@
 - [x] riuovere funzione set_cycle nei dispositivi CP -> ciclo deve essere impostato nel costruttore e mai più modificato
 - [x] creare namespace per dispositivi
 - [x] sistemare consumi
-- [ ] aggiungere un valore di ritorno booleano alle funzioni turnOn e turnOff:
-  - [ ] quando il dispositivo è già spento o già acceso, si comunica al chiamante che non è stata fatta nessuna modifica e il chiamante capisce che non deve mandare nessun messaggio in stampa
-  - [ ] la funzionalità sopra è particolarmente utile nella funzione goForward quando è programmata l'accensione di un dispositivo che supererebbe il consumo massimo e che quindi non viene acceso; in aternativa si dovrebbe eliminare l'evento di spegnimento, ma non è facile eliminare un evento nel mezzo di una priority queue
+- [x] aggiungere un valore di ritorno booleano alle funzioni turnOn e turnOff:
+  - [x] quando il dispositivo è già spento o già acceso, si comunica al chiamante che non è stata fatta nessuna modifica e il chiamante capisce che non deve mandare nessun messaggio in stampa
+  - [x] la funzionalità sopra è particolarmente utile nella funzione goForward quando è programmata l'accensione di un dispositivo che supererebbe il consumo massimo e che quindi non viene acceso; in aternativa si dovrebbe eliminare l'evento di spegnimento, ma non è facile eliminare un evento nel mezzo di una priority queue
+- [ ] inserire eventuali funzioni mancanti, su richiesta della classe 
 
 **Casa**
 - [x] riscrivere funzione per far avanzare il tempo con una multimappa/priority queue
@@ -48,8 +49,15 @@
   - [ ] inserirli in una stringa che verrà restituita dalle funzioni come valore di ritorno
   - [ ] non ci sono 10 funzioni diverse che devono incastrarsi con i messaggi di output, ma il messaggio viene stampato solo alla fine
 - [ ] suggerimento: in caso suddividere il parser dalla classe home
+- [ ] correggere i messaggi di output integrando i valori booleani delle funzioni turnOn e turnOff
 
 ## REGEX
+Alcune espressioni regex che possono tornare utili in una possibile implementazione, anche se non necessarie e indispensabili.
+
+### Regex orario
+per casting da string a clock: \
+``^([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])$``
+
 ### Regex parser comandi
 - ``set devicename on/off``: \
 ``^set [a-zA-Z0-9]* (on|off)$``
@@ -72,6 +80,3 @@
 - ``reset time, timer, all``: \
 ``^reset (time|timers|all)$``
 
-### Regex orario
-per casting da string a clock: \
-``^([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])$``

@@ -8,7 +8,7 @@ int main () {
 	cout << "Programma Robotic-Home del gruppo ~BankAccount()" << endl << endl;
 	
 	// creazione casa
-	Home h;
+	robotic_home::Home h;
 
 	vector<string> inputs = {
 		"show",

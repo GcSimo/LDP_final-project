@@ -5,10 +5,10 @@
 
 #include "Device.h"
 
-namespace device {
+namespace robotic_home {
 	int Device::ID_Counter = 0;
 
-	bool Device::turnOff(const my_clock::Clock &t) {
+	bool Device::turnOff(const Clock &t) {
 		// se il dispositivo prima era acceso, aggiorno il consumo complessivo e l'orario dell'ultimo aggiornamento del consumo
 		if (status) {
 			totalEnergy += (t - lastEnergyUpdate).toHours() * energy;
@@ -19,14 +19,14 @@ namespace device {
 		return false;
 	}
 
-	bool Device::changeStatus(const my_clock::Clock &t) {
+	bool Device::changeStatus(const Clock &t) {
 		if (status)
 			return this->turnOff(t);
 		else
 			return this->turnOn(t);
 	}
 
-	void Device::refreshDevice(const my_clock::Clock &t) {
+	void Device::refreshDevice(const Clock &t) {
 		// se il dispositivo è acceso, aggiorno il consumo (se è spento il consumo non cambia)
 		if (status)
 			totalEnergy += (t - lastEnergyUpdate).toHours() * energy;
@@ -55,11 +55,11 @@ namespace device {
 		return totalEnergy;
 	}
 
-	my_clock::Clock Device::get_onTime() const {
+	Clock Device::get_onTime() const {
 		return onTime;
 	}
 
-	my_clock::Clock Device::get_offTime() const {
+	Clock Device::get_offTime() const {
 		return offTime;
 	}
 

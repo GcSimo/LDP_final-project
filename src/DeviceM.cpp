@@ -5,7 +5,7 @@
 
 #include "DeviceM.h"
 
-namespace device {
+namespace robotic_home {
 	DeviceM::DeviceM(std::string name, double energy) {
 		this->name = name;
 		id = ID_Counter++;
@@ -17,7 +17,7 @@ namespace device {
 		lastEnergyUpdate.setInvalid();
 	}
 
-	bool DeviceM::turnOn(const my_clock::Clock & t) {
+	bool DeviceM::turnOn(const Clock & t) {
 		// se prima il dispositivo prima era spento, aggiorno l'orario dell'ultimo aggiornamento del consumo
 		// infatti se prima era spento, il consumo non è cambiato dall'ultima volta in cui è stato aggiornato
 		if (!status) {
@@ -28,11 +28,11 @@ namespace device {
 		return false;
 	}
 
-	void DeviceM::set_onTime(const my_clock::Clock & onTime) {
+	void DeviceM::set_onTime(const Clock & onTime) {
    		this->onTime = onTime;
 	}
 
-	void DeviceM::set_offTime(const my_clock::Clock& offTime) {
+	void DeviceM::set_offTime(const Clock& offTime) {
 		this->offTime = offTime;
 	}
 
