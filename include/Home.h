@@ -12,16 +12,22 @@
 #include <map>
 #include <string>
 
-class Home{
-	private:
-		my_clock::Clock time;
-		std::map<std::string, device::Device*> devices;
-	public:
-		Home();
-		void listen(const std::string &);
-		void goForward(const my_clock::Clock&);
+namespace robotic_home{
+	class Home {
+		private:
+			static constexpr double DEFAULT_POWER_ABSORPTION = 0;
+			static constexpr double MAX_POWER_ABSORPTION = 3.5;
+			
+			double power_absorption;
+			Clock time;
+			std::map<std::string, Device*> devices;
+		public:
+			Home();
+			void listen(const std::string &);
+			void goForward(const Clock&);
 
-		class ParserError {};
-};
+			class ParserError {};
+	};
+}
 
 #endif // HOME_H

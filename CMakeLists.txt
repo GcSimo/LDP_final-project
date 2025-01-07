@@ -16,6 +16,8 @@ add_executable(main src/main.cpp) # programma completo
 add_executable(test_compiler test/test_compiler.cpp) #  test del compilatore usato
 add_executable(test_clock test/test_clock.cpp) # test classe clock
 add_executable(test_device test/test_device.cpp) # test classi device
+add_executable(test_home test/test_home.cpp) # test classi device
+add_executable(test_slicing test/test_slicing.cpp) #  test dello slicing
 add_executable(test_static_ID test/test_static_ID.cpp) # test variabili statiche
 
 # definizione librerie
@@ -35,3 +37,4 @@ target_link_libraries(home deviceM deviceCP) # link librerie DeviceM e DeviceCP 
 target_link_libraries(main home)
 target_link_libraries(test_clock clock)
 target_link_libraries(test_device deviceM deviceCP)
+target_link_libraries(test_home home)

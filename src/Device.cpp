@@ -5,28 +5,34 @@
 
 #include "Device.h"
 
-namespace device {
+namespace robotic_home {
 	int Device::ID_Counter = 0;
 
-	void Device::turnOff(const my_clock::Clock &t) {
-		// se il dispositivo prima era acceso, aggiorno il consumo complessivo
-		if (status)
-			totalEnergy += (t - lastOn).toHours() * energy;
-		status = 0;
+	bool Device::turnOff(const Clock &t) {
+		// se il dispositivo prima era acceso, aggiorno il consumo complessivo e l'orario dell'ultimo aggiornamento del consumo
+		if (status) {
+			totalEnergy += (t - lastEnergyUpdate).toHours() * energy;
+			lastEnergyUpdate = t;
+			status = 0;
+			return true;
+		}
+		return false;
 	}
 
-	void Device::changeStatus(const my_clock::Clock &t) {
+	bool Device::changeStatus(const Clock &t) {
 		if (status)
-			this->turnOff(t);
+			return this->turnOff(t);
 		else
-			this->turnOn(t);
+			return this->turnOn(t);
 	}
 
-	void Device::refreshDevice(const my_clock::Clock &t) {
-		if (t >= onTime)
-			this->turnOn(onTime);
-		if (t >= offTime)
-			this->turnOff(offTime);
+	void Device::refreshDevice(const Clock &t) {
+		// se il dispositivo è acceso, aggiorno il consumo (se è spento il consumo non cambia)
+		if (status)
+			totalEnergy += (t - lastEnergyUpdate).toHours() * energy;
+		
+		// aggiorno l'orario dell'ultimo aggiornamento del consumo
+		lastEnergyUpdate = t;
 	}
 
 	std::string Device::get_name() const {
@@ -45,24 +51,16 @@ namespace device {
 		return energy;
 	}
 
-	my_clock::Clock Device::get_onTime() const {
+	double Device::get_totalEnergy() const {
+		return totalEnergy;
+	}
+
+	Clock Device::get_onTime() const {
 		return onTime;
 	}
 
-	my_clock::Clock Device::get_offTime() const {
+	Clock Device::get_offTime() const {
 		return offTime;
-	}
-
-	double Device::get_totalEnergy(const my_clock::Clock &t) {
-		/**
-		 * calcola l'energia complessiva consumata:
-		 * E_tot =  E_vecchie_accensioni + E_utltima_accensione
-		 * 
-		 * l'energia delle vecchie accensioni viene aggiornata ogni volta che viene eseguito un turnOff
-		 * l'energia dell'utltima accensione viene sommata solo se il dispositivo è acceso, infatti se
-		 * il dispositivo è spento (status == 0) il valore si annulla perché viene moltiplicato per 0 
-		 */
-		return totalEnergy + (t - lastOn).toHours() * energy * status;
 	}
 
 	std::ostream &operator<<(std::ostream &os, const Device &t) {

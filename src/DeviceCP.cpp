@@ -5,8 +5,8 @@
 
 #include "DeviceCP.h"
 
-namespace device {
-		DeviceCP::DeviceCP(std::string name, double energy, const my_clock::Clock& cycle) {
+namespace robotic_home {
+	DeviceCP::DeviceCP(std::string name, double energy, const Clock& cycle) {
 		this->name = name;
 		id = ID_Counter++;;
 		status = DEFAULT_STATUS;
@@ -14,26 +14,33 @@ namespace device {
 		totalEnergy = DEFAULT_TOTALT_ENERGY;
 		onTime.setInvalid();
 		offTime.setInvalid();
-		lastOn.setInvalid();
+		lastEnergyUpdate.setInvalid();
 		this->cycle = cycle;
 	}
 
-	void DeviceCP::turnOn(const my_clock::Clock & t) {
-		// se prima il dispositivo prima era spento, aggiorno l'orario dell'ultima accensione
-		if (!status)
-			lastOn = t;
-		status = 1;
+	bool DeviceCP::turnOn(const Clock & t) {
+		// se prima il dispositivo prima era spento, aggiorno l'orario dell'ultimo aggiornamento del consumo
+		// infatti se prima era spento, il consumo non è cambiato dall'ultima volta in cui è stato aggiornato
+		if (!status) {
+			lastEnergyUpdate = t;
+			status = 1;
+			// Imposto l'orario di spegnimento
+			offTime = t + cycle;
+			return true;
+		}
 
 		// imposto l'orario di spegnimento
-		offTime = lastOn + cycle;
+		offTime = t + cycle;
+
+		return false;
 	}
 
-	void DeviceCP::set_onTime(const my_clock::Clock & onTime) {
+	void DeviceCP::set_onTime(const Clock & onTime) {
 		this->onTime = onTime;
 		offTime = onTime + cycle;
 	}
 
-	my_clock::Clock DeviceCP::get_cycle() const {
+	Clock DeviceCP::get_cycle() const {
 		return cycle;
 	}
 
@@ -42,16 +49,12 @@ namespace device {
 		str += status ? "acceso\n" : "spento\n";
 		if (energy > 0) str += "Produzione: " + std::to_string(energy) + "kW\nTot. produzione: " + std::to_string(totalEnergy) + " kWh\n";
 		else str += "Consumo: " + std::to_string(energy) + "kW\nTot. consumo: " + std::to_string(totalEnergy) + " kWh\nUltima accensione: ";
-		str +=  (lastOn.isValid()) ? lastOn.toString() : "Nessuna accensione avvenuta";
+		str +=  (lastEnergyUpdate.isValid()) ? lastEnergyUpdate.toString() : "Nessun aggiornamento sul consumo avvenuto";
 		str += "\nAccensione programmata: ";
 		str += (onTime.isValid()) ? onTime.toString() : "Accensione non programmata";
 		str += "\nCiclo di funzionamento: " + cycle.toString() +"\nSpegnimento programmato: ";
 		str += (offTime.isValid()) ? offTime.toString() : "Spegnimento non programmato";
 		str += "\n";
 		return str;
-	}
-
-	std::ostream &operator<<(std::ostream &os, const DeviceCP &t) {
-			return os << t.toString();
 	}
 }
