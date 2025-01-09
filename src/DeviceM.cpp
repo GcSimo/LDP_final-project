@@ -3,7 +3,7 @@
 	Autore:     Giovanni Bordignon
 */
 
-#include "DeviceM.h"
+#include "../include/DeviceM.h"
 
 namespace robotic_home {
 	DeviceM::DeviceM(std::string name, double energy) {

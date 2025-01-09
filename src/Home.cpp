@@ -3,7 +3,7 @@
 	Autore:     Andrea Visonà
 */
 
-#include "Home.h"
+#include "../include/Home.h"
 #include <iostream>
 #include <sstream>
 #include <queue>
@@ -126,6 +126,19 @@ namespace robotic_home {
 
 		// comando reset
 		else if (commandLines[0] == "reset") {
+			if(commandLines[1] == "time"){
+				for (auto x : this->devices)
+				{
+					x.second->turnOff(this->time);
+				}
+				this->time = Clock("0:00");
+			}
+			if(commandLines[1] == "timers"){
+				for (auto x : this->devices){
+					x.second->get_onTime() = Clock(0);
+					x.second->get_offTime() = Clock(0);
+				}
+			}
 			std::cout << "[" << time << "] L'orario attuale è " << time << std::endl;
 		}
 		
