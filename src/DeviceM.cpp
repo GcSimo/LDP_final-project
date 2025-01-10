@@ -35,18 +35,4 @@ namespace domotic_home {
 	void DeviceM::set_offTime(const Clock& offTime) {
 		this->offTime = offTime;
 	}
-
-	std::string DeviceM::toString() const {
-		std::string str = "Dispositivo: " + name + "\nID: " + std::to_string(id) + "\nStato attuale: Dispositivo ";
-		str += status ? "acceso\n" : "spento\n";
-		if (energy > 0) str += "Produzione: " + std::to_string(energy) + "kW\nTot. produzione: " + std::to_string(totalEnergy) + " kWh\n";
-		else str += "Consumo: " + std::to_string(energy) + "kW\nTot. consumo: " + std::to_string(totalEnergy) + " kWh\nUltima accensione: ";
-		str +=  (lastEnergyUpdate.isValid()) ? lastEnergyUpdate.toString() : "Nessun aggiornamento sul consumo avvenuto";
-		str += "\nAccensione programmata: ";
-		str += (onTime.isValid()) ? onTime.toString() : "Accensione non programmata";
-		str += "\nSpegnimento programmato: ";
-		str += (offTime.isValid()) ? offTime.toString() : "Spegnimento non programmato";
-		str += "\n";
-		return str;
-	}
 }
