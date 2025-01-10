@@ -34,13 +34,18 @@ namespace domotic_home {
 			// Le funzioni ritornano TRUE se lo stato del Dispositivo viene effettivamente modificato, altrimenti FALSE.
 			virtual bool turnOn(const Clock &) = 0;
 			bool turnOff(const Clock &);
-			bool changeStatus(const Clock &);
 
 			// Funzione atta al settaggio dell'orario di accensione del dispositivo
 			virtual void set_onTime(const Clock &) = 0;
 
 			// Funzione atta ad aggiornare il consumo/produzione complessivo del dispositivo all'orario passato come parametro
 			void refreshDevice(const Clock &);
+
+			// Funzione di reset degli orari di accensione e spegnimento impostati
+			void resetTime();
+
+			// Funzione di reset dell'energia consumata del dispositivo
+			void resetTotalEnergy();
 
 			// Funzioni per accesso ai dati del dispositivo
 			std::string get_name() const;
@@ -52,7 +57,7 @@ namespace domotic_home {
 			Clock get_offTime() const;
 
 			// Funzione per ottenere una stringa contenente i dati del Dispositivo
-			virtual std::string toString() const = 0;
+			std::string toString() const;
 	};
 
 	std::ostream &operator<<(std::ostream &, const Device &);
