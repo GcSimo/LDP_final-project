@@ -24,9 +24,6 @@ namespace domotic_home {
 
 			// Funzione per ottenere il ciclo di funzionamento del dispositivo
 			Clock get_cycle() const;
-
-			// Funzione per ottenere una stringa contenente i dati del Dispositivo
-			std::string toString() const override;
 	};
 }
 #endif // DEVICECP_H
