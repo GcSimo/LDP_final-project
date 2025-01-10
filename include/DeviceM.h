@@ -24,9 +24,6 @@ namespace domotic_home {
 		
 			// Funzione per il settaggio dell'ora di spegnimento
 			void set_offTime(const Clock&);
-
-			// Funzione per ottenere una stringa contenente i dati del Dispositivo
-			std::string toString() const override;
 	};
 }
 #endif // DEVICEM_H
