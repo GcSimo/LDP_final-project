@@ -49,19 +49,25 @@
   - [x] inserirli in una stringa che verrà restituita dalle funzioni come valore di ritorno
   - [x] non ci sono 10 funzioni diverse che devono incastrarsi con i messaggi di output, ma il messaggio viene stampato solo alla fine
 - [x] suggerimento: in caso suddividere il parser dalla classe home
-- [ ] correggere i messaggi di output integrando i valori booleani delle funzioni turnOn e turnOff
-- [ ] con reset time vanno resettati anche i consumi
-- [ ] correggere il resetTimer
+- [x] correggere i messaggi di output integrando i valori booleani delle funzioni turnOn e turnOff
+- [x] verificare eventuali parametri errati
+- [ ] resettare consumi in reset_time
+- [ ] correggere il reset_timer
+- [ ] implementare reset_all
+- [ ] implementare rm
 - [ ] prevedere un messaggio di output per i comandi di reset
-- [ ] gestire il caso in cui voglio spegnere i pannelli, ma se li spengo supero la massima corrente assorbibile dalla rete -> politica di spegnimento
-- [ ] verificare eventuali parametri errati
 - [ ] terminare il programma all'arrivo delle 23:59
+- [ ] inserire la possibilità di impostare la potenza massima da parametro della CLI in fase di costruzione
+- [ ] gestire il caso in cui voglio spegnere i pannelli, ma se li spengo supero la massima corrente assorbibile dalla rete -> politica di spegnimento
 
 **Parser**
 - [ ] ultimare parser con comandi mancanti
-- [ ] gestire eventuali errori nel parser (boundary check / mancanze, mess)
-- [ ] fare attenzione nel parser, se i dispositivi hanno uno spazio all'interno del loro nome
-- [ ] catturare eventuali eccezioni della classe Casa
+- [ ] gestire eventuali errori nel parser (boundary check / mancanze / parametri in eccesso)
+
+**Main**
+- [ ] sviluppare main che riceve comandi inseriti dall'ultente
+- [ ] gestire eventuali eccezioni di Parser e Home (es. comandi errati, nome non valido, ...)
+- [ ] salvare l'output del programma su file oltre che stamparlo a stdout
 
 ## REGEX
 Alcune espressioni regex che possono tornare utili in una possibile implementazione, anche se non necessarie e indispensabili.

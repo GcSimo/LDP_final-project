@@ -235,7 +235,7 @@ namespace domotic_home {
 		// stringa per output
 		std::string out = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
 
-		// reimposto gli orari di ogni dispotivo
+		// reimposto gli orari di accensione e spegnimento programmati di ogni dispotivo
 		for (auto x : this->devices){
 			x.second->get_onTime() = Clock(0);
 			x.second->get_offTime() = Clock(0);
