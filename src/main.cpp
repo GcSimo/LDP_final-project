@@ -1,33 +1,44 @@
+/*
+	FILE MAIN.CPP
+	Autore:     Andrea Visonà
+*/
+
 #include <iostream>
-#include "DeviceM.h"
-#include "DeviceCP.h"
+#include <vector>
+#include <string>
 #include "Home.h"
-using namespace std;
+#include "Parser.h"
 
 int main () {
-	cout << "Programma Robotic-Home del gruppo ~BankAccount()" << endl << endl;
+	std::cout << "Programma Domotic-Home del gruppo ~BankAccount()" << std::endl << std::endl;
 	
 	// creazione casa
-	robotic_home::Home h;
+	domotic_home::Home h;
 
-	vector<string> inputs = {
+	std::vector<std::string> inputs = {
 		"show",
-		"set Impianto_Fotovoltaico 600 1200",
-		"set PompaDiCaloreETermostato 120 720",
-		"set time 60",
-		"set Televisore 1000",
-		"set time 200",
+		"set Impianto_fotovoltaico 6:00 12:00",
+		"set Pompa_di_calore_+_termostato 1:20 7:20",
+		"set time 6:00",
 		"show",
-		"set time 300",
-		"set Frigorifero on",
-		"set time 600",
-		"set Frigorifero off",
-		"set time 660",
-		"set Frigorifero on",
-		"set time 1260",
-		"set Frigorifero off",
-		"set Televisore 1300",
-		"set time 1400",
+		"set Televisore 10:00",
+		"set time 12:00",
+		"set Lavatrice 12:30",
+		"set Lavastoviglie 12:31",
+		"set Televisore 12:32",
+		"set time 13:00",
+		"set Televisore on",
+		"set time 14:30",
+		//"set time 300",
+		//"set Frigorifero on",
+		//"set time 600",
+		//"set Frigorifero off",
+		//"set time 660",
+		//"set Frigorifero on",
+		//"set time 1260",
+		//"set Frigorifero off",
+		//"set Televisore 1300",
+		//"set time 1400",
 		"show"
 	};
 
@@ -37,7 +48,7 @@ int main () {
 		h.listen(str);
 	} */
 
-	for(string s : inputs) {
-		h.listen(s);
+	for(std::string s : inputs) {
+		domotic_home::parser(s,h);
 	}
 }

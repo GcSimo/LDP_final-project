@@ -3,14 +3,11 @@
 	Autore:     Andrea Visonà
 */
 
-#include "../include/Home.h"
-#include <iostream>
-#include <sstream>
+#include "Home.h"
 #include <queue>
 
-
-namespace robotic_home {
-	// elenco dispositivi della casa
+namespace domotic_home {
+	// elenco dispositivi della casa con consumi e durata cicli
 	std::vector<Device *> deviceList = {
 		new DeviceM("Impianto_fotovoltaico", 1.5),
 		new DeviceCP("Lavatrice", -2, "1:50"),
@@ -24,6 +21,10 @@ namespace robotic_home {
 		new DeviceCP("Televisore", -0.2, "1:00"),
 	};
 
+
+	/**
+	 * @brief Costruttore della classe Home
+	 */
 	Home::Home() {
 		// inizializza ora del giorno a 0
 		time = Clock();
@@ -36,135 +37,241 @@ namespace robotic_home {
 			devices.insert({d->get_name(), d});
 
 		// esegue eventuali accensioni da svolgere all'ora 0:00
-		goForward("0:00");
+		set_time("0:00");
 	}
 
-	void Home::listen(const std::string &s) {
-		std::vector<std::string> commandLines;
-		std::istringstream stream(s);
-		std::string line;
+	/**
+	 * @brief Funzione per accendere / spegnere un dispositivo
+	 * 
+	 * @param devicename nome del dispositivo
+	 * @param new_status true -> accendere / false -> spegnere
+	 * @return std::string messaggio di output
+	 * @throws InvalidDeviceName se devicename non è presente nella casa
+	 */
+	std::string Home::set(const std::string &devicename, bool new_status) {
+		// verifico presenza dispositivo
+		if (!devices.count(devicename))
+			throw InvalidDeviceName();
 
-		// separa il comando ricevuto come stringa in un vettore di stringhe
-		while (std::getline(stream, line, ' ')) {
-			commandLines.push_back(line);
-		}
+		// stringa per output
+		std::string out = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
 
-		// stampa orario di inizio comando
-		std::cout << "[" << time << "] L'orario attuale è " << time << std::endl;
+		// effettuo accensione e spegnimento necessari con funzione ausiliaria
+		out += set(devices[devicename], new_status, time);
 
-		// comando set
-		if (commandLines[0] == "set") {
-			// -- set time ...
-			if (commandLines[1] == "time") {
-				this->goForward(commandLines[2]);
-				std::cout << "[" << time << "] L'orario attuale è " << time << std::endl;
-			}
-			
-			// --- set devicename ... (devicename valido)
-			else if (devices.count(commandLines[1]) != 0) {
-				// --- set devicename on
-				if (commandLines[2] == "on") {
-					if (power_absorption - devices.at(commandLines[1])->get_energy() > MAX_POWER_ABSORPTION) {
-						std::cout << "[" << time << "] Il dispositivo " << devices.at(commandLines[1])->get_name() << " non si è acceso perché si supererebbe la potenza massima asorbibile dalla rete" << std::endl;
-					}
-					else {
-						devices.at(commandLines[1])->turnOn(time);
-						power_absorption -= devices.at(commandLines[1])->get_energy();
-						std::cout << "[" << time << "] Il dispositivo " << commandLines[1] << " si è acceso" << std::endl;
-					}
-				}
-				// --- set devicename off
-				else if (commandLines[2] == "off") {
-					devices.at(commandLines[1])->turnOff(time);
-					power_absorption += devices.at(commandLines[1])->get_energy();
-					std::cout << "[" << time << "] Il dispositivo " << commandLines[1] << " si è spento" << std::endl;
-				}
-				// --- set devicename start [stop]
-				else {
-					devices.at(commandLines[1])->set_onTime(commandLines[2]);
-					
-					// nel caso di un dispositivo manuale, imposto orario di spegnimento
-					if (DeviceM *temp= dynamic_cast<DeviceM *>(devices.at(commandLines[1]))) {
-						temp->set_offTime(commandLines[3]);
-					}
-					std::cout << "[" << time << "] Impostato un timer per il dispositivo " << commandLines[1] << " dalle " << devices.at(commandLines[1])->get_onTime() << " alle " << devices.at(commandLines[1])->get_offTime() << std::endl;
-				}
-			}
+		// restituisco messaggio di output
+		return out;
+	}
 
-			// --- set devicename ... (devicename invalido)
-			else
-				throw ParserError(); // dispositivo inesistente
-		}
+	/**
+	 * @brief Funzione per impostare un'accensione programmata del dispositivo
+	 * 
+	 * @param devicename nome del dispositivo
+	 * @param start orario di accensione
+	 * @return std::string messaggio di output
+	 * @throws InvalidDeviceName se devicename non è presente nella casa
+	 */
+	std::string Home::set(const std::string &devicename, const Clock &start) {
+		// verifico presenza dispositivo
+		if (!devices.count(devicename))
+			throw InvalidDeviceName();
 
-		// comando rm
-		else if (commandLines[0] == "rm") {
-			std::cout << "[" << time << "] Rimosso il timer per il dispositivo " << commandLines[1] << std::endl;
-		}
+		// stringa per output
+		std::string out = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
 
-		// comando show
-		else if (commandLines[0] == "show") {
-			double cons = 0; // consumo complessimo
-			double prod = 0; // produzione complessiva
-			
-			// calcolo consumo, produzione complessiva e consumo istantaneo
-			for (auto d : devices) { // auto = std::pair<std::string,Device*>
-				if (d.second->get_totalEnergy() < 0)
-					cons -= d.second->get_totalEnergy();
-				else
-					prod += d.second->get_totalEnergy();
-			}
-
-			// stampo consumo e produzione del sistema
-			std::cout  << "[" << time << "] Attualmente il sistema ha prodotto " << prod << " kWh e consumato " << cons << " kWh. Nello specifico:" << std::endl;
-			
-			// stampo nome, status e consumo individuale dei dispositivi
-			// calcolo consumo complessivo e consumo istantaneo
-			for (auto d : devices) { // auto = std::pair<std::string,Device*>
-				std::cout << " - il dispositivo " << d.first << " ha " << (d.second->get_totalEnergy() > 0 ? "prodotto " : "consumato ")  << std::abs(d.second->get_totalEnergy()) << " kWh" << std::endl;
-			}
-		}
-
-		// comando reset
-		else if (commandLines[0] == "reset") {
-			if(commandLines[1] == "time"){
-				for (auto x : this->devices)
-				{
-					x.second->turnOff(this->time);
-				}
-				this->time = Clock("0:00");
-			}
-			if(commandLines[1] == "timers"){
-				for (auto x : this->devices){
-					x.second->get_onTime() = Clock(0);
-					x.second->get_offTime() = Clock(0);
-				}
-			}
-			std::cout << "[" << time << "] L'orario attuale è " << time << std::endl;
-		}
+		// imposto orario di accensione
+		devices[devicename]->set_onTime(start);
 		
-		// comando inesistente
-		else
-			throw ParserError(); // comando non valido
+		// calcolo messaggio di output
+		out += "[" + time.toString() + "] Impostato un timer per il dispositivo " + devicename + " dalle " + devices[devicename]->get_onTime().toString() + " alle " + devices[devicename]->get_offTime().toString() + "\n";
 
-		std::cout << std::endl << std::endl;
+		// restituisco messaggio di output
+		return out;
 	}
 
+	/**
+	 * @brief Funzione per impostare accensione e spegnimento programmati
+	 * 
+	 * @param devicename nome del dispositivo
+	 * @param start orario di accensione
+	 * @param stop orario di spegnimento
+	 * @return std::string messaggio di output
+	 * @throws InvalidDeviceName se devicename non è presente nella casa
+	 * @throws InvalidDeviceType se si tenta di impostare un orario di spegnimento programmato ad un dispositivo CP
+	 */
+	std::string Home::set(const std::string &devicename, const Clock &start, const Clock &stop) {
+		// verifico presenza dispositivo
+		if (!devices.count(devicename))
+			throw InvalidDeviceName();
+		
+		// verifico che il dispositivo sia di tipo manuale
+		if (!dynamic_cast<DeviceM *>(devices[devicename]))
+			throw InvalidDeviceType();
 
-	// struct evento da memorizzare nella priority queue
-	struct event {
-		Clock time; // orario dell'evento
-		Device *dev; // puntatore al dispositivo su cui agire
-		bool command; // true -> turnOn, false -> turnOff
-	};
+		// stringa per output
+		std::string out = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
 
+		// imposto orari accensione e spegnimento
+		DeviceM *temp = dynamic_cast<DeviceM *>(devices[devicename]);
+		temp->set_onTime(start);
+		temp->set_offTime(stop);
+		//devices[devicename]->set_onTime(start);
+		//devices[devicename]->set_offTime(stop);
 
-	// funciton object per ordinamento eventi nella priority queue: l'orario minore è quello con priorità più alta
-	struct eventCompare {
-		bool operator()(const event &e1, const event &e2) const { return e1.time > e2.time; }
-	};
+		// calcolo messaggio di output
+		out += "[" + time.toString() + "] Impostato un timer per il dispositivo " + devicename + " dalle " + devices[devicename]->get_onTime().toString() + " alle " + devices[devicename]->get_offTime().toString() + "\n";
 
-	// funzione per far proseguire il tempo
-	void Home::goForward(const Clock &endTime) {
+		// restituisco messaggio di output
+		return out;
+	}
+
+	/**
+	 * @brief Funzione per rimuovere accensione/spegnimento programmati
+	 * 
+	 * @param devicename nome del dispositivo
+	 * @return std::string messaggio di ouput
+	 * @throws InvalidDeviceName se devicename non è presente nella casa
+	 */
+	std::string Home::rm(const std::string &devicename) {
+		// verifico presenza dispositivo
+		if (!devices.count(devicename))
+			throw InvalidDeviceName();
+
+		// stringa per output
+		std::string out = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
+
+		// calcolo messaggio di output
+		out += "[" + time.toString() + "] --- rm devicename / FUNZIONE NON IMPLEMENTATA ---\n";
+
+		// restituisco messaggio di output
+		return out;
+	}
+
+	/**
+	 * @brief Funzione per stampare i dispositivi della casa e relativi consumi
+	 * 
+	 * @return std::string messaggio di output
+	 */
+	std::string Home::show() {
+		double cons = 0; // consumo complessimo
+		double prod = 0; // produzione complessiva
+
+		// stringa per output
+		std::string out = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
+			
+		// calcolo consumo, produzione complessiva e consumo istantaneo
+		for (auto d : devices) { // auto = std::pair<std::string,Device*>
+			if (d.second->get_totalEnergy() < 0)
+				cons -= d.second->get_totalEnergy();
+			else
+				prod += d.second->get_totalEnergy();
+		}
+
+		// stampo consumo e produzione del sistema
+		out += "[" + time.toString() + "] Attualmente il sistema ha prodotto " + std::to_string(prod)  + " kWh e consumato " + std::to_string(cons) + " kWh. Nello specifico:\n";
+		
+		// stampo nome, status e consumo individuale dei dispositivi
+		// calcolo consumo complessivo e consumo istantaneo
+		for (auto d : devices) { // auto = std::pair<std::string,Device*>
+			out += " - il dispositivo " + d.first + " ha " + (d.second->get_totalEnergy() > 0 ? "prodotto " : "consumato ") + std::to_string(std::abs(d.second->get_totalEnergy())) + " kWh\n";
+		}
+
+		// restituisco messaggio di output
+		return out;
+	}
+
+	/**
+	 * @brief Funzione per stampare il consumo di un dispositivo
+	 * 
+	 * @param devicename nome del dispositivo
+	 * @return std::string messaggio di output
+	 * @throws InvalidDeviceName se devicename non è presente nella casa
+	 */
+	std::string Home::show(const std::string &devicename) {
+		// verifico presenza dispositivo
+		if (!devices.count(devicename))
+			throw InvalidDeviceName();
+
+		// stringa per output
+		std::string out = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
+
+		// calcolo messaggio di output
+		out += "[" + time.toString() + "] Il dispositivo " + devicename + " ha attualmente " + (devices[devicename]->get_totalEnergy() > 0 ? "prodotto " : "consumato ") + std::to_string(std::abs(devices[devicename]->get_totalEnergy())) + "kWh \n";
+
+		// restituisco messaggio di output
+		return out;
+	}
+
+	/**
+	 * @brief Funzione di debug per riportare l'orario della casa al valore iniziale (0:00)
+	 * 
+	 * @return std::string messaggio di output
+	 */
+	std::string Home::reset_time() {
+		// stringa per output
+		std::string out = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
+
+		// spengo i dispotivi
+		for (auto x : this->devices) {
+			x.second->turnOff(this->time);
+		}
+
+		// reimposto l'ora della casa
+		this->time = Clock("0:00");
+
+		// calcolo messaggio di output
+		out += "[" + time.toString() + "] --- reset_time ---\n";
+
+		// restituisco messaggio di output
+		return out;
+	}
+
+	/**
+	 * @brief Funzione di debug per resettare i timer di tutti i dispositivi
+	 * 
+	 * @return std::string messaggio di output
+	 */
+	std::string Home::reset_timers() {
+		// stringa per output
+		std::string out = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
+
+		// reimposto gli orari di accensione e spegnimento programmati di ogni dispotivo
+		for (auto x : this->devices){
+			x.second->get_onTime() = Clock(0);
+			x.second->get_offTime() = Clock(0);
+		}
+
+		// calcolo messaggio di output
+		out += "[" + time.toString() + "] --- reset_timers ---\n";
+
+		// restituisco messaggio di output
+		return out;
+	}
+
+	/**
+	 * @brief Funzione per riportare lo stato della casa alle condizioni iniziali
+	 * 
+	 * @return std::string messaggio di output
+	 */
+	std::string Home::reset_all() {
+		// stringa per output
+		std::string out = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
+
+		// calcolo messaggio di output
+		out += "[" + time.toString() + "] --- reset_all / FUNZIONE NON IMPLEMENTATA ---\n";
+
+		// restituisco messaggio di output
+		return out;
+	}
+
+	/**
+	 * @brief Funzione per far avanzare l'orario della casa e accendere/spegnere i dispositivi in base agli orari programmati
+	 * 
+	 * @param endTime orario di arrivo
+	 * @return std::string messaggio di output
+	 * @throw TimeRangeError quando si prova a tornare indietro nel tempo
+	 */
+	std::string Home::set_time(const Clock &endTime) {
 		/**
 		 * priority queue eventList
 		 * - memorizza oggetti di tipo event (struct <time,device>)
@@ -174,6 +281,13 @@ namespace robotic_home {
 		std::priority_queue<event, std::vector<event>, eventCompare> eventList;
 		Clock &startTime = time; // così il nome è più esplicito
 
+		// se orario invalido -> lancio eccezione
+		if (startTime > endTime)
+			throw TimeRangeError();
+
+		// stringa per output
+		std::string out = "[" + startTime.toString() + "] L'orario attuale è " + startTime.toString() + "\n";
+
 		// inserisco i dati nella priority queue
 		for (auto d : devices) { // auto = std::pair<std::string,Device*>
 			if (d.second->get_onTime() > startTime && d.second->get_onTime() <=  endTime)
@@ -182,22 +296,9 @@ namespace robotic_home {
 				eventList.push({d.second->get_offTime(), d.second, false});
 		}
 
-		// estraggo i dati dalla priority queue
+		// ciclo while per processare gli eventi nella priority queue
 		while (!eventList.empty()) {
-			// impossibile accendere il dispositivo perché la potenza assorbita dalla rete supera la potenza massima della rete
-			if (eventList.top().command && power_absorption - eventList.top().dev->get_energy() > MAX_POWER_ABSORPTION) {
-				std::cout << "[" << eventList.top().time << "] Il dispositivo " << eventList.top().dev->get_name() << " non si è acceso perché si supererebbe la potenza massima asorbibile dalla rete" << std::endl;
-			}
-			else if (eventList.top().command) { // dispositivo da accendere
-				eventList.top().dev->turnOn(eventList.top().time);
-				power_absorption -= eventList.top().dev->get_energy();
-				std::cout << "[" << eventList.top().time << "] Il dispositivo " << eventList.top().dev->get_name() << " si è acceso" << std::endl;
-			}
-			else { // dispositivo da spegnere
-				eventList.top().dev->turnOff(eventList.top().time);
-				power_absorption += eventList.top().dev->get_energy();
-				std::cout << "[" << eventList.top().time << "] Il dispositivo " << eventList.top().dev->get_name() << " si è spento" << std::endl;
-			}
+			out += set(eventList.top().dev, eventList.top().command, eventList.top().time);
 			eventList.pop();
 		}
 
@@ -206,6 +307,76 @@ namespace robotic_home {
 			d.second->refreshDevice(endTime);
 		}
 
+		// aggiorno l'orario della casa
 		startTime = endTime;
+
+		// aggiungo l'orario finale al messaggio di stampa
+		out += "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
+
+		// restituisco messaggio di output
+		return out;
+	}
+
+	/**
+	 * @brief Funzione membro privata ausiliaria per semplificare l'accensione e lo spegnimento
+	 * dei dispositivi della casa
+	 * 
+	 * Funzionamento:
+	 * - controllo se l'evento è accensione o spegnimento -> differenzio i due casi
+	 * - verifico che l'operazione faccia cambiare stato al dispositivo -> altrimenti non faccio nulla
+	 * - verifico che l'energia assorbita dopo l'operazione non superi il limite -> altrimenti non faccio nulla
+	 * - eseguo l'operazione prevista e aggiorno quanto necessario
+	 * 
+	 * @param d puntatore al dispositivo su cui agire
+	 * @param new_status true -> accensione / false -> spegnimento
+	 * @param time orario in cui è effettuata l'azione
+	 * @return std::string messaggio di output
+	 */
+	std::string Home::set(Device *d, bool new_status, const Clock &time_op) {
+		// stringa per output
+		std::string out = "";
+
+		// dispositivo da accendere
+		if (new_status) {
+			// se dispositivo è già acceso -> non lo riaccendo
+			if (d->get_status()) {
+				out += "[" + time_op.toString() + "] Il dispositivo " + d->get_name() + " è già acceso\n";
+			}
+
+			// se assorbimento dalla rete supera il limite -> non accendo il dispositivo
+			else if (power_absorption - d->get_energy() > MAX_POWER_ABSORPTION) {
+				out += "[" + time_op.toString() + "] Il dispositivo " + d->get_name() + " non si è acceso perché si supererebbe la potenza massima asorbibile dalla rete\n";
+			}
+
+			// se va tutto bene
+			else {
+				d->turnOn(time_op);
+				power_absorption -= d->get_energy();
+				out += "[" + time_op.toString() + "] Il dispositivo " + d->get_name() + " si è acceso\n";
+			}
+		}
+		
+		// dispositivo da spegnere
+		else {
+			// se dispositivo è già spento -> non lo rispengo
+			if (!d->get_status()) {
+				out += "[" + time_op.toString() + "] Il dispositivo " + d->get_name() + " è già spento\n";
+			}
+
+			// se assorbimento dalla rete supera il limite -> non spengo il dispositivo (caso pannelli)
+			else if (power_absorption + d->get_energy() > MAX_POWER_ABSORPTION) {
+				out += "[" + time_op.toString() + "] Il dispositivo " + d->get_name() + " non si è spento perché si supererebbe la potenza massima asorbibile dalla rete\n";
+			}
+			
+			// se va tutto bene
+			else {
+				d->turnOff(time_op);
+				power_absorption += d->get_energy();
+				out += "[" + time_op.toString() + "] Il dispositivo " + d->get_name() + " si è spento\n";
+			}
+		}
+
+		// restituisco messaggio di output
+		return out;
 	}
 }

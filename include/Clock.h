@@ -30,7 +30,7 @@
 #include <string>
 //#include <exception>
 
-namespace robotic_home {
+namespace domotic_home {
 	class Clock {
 		private:
 			static constexpr int DEFAULT_VALUE = 0;

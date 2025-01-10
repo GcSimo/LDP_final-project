@@ -3,9 +3,9 @@
 	Autore:     Giovanni Bordignon
 */
 
-#include "../include/DeviceM.h"
+#include "DeviceM.h"
 
-namespace robotic_home {
+namespace domotic_home {
 	DeviceM::DeviceM(std::string name, double energy) {
 		this->name = name;
 		id = ID_Counter++;

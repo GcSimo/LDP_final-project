@@ -8,7 +8,7 @@
 
 #include "Device.h"
 
-namespace robotic_home {
+namespace domotic_home {
 	class DeviceCP : public Device {
 		private:
 			Clock cycle;

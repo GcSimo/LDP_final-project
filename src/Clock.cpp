@@ -4,10 +4,9 @@
 */
 
 #include "Clock.h"
-#include <algorithm>
 #include <regex>
 
-namespace robotic_home {
+namespace domotic_home {
 	Clock::Clock() : hour{DEFAULT_VALUE}, minute{DEFAULT_VALUE} { }
 
 	Clock::Clock(int h, int m) : hour{h}, minute { m } {

@@ -3,9 +3,9 @@
 	Autore:     Giovanni Bordignon
 */
 
-#include "../include/DeviceCP.h"
+#include "DeviceCP.h"
 
-namespace robotic_home {
+namespace domotic_home {
 	DeviceCP::DeviceCP(std::string name, double energy, const Clock& cycle) {
 		this->name = name;
 		id = ID_Counter++;;

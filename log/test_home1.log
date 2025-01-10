@@ -1,0 +1,164 @@
+Programma Domotic-Home del gruppo ~BankAccount()
+
+[0:00] L'orario attuale è 0:00
+[0:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 0.000000 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 0.000000 kWh
+ - il dispositivo Lavatrice ha consumato 0.000000 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 0.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.000000 kWh
+
+[0:00] L'orario attuale è 0:00
+[0:00] Il dispositivo Televisore si è acceso
+
+[0:00] L'orario attuale è 0:00
+[0:00] Il dispositivo Lavatrice si è acceso
+
+[0:00] L'orario attuale è 0:00
+[0:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 0.000000 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 0.000000 kWh
+ - il dispositivo Lavatrice ha consumato 0.000000 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 0.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.000000 kWh
+
+[0:00] L'orario attuale è 0:00
+[1:00] Il dispositivo Televisore si è spento
+[1:00] L'orario attuale è 1:00
+
+[1:00] L'orario attuale è 1:00
+[1:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 2.200000 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 0.000000 kWh
+ - il dispositivo Lavatrice ha consumato 2.000000 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 0.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.200000 kWh
+
+[1:00] L'orario attuale è 1:00
+[1:50] Il dispositivo Lavatrice si è spento
+[2:00] L'orario attuale è 2:00
+
+[2:00] L'orario attuale è 2:00
+[2:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 3.866667 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 0.000000 kWh
+ - il dispositivo Lavatrice ha consumato 3.666667 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 0.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.200000 kWh
+
+[2:00] L'orario attuale è 2:00
+[0:00] --- reset_time ---
+
+[0:00] L'orario attuale è 0:00
+[0:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 3.866667 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 0.000000 kWh
+ - il dispositivo Lavatrice ha consumato 3.666667 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 0.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.200000 kWh
+
+ ------------------------------ 
+
+[0:00] L'orario attuale è 0:00
+[0:00] Il dispositivo Lavastoviglie si è acceso
+
+[0:00] L'orario attuale è 0:00
+[0:00] Il dispositivo Scaldabagno si è acceso
+
+[0:00] L'orario attuale è 0:00
+[0:00] Impostato un timer per il dispositivo Scaldabagno dalle 1:00 alle 3:00
+
+[0:00] L'orario attuale è 0:00
+[1:00] Il dispositivo Scaldabagno è già acceso
+[1:00] Il dispositivo Televisore è già spento
+[1:50] Il dispositivo Lavatrice è già spento
+[2:00] L'orario attuale è 2:00
+
+[2:00] L'orario attuale è 2:00
+[2:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 8.866667 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 3.000000 kWh
+ - il dispositivo Lavatrice ha consumato 3.666667 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 2.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.200000 kWh
+
+[2:00] L'orario attuale è 2:00
+[3:00] Il dispositivo Scaldabagno si è spento
+[3:15] Il dispositivo Lavastoviglie si è spento
+[4:00] L'orario attuale è 4:00
+
+[4:00] L'orario attuale è 4:00
+[4:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 11.741667 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 4.875000 kWh
+ - il dispositivo Lavatrice ha consumato 3.666667 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 3.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.200000 kWh
+
+[4:00] L'orario attuale è 4:00
+[10:39] L'orario attuale è 10:39
+
+[10:39] L'orario attuale è 10:39
+[10:39] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 11.741667 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 4.875000 kWh
+ - il dispositivo Lavatrice ha consumato 3.666667 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 3.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.200000 kWh
+
+[10:39] L'orario attuale è 10:39
+[23:59] L'orario attuale è 23:59
+
+[23:59] L'orario attuale è 23:59
+[23:59] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 11.741667 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 4.875000 kWh
+ - il dispositivo Lavatrice ha consumato 3.666667 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 3.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.200000 kWh
+
