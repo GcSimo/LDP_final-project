@@ -19,13 +19,6 @@ namespace domotic_home {
 		return false;
 	}
 
-	bool Device::changeStatus(const Clock &t) {
-		if (status)
-			return this->turnOff(t);
-		else
-			return this->turnOn(t);
-	}
-
 	void Device::refreshDevice(const Clock &t) {
 		// se il dispositivo è acceso, aggiorno il consumo (se è spento il consumo non cambia)
 		if (status)
@@ -33,6 +26,15 @@ namespace domotic_home {
 		
 		// aggiorno l'orario dell'ultimo aggiornamento del consumo
 		lastEnergyUpdate = t;
+	}
+
+	void Device::resetTime() {
+		onTime.setInvalid();
+		offTime.setInvalid();
+	}
+
+	void Device::resetTotalEnergy() {
+		totalEnergy = DEFAULT_TOTALT_ENERGY;
 	}
 
 	std::string Device::get_name() const {
@@ -61,6 +63,10 @@ namespace domotic_home {
 
 	Clock Device::get_offTime() const {
 		return offTime;
+	}
+
+	std::string Device::toString() const {
+		return name;
 	}
 
 	std::ostream &operator<<(std::ostream &os, const Device &t) {
