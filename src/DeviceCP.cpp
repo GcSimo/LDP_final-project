@@ -3,7 +3,7 @@
 	Autore:     Giovanni Bordignon
 */
 
-#include "../include/DeviceCP.h"
+#include "DeviceCP.h"
 
 namespace robotic_home {
 	DeviceCP::DeviceCP(std::string name, double energy, const Clock& cycle) {

@@ -3,7 +3,7 @@
 	Autore:     Giovanni Bordignon
 */
 
-#include "../include/Device.h"
+#include "Device.h"
 
 namespace robotic_home {
 	int Device::ID_Counter = 0;

@@ -1,16 +1,16 @@
 #include <iostream>
-#include "DeviceM.h"
-#include "DeviceCP.h"
+#include <vector>
+#include <string>
 #include "Home.h"
-using namespace std;
+#include "Parser.h"
 
 int main () {
-	cout << "Programma Robotic-Home del gruppo ~BankAccount()" << endl << endl;
+	std::cout << "Programma Robotic-Home del gruppo ~BankAccount()" << std::endl << std::endl;
 	
 	// creazione casa
 	robotic_home::Home h;
 
-	vector<string> inputs = {
+	std::vector<std::string> inputs = {
 		"show",
 		"set Impianto_fotovoltaico 6:00 12:00",
 		"set Pompa_di_calore_+_termostato 1:20 7:20",
@@ -37,8 +37,8 @@ int main () {
 		"show"
 	};
 
-	for(string s : inputs)
-		h.listen(s);
+	for(std::string s : inputs)
+		robotic_home::parser(s,h);
 	
 	/* while(true){
 		std::string str;

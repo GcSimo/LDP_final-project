@@ -4,7 +4,6 @@
 */
 
 #include "Clock.h"
-#include <algorithm>
 #include <regex>
 
 namespace robotic_home {
