@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
-# --- PROGETTO ROBOTIC_HOME ---
-project(robotic_home)
+# ----- PROGETTO DOMOTIC_HOME by ~BankAccount() -----
+project(domotic_home)
 
 # cartelle dei file sorgente, librerie e test
 include_directories(include)

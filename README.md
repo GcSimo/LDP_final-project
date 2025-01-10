@@ -36,9 +36,10 @@
 - [x] aggiungere un valore di ritorno booleano alle funzioni turnOn e turnOff:
   - [x] quando il dispositivo è già spento o già acceso, si comunica al chiamante che non è stata fatta nessuna modifica e il chiamante capisce che non deve mandare nessun messaggio in stampa
   - [x] la funzionalità sopra è particolarmente utile nella funzione goForward quando è programmata l'accensione di un dispositivo che supererebbe il consumo massimo e che quindi non viene acceso; in aternativa si dovrebbe eliminare l'evento di spegnimento, ma non è facile eliminare un evento nel mezzo di una priority queue
-- [ ] inserire eventuali funzioni mancanti, su richiesta della classe:
+- [ ] inserire eventuali funzioni mancanti, su richiesta della classe home e parser:
   - [ ] funzione per resettare i consumi
   - [ ] funzione per eliminare i timers programmati
+- [ ] alla fine di tutto eliminare funzioni non utilizzate come il toString, chageStatus, operator<< e bool in turnOff, turnOn
 
 **Casa**
 - [x] riscrivere funzione per far avanzare il tempo con una multimappa/priority queue
@@ -48,12 +49,19 @@
   - [x] inserirli in una stringa che verrà restituita dalle funzioni come valore di ritorno
   - [x] non ci sono 10 funzioni diverse che devono incastrarsi con i messaggi di output, ma il messaggio viene stampato solo alla fine
 - [x] suggerimento: in caso suddividere il parser dalla classe home
-- [ ] ultimare parser con comandi mancanti
-- [ ] gestire eventuali errori nel parser
-- [ ] fare attenzione nel parser, se i dispositivi hanno uno spazio all'interno del loro nome
 - [ ] correggere i messaggi di output integrando i valori booleani delle funzioni turnOn e turnOff
 - [ ] con reset time vanno resettati anche i consumi
+- [ ] correggere il resetTimer
 - [ ] prevedere un messaggio di output per i comandi di reset
+- [ ] gestire il caso in cui voglio spegnere i pannelli, ma se li spengo supero la massima corrente assorbibile dalla rete -> politica di spegnimento
+- [ ] verificare eventuali parametri errati
+- [ ] terminare il programma all'arrivo delle 23:59
+
+**Parser**
+- [ ] ultimare parser con comandi mancanti
+- [ ] gestire eventuali errori nel parser (boundary check / mancanze, mess)
+- [ ] fare attenzione nel parser, se i dispositivi hanno uno spazio all'interno del loro nome
+- [ ] catturare eventuali eccezioni della classe Casa
 
 ## REGEX
 Alcune espressioni regex che possono tornare utili in una possibile implementazione, anche se non necessarie e indispensabili.

@@ -10,10 +10,10 @@
 #include "Parser.h"
 
 int main () {
-	std::cout << "Programma Robotic-Home del gruppo ~BankAccount()" << std::endl << std::endl;
+	std::cout << "Programma Domotic-Home del gruppo ~BankAccount()" << std::endl << std::endl;
 	
 	// creazione casa
-	robotic_home::Home h;
+	domotic_home::Home h;
 
 	std::vector<std::string> inputs = {
 		"show",
@@ -49,6 +49,6 @@ int main () {
 	} */
 
 	for(std::string s : inputs) {
-		robotic_home::parser(s,h);
+		domotic_home::parser(s,h);
 	}
 }
