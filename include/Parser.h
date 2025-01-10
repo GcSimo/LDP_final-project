@@ -9,7 +9,7 @@
 #include "Home.h"
 #include <string>
 
-namespace robotic_home{
+namespace domotic_home {
 	void parser(const std::string &s, Home &h);
 }
 

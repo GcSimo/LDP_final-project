@@ -9,7 +9,7 @@
 #include "Clock.h"
 #include <iostream>
 
-namespace robotic_home {
+namespace domotic_home {
 	class Device {
 		protected:
 			// Costanti per i valori di default

@@ -7,8 +7,8 @@
 #include <vector>
 #include <sstream>
 
-namespace robotic_home {
-	void parser(const std::string &s, robotic_home::Home &h) {
+namespace domotic_home {
+	void parser(const std::string &s, domotic_home::Home &h) {
 		std::vector<std::string> commandLines;
 		std::istringstream stream(s);
 		std::string line;

@@ -5,7 +5,7 @@
 
 #include "Device.h"
 
-namespace robotic_home {
+namespace domotic_home {
 	int Device::ID_Counter = 0;
 
 	bool Device::turnOff(const Clock &t) {

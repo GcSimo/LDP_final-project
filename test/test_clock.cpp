@@ -2,7 +2,7 @@
 #include "Clock.h"
 
 using namespace std;
-using namespace robotic_home;
+using namespace domotic_home;
 
 int main() {
 	Clock c0;
