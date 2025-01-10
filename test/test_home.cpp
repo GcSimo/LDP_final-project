@@ -2,13 +2,36 @@
 #include <vector>
 #include <string>
 #include "Home.h"
-#include "Parser.h"
+using namespace std;
 
 int main () {
-	std::cout << "Programma Robotic-Home del gruppo ~BankAccount()" << std::endl << std::endl;
+	std::cout << "Programma Domotic-Home del gruppo ~BankAccount()" << std::endl << std::endl;
 	
 	// creazione casa
-	robotic_home::Home h;
+	domotic_home::Home h;
+	cout << h.show() << endl;
+	cout << h.set("Televisore", true) << endl;
+	cout << h.set("Lavatrice", true) << endl;
+	cout << h.show() << endl;
+	cout << h.set_time("1:00") << endl;
+	cout << h.show() << endl;
+	cout << h.set_time("2:00") << endl;
+	cout << h.show() << endl;
+	cout << h.reset_time() << endl;
+	cout << h.show() << endl;
+	cout << " ------------------------------ \n" << endl;
+	cout << h.set("Lavastoviglie", true) << endl;
+	cout << h.set("Scaldabagno", true) << endl;
+	cout << h.set("Scaldabagno", "1:00", "3:00") << endl;
+	cout << h.set_time("2:00") << endl;
+	cout << h.show() << endl;
+	//cout << h.reset_timers() << endl;
+	cout << h.set_time("4:00") << endl;
+	cout << h.show() << endl;
+	cout << h.set_time("10:39") << endl;
+	cout << h.show() << endl;
+	cout << h.set_time("23:59") << endl;
+	cout << h.show() << endl;
 
 	std::vector<std::string> inputs = {
 		"show",
@@ -24,6 +47,8 @@ int main () {
 		"set time 13:00",
 		"set Televisore on",
 		"set time 14:30",
+		"show",
+		"reset timers",
 		//"set time 300",
 		//"set Frigorifero on",
 		//"set time 600",
@@ -36,13 +61,4 @@ int main () {
 		//"set time 1400",
 		"show"
 	};
-
-	for(std::string s : inputs)
-		robotic_home::parser(s,h);
-	
-	/* while(true){
-		std::string str;
-		std::getline(std::cin,str);
-		h.listen(str);
-	} */
 }
