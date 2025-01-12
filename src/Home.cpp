@@ -7,28 +7,20 @@
 #include <queue>
 
 namespace domotic_home {
-	// elenco dispositivi della casa con consumi e durata cicli
-	std::vector<Device *> deviceList = {
-		new DeviceM("Impianto_fotovoltaico", 1.5),
-		new DeviceCP("Lavatrice", -2, "1:50"),
-		new DeviceCP("Lavastoviglie", -1.5, "3:15"),
-		new DeviceM("Pompa_di_calore_+_termostato", -2),
-		new DeviceCP("Tapparelle_elettriche", -0.3, "0:01"),
-		new DeviceM("Scaldabagno", -1),
-		new DeviceM("Frigorifero", -0.4),
-		new DeviceCP("Forno_a_microonde", -0.8, "0:02"),
-		new DeviceCP("Asciugatrice", -0.5, "1:00"),
-		new DeviceCP("Televisore", -0.2, "1:00"),
-	};
+	// elenco dispositivi con relativi consumi e durata cicli
+	constexpr int nDevices = 10;
+	std::string deviceName[nDevices]  = {"Impianto_fotovoltaico", "Lavatrice", "Lavastoviglie", "Pompa_di_calore_+_termostato", "Tapparelle_elettriche", "Scaldabagno", "Frigorifero", "Forno_a_microonde", "Asciugatrice", "Televisore" };
+	std::string deviceCycle[nDevices] = {         "0:00",            "1:50",       "3:15",                  "0:00",                     "0:01",              "0:00",       "0:00",           "0:02",           "1:00",        "1:00"     };
+	double devicePower[nDevices]      = {          1.5,               -2,           -1.5,                    -2,                         -0.3,                -1,           -0.4,             -0.8,             -0.5,          -0.2      };
 
 	/**
 	 * @brief Costruttore vuoto della classe Home
 	 */
-	Home::Home() : Home(MAX_POWER_ABSORPTION) {};
+	Home::Home() : Home(DEFAULT_MAX_POWER_ABSORPTION) {};
 
 	/**
-	 * @brief Costruttore della classe Home con massima potenza assorbibile passata come parametro
-	 * @param max_power_absorption massima potenza assorbibile dalla rete
+	 * @brief Costruttore della classe Home con massima potenza prelevabile passata come parametro
+	 * @param max_power_absorption massima potenza prelevabile dalla rete
 	 */
 	Home::Home(double max_power_absorption) {
 		// inizializzazioni
@@ -37,9 +29,172 @@ namespace domotic_home {
 		this->max_power_absorption = max_power_absorption;
 
 		// inserisce i dispositivi nella casa
-		for (Device *d : deviceList)
-			devices.insert({d->get_name(), d});
+		for (int i = 0; i < nDevices; i++) {
+			// nuovo dispositivo
+			Device *newDevice = nullptr;
+
+			// alloco il nuovo dispositivo in base al tipo -> se cycle == 0:00 allora è manuale
+			if (deviceCycle[i] == "0:00")
+				newDevice = new DeviceM(deviceName[i], devicePower[i]);
+			else 
+				newDevice = new DeviceCP(deviceName[i], devicePower[i], deviceCycle[i]);
+
+			// inserisco i dispositivi nella mappa
+			devices.insert({newDevice->get_name(), newDevice});
+		}
 	}
+
+	/**
+	 * @brief Costruttore di copia
+	 * 
+	 * @param h oggetto da copiare
+	 */
+	Home::Home(const Home &h) {
+		this->time = h.time;
+		this->power_absorption = h.power_absorption;
+		this->max_power_absorption = h.max_power_absorption;
+
+		// copio mappa con dispositivi
+		for (auto d : h.devices) {
+			Device *newDevice = nullptr;
+			if (dynamic_cast<DeviceM *>(d.second))
+				newDevice = new DeviceM(*dynamic_cast<DeviceM *>(d.second));
+			else
+				newDevice = new DeviceCP(*dynamic_cast<DeviceCP *>(d.second));
+			this->devices.insert({newDevice->get_name(), newDevice});
+		}
+
+		// popolo lista con i riferimenti ai dispositivi della mappa
+		for (auto d : h.turned_on_devices)
+			this->turned_on_devices.push_back(this->devices[d->get_name()]);
+	}
+
+	/**
+	 * @brief Costruttore di move
+	 * 
+	 * @param h oggetto rvalue
+	 */
+	Home::Home(Home &&h) {
+		this->time = h.time;
+		this->power_absorption = h.power_absorption;
+		this->max_power_absorption = h.max_power_absorption;
+		this->devices = h.devices; // copia gli indirizzi di memoria
+		this->turned_on_devices = h.turned_on_devices; // copia indirizzi di memoria
+		
+		// elimino dati in h
+		h.time = Clock();
+		h.power_absorption = 0;
+		h.max_power_absorption = 0; // non ha senso, tanto h verrà eliminato
+		h.devices.clear();
+		h.turned_on_devices.clear();
+	}
+
+	/**
+	 * @brief Distruttore della classe home
+	 * libera l'area di memoria occupata dai dispositivi
+	 */
+	Home::~Home() {
+		/**
+		 * Descrizione algoritmo:
+		 * - per ogni dispositivo nella casa:
+		 *   - lo converto nella sua classe specifica (DeviceM o DeviceCP)
+		 *   - eseguo il delete del dispositivo (chiamo implicitamente distruttore)
+		 */
+		for (auto d : this->devices) {
+			if (dynamic_cast<DeviceM *>(d.second)) {
+				DeviceM *temp = dynamic_cast<DeviceM *>(d.second);
+				delete temp;
+			}
+			else {
+				DeviceCP *temp = dynamic_cast<DeviceCP *>(d.second);
+				delete temp;
+			}
+		}
+	}
+
+	/**
+	 * @brief Assegnamento di copia
+	 * 
+	 * @param h oggetto da copiare
+	 * @return Home& destinazione
+	 */
+	Home &Home::operator=(const Home &h) {
+		// elimino dati vecchi
+		for (auto d : this->devices) {
+			if (dynamic_cast<DeviceM *>(d.second)) {
+				DeviceM *temp = dynamic_cast<DeviceM *>(d.second);
+				delete temp;
+			}
+			else {
+				DeviceCP *temp = dynamic_cast<DeviceCP *>(d.second);
+				delete temp;
+			}
+		}
+		this->devices.clear();
+		this->turned_on_devices.clear();
+
+		// inserisco dati nuovi
+		this->time = h.time;
+		this->power_absorption = h.power_absorption;
+		this->max_power_absorption = h.max_power_absorption;
+
+		// copio mappa con dispositivi
+		for (auto d : h.devices) {
+			Device *newDevice = nullptr;
+			if (dynamic_cast<DeviceM *>(d.second))
+				newDevice = new DeviceM(*dynamic_cast<DeviceM *>(d.second));
+			else
+				newDevice = new DeviceCP(*dynamic_cast<DeviceCP *>(d.second));
+			this->devices.insert({newDevice->get_name(), newDevice});
+		}
+
+		// popolo lista con i riferimenti ai dispositivi della mappa
+		for (auto d : h.turned_on_devices)
+			this->turned_on_devices.push_back(this->devices[d->get_name()]);
+		
+		// restituisco oggetto this
+		return *this;
+	}
+
+	/**
+	 * @brief Assegnamento di move
+	 * 
+	 * @param h oggetto rvalue
+	 * @return Home& destinazione
+	 */
+	Home &Home::operator=(Home &&h) {
+		// elimino dati vecchi
+		for (auto d : this->devices) {
+			if (dynamic_cast<DeviceM *>(d.second)) {
+				DeviceM *temp = dynamic_cast<DeviceM *>(d.second);
+				delete temp;
+			}
+			else {
+				DeviceCP *temp = dynamic_cast<DeviceCP *>(d.second);
+				delete temp;
+			}
+		}
+		this->devices.clear();
+		this->turned_on_devices.clear();
+
+		// inserisco quelli nuovi
+		this->time = h.time;
+		this->power_absorption = h.power_absorption;
+		this->max_power_absorption = h.max_power_absorption;
+		this->devices = h.devices; // copia gli indirizzi di memoria
+		this->turned_on_devices = h.turned_on_devices; // copia indirizzi di memoria
+		
+		// elimino dati in h
+		h.time = Clock();
+		h.power_absorption = 0;
+		h.max_power_absorption = 0; // non ha senso, tanto h verrà eliminato
+		h.devices.clear();
+		h.turned_on_devices.clear();
+
+		// restituisco oggetto this
+		return *this;
+	}
+
 
 	/**
 	 * @brief Funzione per accendere / spegnere un dispositivo
@@ -93,6 +248,26 @@ namespace domotic_home {
 
 		// restituisco messaggio di output
 		return log;
+	}
+
+	/**
+	 * @brief Funzione ausiliaria di overloading della funzione set(string, clock) in modo da poter
+	 * utilizzare string-literal come orari di accensione e spegnimento.
+	 *
+	 * Quando si invoca la funzione set(string, Clock) inserendo uno string-literal come orario,
+	 * il secondo parametro è di tipo const char* e il compilatore preferisce utilizzare il casting
+	 * implicito da puntatore (const char*) a bool al posto di eseguire il cast da const char*
+	 * a Clock, specificato nel costruttore Clock(const char*).
+	 * Per questo motivoviene invocata la funzione set(string, true) al posto di set(string, clock).
+	 * 
+	 * Con questo overloading si fa in modo di forzare la chiamata della funzione set desiderata.
+	 * 
+	 * @param devicename nome del dispositivo
+	 * @param start orario di accensione
+	 * @return std::string
+	 */
+	std::string Home::set(const std::string &devicename, const char *start) {
+		return set(devicename, Clock(start));
 	}
 
 	/**
@@ -167,7 +342,7 @@ namespace domotic_home {
 	 * 
 	 * @return std::string messaggio di output
 	 */
-	std::string Home::show() {
+	std::string Home::show() const {
 		double cons = 0; // consumo complessimo
 		double prod = 0; // produzione complessiva
 
@@ -203,7 +378,7 @@ namespace domotic_home {
 	 * @return std::string messaggio di output
 	 * @throw InvalidDeviceName se devicename non è presente nella casa
 	 */
-	std::string Home::show(const std::string &devicename) {
+	std::string Home::show(const std::string &devicename) const {
 		// verifico presenza dispositivo
 		if (!devices.count(devicename))
 			throw InvalidDeviceName();
@@ -212,8 +387,8 @@ namespace domotic_home {
 		std::string log = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
 
 		// calcolo messaggio di output
-		log += "[" + time.toString() + "] Il dispositivo " + devicename + " ha attualmente " + (devices[devicename]->get_totalEnergy() > 0 ? "prodotto " : "consumato ");
-		log += std::to_string(std::abs(devices[devicename]->get_totalEnergy())) + "kWh \n";
+		log += "[" + time.toString() + "] Il dispositivo " + devicename + " ha attualmente " + (devices.at(devicename)->get_totalEnergy() > 0 ? "prodotto " : "consumato ");
+		log += std::to_string(std::abs(devices.at(devicename)->get_totalEnergy())) + "kWh \n";
 
 		// restituisco messaggio di output
 		return log;
@@ -362,7 +537,7 @@ namespace domotic_home {
 	 * @return true se orario del sistema è = 23:59
 	 * @return false se orario del sistema è < 23:59
 	 */
-	bool Home::isDayEnded() {
+	bool Home::isDayEnded() const {
 		return time == Clock("23:59");
 	}
 
@@ -399,30 +574,29 @@ namespace domotic_home {
 		if (s && !d->get_status()) {
 			// se assorbimento dalla rete supera il limite -> applico la politica di spegnimento
 			if (power_absorption - d->get_energy() > max_power_absorption) {
-				log += "[" + t.toString() + "] Il dispositivo " + d->get_name() + " non si è acceso perché si supererebbe la potenza massima asorbibile dalla rete\n";
+				log += "[" + t.toString() + "] Il dispositivo " + d->get_name() + " non si è acceso perché si supererebbe la potenza massima prelevabile dalla rete\n";
 				log += turn_off_policy(t, d->get_energy());
 			}
 
 			d->turnOn(t);
 			power_absorption -= d->get_energy();
+			log += "[" + t.toString() + "] Il dispositivo " + d->get_name() + " si è acceso\n";
 			if (d->get_energy() < 0) // se consuma, lo inserisco nella lista dei dispositivi che si possono spegnere al bisogno
 				turned_on_devices.push_back(d);
-			log += "[" + t.toString() + "] Il dispositivo " + d->get_name() + " si è acceso\n";
 		}
 		
 		// dispositivo da spegnere, quando è acceso
 		else if (!s && d->get_status()) {
 			// se assorbimento dalla rete supera il limite -> applico la politica di spegnimento
 			if (power_absorption + d->get_energy() > max_power_absorption) {
-				log += "[" + t.toString() + "] Il dispositivo " + d->get_name() + " non si è spento perché si supererebbe la potenza massima asorbibile dalla rete\n";
+				log += "[" + t.toString() + "] Il dispositivo " + d->get_name() + " non si è spento perché si supererebbe la potenza massima prelevabile dalla rete\n";
 				log += turn_off_policy(t, d->get_energy());
 			}
 			
 			d->turnOff(t);
 			power_absorption += d->get_energy();
-			if (d->get_energy() < 0) // se consuma ovvero se è nella lista, lo rimuovo
-				turned_on_devices.remove(d);
 			log += "[" + t.toString() + "] Il dispositivo " + d->get_name() + " si è spento\n";
+			turned_on_devices.remove(d); // se non c'è nella lista, non viene rimosso nulla
 		}
 
 		// se dispositivo è già acceso -> non lo riaccendo, ma chiamo lo stesso turnOn per far ripartire il timer nei DeviceCP
@@ -452,7 +626,8 @@ namespace domotic_home {
 
 		// se voglio accendere un dispositivo che consuma, devo ridurre la potenza per poterlo accendere senza problemi
 		// se voglio spegnere un dispositivo che produce, devo fare in modo che la potenza dei vari dispositivi non superi il massimo
-		while (power_absorption + std::abs(p) - max_power_absorption > 1e-14) {
+		while (power_absorption + std::abs(p) - max_power_absorption > 0) {
+			//std::cout << power_absorption << " + " << std::abs(p) << " - " << max_power_absorption << " = " << power_absorption + std::abs(p) - max_power_absorption << std::endl;
 			turned_on_devices.front()->turnOff(t);
 			power_absorption += turned_on_devices.front()->get_energy();
 			log += "[" + t.toString() + "] Il dispositivo " + turned_on_devices.front()->get_name() + " si è spento per ridurre il consumo del sistema\n";

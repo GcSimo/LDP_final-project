@@ -18,37 +18,43 @@ namespace domotic_home {
 		private:
 			// costanti private
 			static constexpr double DEFAULT_POWER_ABSORPTION = 0;
-			static constexpr double MAX_POWER_ABSORPTION = 3.5;
+			static constexpr double DEFAULT_MAX_POWER_ABSORPTION = 3.5;
 
 			// variabili membro private
-			Clock time;
-			double power_absorption;
-			double max_power_absorption;
-			std::map<std::string, Device*> devices;
-			std::list<Device *> turned_on_devices;
+			Clock time; // orario sistema
+			double power_absorption; // potenza istantanea assorbita dalla rete
+			double max_power_absorption; // massima potenza istantanea prelevabile dalla rete
+			std::map<std::string, Device*> devices; // elenco dispositivi della casa
+			std::list<Device *> turned_on_devices; // elenco dispositivi accesi che consumano potenza
 
 			// member function private
-			std::string set(Device *, bool, const Clock &); // funzione ausiliaria per on/off dispositivi
+			std::string set(Device *, bool, const Clock &); // funzione ausiliaria per gestione on/off dispositivi
 			std::string turn_off_policy(const Clock &, double); // funzione ausiliaria per spegnere i dispositivi se si supera assorbimento massimo
 
 		public:
 			// costruttore
-			Home();
-			Home(double);
+			Home(); // costruttore di defult
+			Home(double); // costruttore con massima potenza prelevabile passata come parametro
+			Home(const Home &); // costruttore di copia
+			Home(Home &&); // costruttore di move
+			~Home(); // dealloca i dispositivi
+
+			Home &operator=(const Home &); // assegnamento di copia
+			Home &operator=(Home &&); // assegnamento di move
 
 			// member function pubbliche
 			std::string set(const std::string &, bool); // set devicename on/off
 			std::string set(const std::string &, const Clock &); // set devicename start
-			std::string set(const std::string &a, const char *b) { return set(a, Clock(b)); } // overloading per usare orari literal "hh:mm"
+			std::string set(const std::string &a, const char *b); // overloading per usare orari literal "hh:mm"
 			std::string set(const std::string &, const Clock &, const Clock &); // set devicename start stop
 			std::string rm(const std::string &); // rm devicename
-			std::string show(); // show
-			std::string show(const std::string &); // show devicename
+			std::string show() const; // show
+			std::string show(const std::string &) const; // show devicename
 			std::string set_time(const Clock &); // set time
 			std::string reset_time(); // reset time
 			std::string reset_timers(); // reset timers
 			std::string reset_all(); // reset all
-			bool isDayEnded(); // true time == 23:59, false altrimenti
+			bool isDayEnded() const; // true time == 23:59, false altrimenti
 
 			// classi per lancio di eccezioni
 			// se il dispositivo non è presente nella casa

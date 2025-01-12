@@ -321,12 +321,12 @@ Errore: non è possiblie impostare un orario di spegnimento programmato ad un di
 [0:00] Il dispositivo Lavastoviglie si è acceso
 
 [0:00] L'orario attuale è 0:00
-[0:00] Il dispositivo Lavatrice non si è acceso perché si supererebbe la potenza massima asorbibile dalla rete
+[0:00] Il dispositivo Lavatrice non si è acceso perché si supererebbe la potenza massima prelevabile dalla rete
 [0:00] Il dispositivo Frigorifero si è spento per ridurre il consumo del sistema
 [0:00] Il dispositivo Lavatrice si è acceso
 
 [0:00] L'orario attuale è 0:00
-[0:00] Il dispositivo Tapparelle_elettriche non si è acceso perché si supererebbe la potenza massima asorbibile dalla rete
+[0:00] Il dispositivo Tapparelle_elettriche non si è acceso perché si supererebbe la potenza massima prelevabile dalla rete
 [0:00] Il dispositivo Lavastoviglie si è spento per ridurre il consumo del sistema
 [0:00] Il dispositivo Tapparelle_elettriche si è acceso
 
@@ -337,7 +337,7 @@ Errore: non è possiblie impostare un orario di spegnimento programmato ad un di
 [0:00] Il dispositivo Televisore si è acceso
 
 [0:00] L'orario attuale è 0:00
-[0:00] Il dispositivo Forno_a_microonde non si è acceso perché si supererebbe la potenza massima asorbibile dalla rete
+[0:00] Il dispositivo Forno_a_microonde non si è acceso perché si supererebbe la potenza massima prelevabile dalla rete
 [0:00] Il dispositivo Lavatrice si è spento per ridurre il consumo del sistema
 [0:00] Il dispositivo Forno_a_microonde si è acceso
 
@@ -351,15 +351,85 @@ Errore: non è possiblie impostare un orario di spegnimento programmato ad un di
 [0:00] Il dispositivo Lavastoviglie si è acceso
 
 [0:00] L'orario attuale è 0:00
-[0:00] Il dispositivo Lavatrice non si è acceso perché si supererebbe la potenza massima asorbibile dalla rete
+[0:00] Il dispositivo Lavatrice non si è acceso perché si supererebbe la potenza massima prelevabile dalla rete
 [0:00] Il dispositivo Tapparelle_elettriche si è spento per ridurre il consumo del sistema
 [0:00] Il dispositivo Asciugatrice si è spento per ridurre il consumo del sistema
 [0:00] Il dispositivo Lavatrice si è acceso
 
 [0:00] L'orario attuale è 0:00
-[0:00] Il dispositivo Impianto_fotovoltaico non si è spento perché si supererebbe la potenza massima asorbibile dalla rete
+[0:00] Il dispositivo Impianto_fotovoltaico non si è spento perché si supererebbe la potenza massima prelevabile dalla rete
 [0:00] Il dispositivo Televisore si è spento per ridurre il consumo del sistema
 [0:00] Il dispositivo Forno_a_microonde si è spento per ridurre il consumo del sistema
 [0:00] Il dispositivo Frigorifero si è spento per ridurre il consumo del sistema
+[0:00] Il dispositivo Lavastoviglie si è spento per ridurre il consumo del sistema
 [0:00] Il dispositivo Impianto_fotovoltaico si è spento
+
+
+ --- TEST INDIPENDENZA CLASSI HOME ---
+h1: [0:00] L'orario attuale è 0:00
+[0:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 0.000000 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 0.000000 kWh
+ - il dispositivo Lavatrice ha consumato 0.000000 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 0.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.000000 kWh
+
+h2: [0:00] L'orario attuale è 0:00
+[0:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 0.000000 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 0.000000 kWh
+ - il dispositivo Lavatrice ha consumato 0.000000 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 0.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.000000 kWh
+
+h1: [0:00] L'orario attuale è 0:00
+[0:00] Il dispositivo Frigorifero si è acceso
+h1: [0:00] L'orario attuale è 0:00
+[0:00] Il dispositivo Lavastoviglie si è acceso
+
+h1: [0:00] L'orario attuale è 0:00
+[0:00] Il dispositivo Lavatrice non si è acceso perché si supererebbe la potenza massima prelevabile dalla rete
+[0:00] Il dispositivo Frigorifero si è spento per ridurre il consumo del sistema
+[0:00] Il dispositivo Lavatrice si è acceso
+
+h1: [0:00] L'orario attuale è 0:00
+[1:50] Il dispositivo Lavatrice si è spento
+[3:15] Il dispositivo Lavastoviglie si è spento
+[4:00] L'orario attuale è 4:00
+
+h1: [4:00] L'orario attuale è 4:00
+[4:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 8.541667 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 4.875000 kWh
+ - il dispositivo Lavatrice ha consumato 3.666667 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 0.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.000000 kWh
+
+h2: [0:00] L'orario attuale è 0:00
+[0:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 0.000000 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno_a_microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto_fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 0.000000 kWh
+ - il dispositivo Lavatrice ha consumato 0.000000 kWh
+ - il dispositivo Pompa_di_calore_+_termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 0.000000 kWh
+ - il dispositivo Tapparelle_elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.000000 kWh
 
