@@ -32,8 +32,8 @@ namespace domotic_home {
 		public:
 			// Funzioni deputate all'accensione e allo spegnimento del dispositivo (--> viene modificata variabile booleana "status")
 			// Le funzioni ritornano TRUE se lo stato del Dispositivo viene effettivamente modificato, altrimenti FALSE.
-			virtual bool turnOn(const Clock &) = 0;
-			bool turnOff(const Clock &);
+			virtual void turnOn(const Clock &) = 0;
+			void turnOff(const Clock &);
 
 			// Funzione atta al settaggio dell'orario di accensione del dispositivo
 			virtual void set_onTime(const Clock &) = 0;
@@ -48,19 +48,19 @@ namespace domotic_home {
 			void resetTotalEnergy();
 
 			// Funzioni per accesso ai dati del dispositivo
-			std::string get_name() const;
-			int get_id() const;
-			bool get_status() const;
-			double get_energy() const;
-			double get_totalEnergy() const;
-			Clock get_onTime() const;
-			Clock get_offTime() const;
+			std::string get_name() const { return name; }
+			int get_id() const { return id; }
+			bool get_status() const { return status; }
+			double get_energy() const { return energy; }
+			double get_totalEnergy() const; //{ return ...; }		// INLINE?
+			Clock get_onTime() const { return onTime; }
+			Clock get_offTime() const { return offTime; }
 
 			// Funzione per ottenere una stringa contenente i dati del Dispositivo
-			std::string toString() const;
+			std::string toString() const; //{ return name; }		// INLINE?
 	};
 
-	std::ostream &operator<<(std::ostream &, const Device &);
+	std::ostream &operator<<(std::ostream &, const Device &);			// INLINE?
 }
 
 #endif // DEVICE_H
