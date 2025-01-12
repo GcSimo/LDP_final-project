@@ -33,8 +33,4 @@ namespace domotic_home {
 		this->onTime = onTime;
 		offTime = onTime + cycle;
 	}
-
-	Clock DeviceCP::get_cycle() const {
-		return cycle;
-	}
 }
