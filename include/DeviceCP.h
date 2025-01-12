@@ -17,7 +17,7 @@ namespace domotic_home {
 			DeviceCP(std::string, double, const Clock &);
 
 			// Funzione per l'accensione del Dispositivo
-			bool turnOn(const Clock &) override;
+			void turnOn(const Clock &) override;
 
 			// Funzione per il settaggio dell'ora di accensione del Dispositivo
 			void set_onTime(const Clock &) override;
