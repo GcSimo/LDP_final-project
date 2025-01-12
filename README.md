@@ -1,8 +1,8 @@
 # Progetto finale del gruppo ~BankAccount()
 ## Suddivisione del lavoro
 - Giovanni: classi MyClock e Dispositivi
-- Andrea:
-- Giacomo:
+- Andrea: funzione parser e main
+- Giacomo: classe Home
 
 ## TO-DO List
 **Generale**
@@ -65,8 +65,9 @@
 - [x] fare in modo di reimpostare l'offTime dei CP quando vengono riaccesi
 - [x] fare attenzione alla conversione preferita ``const char * -> bool`` rispetto a ``const char * -> clock`` per funzione set(devicename, on/off - clock)
 - [x] implementare politica di spegnimento
+- [x] verificare memory leak per deviceList e indipendenza dispositivi per due case diverse
 - [ ] controllare confronti tra double e in caso definire eventuali errore/epsilon
-- [ ] verificare memory leak per deviceList e indipendenza dispositivi per due case diverse
+- [ ] prevedere costruttore/assegnamento di copy e move?
 
 **Parser**
 - [ ] ultimare parser con comandi mancanti

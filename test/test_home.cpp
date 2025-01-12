@@ -149,4 +149,20 @@ int main () {
 	cout << h.set("Lavastoviglie", true) << endl;
 	cout << h.set("Lavatrice", true) << endl;
 	cout << h.set("Impianto_fotovoltaico", false) << endl;
+
+	// test indipendenza classi home
+	h.reset_all();
+	domotic_home::Home h1;
+	domotic_home::Home h2;
+	cout << "\n --- TEST INDIPENDENZA CLASSI HOME ---" << endl;
+	cout << "h1: " << h1.show() << endl;
+	cout << "h2: " << h2.show() << endl;
+	cout << "h1: " << h1.set("Frigorifero", true);
+	cout << "h1: " << h1.set("Lavastoviglie", true) << endl;
+	cout << "h1: " << h1.set("Lavatrice", true) << endl;
+	cout << "h1: " << h1.set_time("4:00") << endl;
+	cout << "h1: " << h1.show() << endl;
+	cout << "h2: " << h2.show() << endl;
+
+	//cout << 0.4 + 1.5 - 0.4 + 2 - 1.5 + 0.3 + 0.5 + 0.2 - 2 + 0.8 - 1.5 + 0.4 + 1.5 - 0.3 - 0.5 + 2 - 0.2 - 0.8 - 0.4 + 1.5 - 3.5 << endl;
 }
