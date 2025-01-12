@@ -23,7 +23,7 @@ namespace domotic_home {
 			void set_onTime(const Clock &) override;
 
 			// Funzione per ottenere il ciclo di funzionamento del dispositivo
-			Clock get_cycle() const;
+			Clock get_cycle() const { return cycle; }
 	};
 }
 #endif // DEVICECP_H
