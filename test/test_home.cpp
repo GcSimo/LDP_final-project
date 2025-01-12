@@ -164,5 +164,43 @@ int main () {
 	cout << "h1: " << h1.show() << endl;
 	cout << "h2: " << h2.show() << endl;
 
-	//cout << 0.4 + 1.5 - 0.4 + 2 - 1.5 + 0.3 + 0.5 + 0.2 - 2 + 0.8 - 1.5 + 0.4 + 1.5 - 0.3 - 0.5 + 2 - 0.2 - 0.8 - 0.4 + 1.5 - 3.5 << endl;
+	// test copy constructor
+	cout << "\n --- TEST COPY CTOR ---" << endl;
+	domotic_home::Home h3 = h1;
+	cout << "h1: " << h1.show() << endl;
+	cout << "h3: " << h3.show() << endl;
+	cout << "h3: " << h3.reset_all() << endl;
+	cout << "h1: " << h1.show() << endl;
+	cout << "h3: " << h3.show() << endl;
+
+	// test copy assignment
+	cout << "\n --- TEST COPY ASSGN ---" << endl;
+	h3 = h1;
+	cout << "h1: " << h1.show() << endl;
+	cout << "h3: " << h3.show() << endl;
+	cout << "h3: " << h3.reset_all() << endl;
+	cout << "h1: " << h1.show() << endl;
+	cout << "h3: " << h3.show() << endl;
+
+	// test move constructor
+	cout << "\n --- TEST MOVE CTOR ---" << endl;
+	domotic_home::Home temp = h1;
+	domotic_home::Home h4 = std::move(temp);
+	cout << "h1: " << h1.show() << endl;
+	cout << "h4: " << h4.show() << endl;
+	cout << "temp: " << temp.show() << endl;
+	cout << "h4: " << h4.reset_all() << endl;
+	cout << "h1: " << h1.show() << endl;
+	cout << "h4: " << h4.show() << endl;
+
+	// test move assignment
+	cout << "\n --- TEST MOVE ASSGN ---" << endl;
+	temp = h1;
+	h4 = std::move(temp);
+	cout << "h1: " << h1.show() << endl;
+	cout << "h4: " << h4.show() << endl;
+	cout << "temp: " << temp.show() << endl;
+	cout << "h4: " << h4.reset_all() << endl;
+	cout << "h1: " << h1.show() << endl;
+	cout << "h4: " << h4.show() << endl;
 }

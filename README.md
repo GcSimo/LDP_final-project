@@ -14,6 +14,7 @@
 - [x] bug quando si inserisce orario invalido del tipo ``:56`` o ``08:`` -> utilizzare le regex? ``^([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])$``
 - [x] ereditarietà eccezioni
 - [ ] verificare comportamenti inattesi quando si passa un Invalid alle diverse funzioni (es. orarioValido + orarioInvalid, orarioValido - orarioInvalid)
+- [ ] inserire sempre doppia cifra nelle ore da stampare es. 00:00 e non 0:00
 
 **Dispostivi**
 - [x] aggiungere ``toString`` e ``operator<<`` a ``Device.h``, eventualmente virtual
@@ -66,8 +67,8 @@
 - [x] fare attenzione alla conversione preferita ``const char * -> bool`` rispetto a ``const char * -> clock`` per funzione set(devicename, on/off - clock)
 - [x] implementare politica di spegnimento
 - [x] verificare memory leak per deviceList e indipendenza dispositivi per due case diverse
-- [ ] controllare confronti tra double e in caso definire eventuali errore/epsilon
-- [ ] prevedere costruttore/assegnamento di copy e move?
+- [x] controllare confronti tra double e in caso definire eventuali errore/epsilon
+- [x] prevedere costruttore/assegnamento di copy e move?
 
 **Parser**
 - [ ] ultimare parser con comandi mancanti
