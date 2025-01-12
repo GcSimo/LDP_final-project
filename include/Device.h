@@ -52,7 +52,7 @@ namespace domotic_home {
 			int get_id() const { return id; }
 			bool get_status() const { return status; }
 			double get_energy() const { return energy; }
-			double get_totalEnergy() const; //{ return ...; }		// INLINE?
+			double get_totalEnergy() const { return totalEnergy; }
 			Clock get_onTime() const { return onTime; }
 			Clock get_offTime() const { return offTime; }
 
