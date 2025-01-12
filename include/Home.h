@@ -10,6 +10,7 @@
 #include "DeviceM.h"
 #include "DeviceCP.h"
 #include <map>
+#include <list>
 #include <string>
 
 namespace domotic_home {
@@ -18,21 +19,27 @@ namespace domotic_home {
 			// costanti private
 			static constexpr double DEFAULT_POWER_ABSORPTION = 0;
 			static constexpr double MAX_POWER_ABSORPTION = 3.5;
-			
+
 			// variabili membro private
 			Clock time;
 			double power_absorption;
+			double max_power_absorption;
 			std::map<std::string, Device*> devices;
+			std::list<Device *> turned_on_devices;
 
 			// member function private
 			std::string set(Device *, bool, const Clock &); // funzione ausiliaria per on/off dispositivi
+			std::string turn_off_policy(const Clock &, double); // funzione ausiliaria per spegnere i dispositivi se si supera assorbimento massimo
+
 		public:
 			// costruttore
 			Home();
+			Home(double);
 
 			// member function pubbliche
 			std::string set(const std::string &, bool); // set devicename on/off
 			std::string set(const std::string &, const Clock &); // set devicename start
+			std::string set(const std::string &a, const char *b) { return set(a, Clock(b)); } // overloading per usare orari literal "hh:mm"
 			std::string set(const std::string &, const Clock &, const Clock &); // set devicename start stop
 			std::string rm(const std::string &); // rm devicename
 			std::string show(); // show
@@ -41,6 +48,7 @@ namespace domotic_home {
 			std::string reset_time(); // reset time
 			std::string reset_timers(); // reset timers
 			std::string reset_all(); // reset all
+			bool isDayEnded(); // true time == 23:59, false altrimenti
 
 			// classi per lancio di eccezioni
 			// se il dispositivo non è presente nella casa
@@ -61,9 +69,8 @@ namespace domotic_home {
 			class TimeRangeError : public std::logic_error {
 				public:
 					TimeRangeError() : std::logic_error("") {}
-					const char *what() const noexcept override { return "Errore: l'ora passata come parametro non rientra nell'intervallo corretto [0:00,23:59]!"; }
+					const char *what() const noexcept override { return "Errore: l'ora passata come parametro è precedente all'orario del sistema!"; }
 			};
-
 	};
 
 	// struct evento da memorizzare nella priority queue per funzione set_time()

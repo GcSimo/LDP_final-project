@@ -35,6 +35,7 @@ namespace domotic_home {
 
 	void Device::resetTotalEnergy() {
 		totalEnergy = DEFAULT_TOTALT_ENERGY;
+		lastEnergyUpdate.setInvalid();
 	}
 
 	std::string Device::get_name() const {

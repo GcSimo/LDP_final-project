@@ -13,6 +13,7 @@
 - [x] limite MAX_HOUR a 23 al posto che a 24
 - [x] bug quando si inserisce orario invalido del tipo ``:56`` o ``08:`` -> utilizzare le regex? ``^([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])$``
 - [x] ereditarietà eccezioni
+- [ ] verificare comportamenti inattesi quando si passa un Invalid alle diverse funzioni (es. orarioValido + orarioInvalid, orarioValido - orarioInvalid)
 
 **Dispostivi**
 - [x] aggiungere ``toString`` e ``operator<<`` a ``Device.h``, eventualmente virtual
@@ -36,10 +37,13 @@
 - [x] aggiungere un valore di ritorno booleano alle funzioni turnOn e turnOff:
   - [x] quando il dispositivo è già spento o già acceso, si comunica al chiamante che non è stata fatta nessuna modifica e il chiamante capisce che non deve mandare nessun messaggio in stampa
   - [x] la funzionalità sopra è particolarmente utile nella funzione goForward quando è programmata l'accensione di un dispositivo che supererebbe il consumo massimo e che quindi non viene acceso; in aternativa si dovrebbe eliminare l'evento di spegnimento, ma non è facile eliminare un evento nel mezzo di una priority queue
-- [ ] inserire eventuali funzioni mancanti, su richiesta della classe home e parser:
-  - [ ] funzione per resettare i consumi
-  - [ ] funzione per eliminare i timers programmati
-- [ ] alla fine di tutto eliminare funzioni non utilizzate come il toString, chageStatus, operator<< e bool in turnOff, turnOn
+- [x] inserire eventuali funzioni mancanti, su richiesta della classe home e parser:
+  - [x] funzione per resettare i consumi
+  - [x] funzione per eliminare i timers programmati
+- [x] alla fine di tutto eliminare funzioni non utilizzate come il toString, chageStatus, operator<<
+- [ ] eliminare valore di ritorno bool su turnOn e turnOff
+- [ ] se status == true e viene chiamata turnOn, ricalcolare orario di spegnimento dei CP
+- [ ] rendere le funzioni get_... inline come per la classe Clock?
 
 **Casa**
 - [x] riscrivere funzione per far avanzare il tempo con una multimappa/priority queue
@@ -51,14 +55,18 @@
 - [x] suggerimento: in caso suddividere il parser dalla classe home
 - [x] correggere i messaggi di output integrando i valori booleani delle funzioni turnOn e turnOff
 - [x] verificare eventuali parametri errati
-- [ ] resettare consumi in reset_time
-- [ ] correggere il reset_timer
-- [ ] implementare reset_all
-- [ ] implementare rm
-- [ ] prevedere un messaggio di output per i comandi di reset
-- [ ] terminare il programma all'arrivo delle 23:59
-- [ ] inserire la possibilità di impostare la potenza massima da parametro della CLI in fase di costruzione
-- [ ] gestire il caso in cui voglio spegnere i pannelli, ma se li spengo supero la massima corrente assorbibile dalla rete -> politica di spegnimento
+- [x] resettare consumi in reset_time
+- [x] correggere il reset_timer
+- [x] implementare reset_all
+- [x] implementare rm
+- [x] prevedere un messaggio di output per i comandi di reset
+- [x] inserire la possibilità di impostare la potenza massima da parametro della CLI in fase di costruzione
+- [x] se imposto un timer per l'ora in cui sono, accendo il dispositivo
+- [x] fare in modo di reimpostare l'offTime dei CP quando vengono riaccesi
+- [x] fare attenzione alla conversione preferita ``const char * -> bool`` rispetto a ``const char * -> clock`` per funzione set(devicename, on/off - clock)
+- [x] implementare politica di spegnimento
+- [ ] controllare confronti tra double e in caso definire eventuali errore/epsilon
+- [ ] verificare memory leak per deviceList e indipendenza dispositivi per due case diverse
 
 **Parser**
 - [ ] ultimare parser con comandi mancanti
@@ -68,6 +76,7 @@
 - [ ] sviluppare main che riceve comandi inseriti dall'ultente
 - [ ] gestire eventuali eccezioni di Parser e Home (es. comandi errati, nome non valido, ...)
 - [ ] salvare l'output del programma su file oltre che stamparlo a stdout
+- [ ] terminare il programma all'arrivo delle 23:59 con ``if (home.isDayEnded()) -> end program``
 
 ## REGEX
 Alcune espressioni regex che possono tornare utili in una possibile implementazione, anche se non necessarie e indispensabili.
