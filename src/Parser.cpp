@@ -8,6 +8,7 @@
 #include <sstream>
 
 namespace domotic_home {
+	const std::string DEVICE_NAME_SEPARATOR = "_";
 	void parser(const std::string &s, domotic_home::Home &h) {
 		std::vector<std::string> commandLines;
 		std::istringstream stream(s);
@@ -17,7 +18,6 @@ namespace domotic_home {
 		while (std::getline(stream, line, ' ')) {
 			commandLines.push_back(line);
 		}
-
 		// stringa per messaggio di output
 		std::string out = "";
 
@@ -29,27 +29,61 @@ namespace domotic_home {
 			}
 		
 			// --- set devicename on
-			else if (commandLines[2] == "on") {
-				out = h.set(commandLines[1], true);
+			else if (commandLines[commandLines.size()-1] == "on") {
+				std::string devname = "";
+				for (int i=1 ; i<commandLines.size()-1 ; i++){
+					if(i != 1)
+						devname += DEVICE_NAME_SEPARATOR;
+					devname += commandLines[i];
+				}
+				out = h.set(devname, true);
 			}
 			
 			// --- set devicename off
-			else if (commandLines[2] == "off") {
-				out = h.set(commandLines[1], false);
+			else if (commandLines[commandLines.size()-1] == "off") {
+				std::string devname = "";
+				for (int i=1 ; i<commandLines.size()-1 ; i++){
+					if(i != 1)
+						devname += DEVICE_NAME_SEPARATOR;
+					devname += commandLines[i];
+				}
+				out = h.set(devname, false);
 			}
 
 			// --- set devicename start [stop]
 			else {
-				if (commandLines.size() == 3) // solo start
-					out = h.set(commandLines[1], commandLines[2]);
-				else // start e stop
-					out = h.set(commandLines[1], commandLines[2], commandLines[3]);
+				std::string sv = commandLines[commandLines.size()-2];
+				bool ifOnlyStart = !sv.empty() && std::find_if(sv.begin(), 
+					sv.end(), [](unsigned char c) { return !std::isdigit(c); }) == sv.end();
+				if (!ifOnlyStart){ // solo start
+					std::string devname = "";
+					for (int i=1 ; i<commandLines.size()-1 ; i++){
+						if(i != 1)
+							devname += DEVICE_NAME_SEPARATOR;
+						devname += commandLines[i];
+					}
+					out = h.set(devname, commandLines[commandLines.size()-1]);
+				}else{ // start e stop
+					std::string devname = "";
+					for (int i=1 ; i<commandLines.size()-1 ; i++){
+						if(i != 1)
+							devname += DEVICE_NAME_SEPARATOR;
+						devname += commandLines[i];
+					}
+					out = h.set(commandLines[1], commandLines[commandLines.size()-2], commandLines[commandLines.size()-1]);
+				}
 			}
 		}
 
 		// comando rm
 		else if (commandLines[0] == "rm") {
-			out = h.rm(commandLines[1]);
+			std::string devname = "";
+			for (int i=1 ; i<commandLines.size()-1 ; i++){
+				if(i != 1)
+					devname += DEVICE_NAME_SEPARATOR;
+				devname += commandLines[i];
+			}
+			out = h.rm(devname);
 		}
 
 		// comando show
