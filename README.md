@@ -71,6 +71,7 @@
 - [x] prevedere costruttore/assegnamento di copy e move
 - [ ] verifico orari quando imposto timer ai dispositivi
 - [ ] accendo i dispositivi se il timer impostato comprende l'orario del sistema -> l'orario di spegnimento dei CP verrebbe sovrascritto, come si fa??
+- [ ] quando imposto un nuovo timer di sola accensione per i dispositivi M, elimino il vecchio orario di spegnimento / resetto il timer del dispositivo
 
 **Parser**
 - [ ] ultimare parser con comandi mancanti
@@ -81,6 +82,8 @@
 - [x] gestire eventuali eccezioni di Parser e Home (es. comandi errati, nome non valido, ...)
 - [x] salvare l'output del programma su file oltre che stamparlo a stdout
 - [x] terminare il programma all'arrivo delle 23:59 con ``if (home.isDayEnded()) -> end program``
+- [ ] aggiungere controllo stringa vuota
+- [ ] verificare descrizione errori
 
 ## REGEX
 Alcune espressioni regex che possono tornare utili in una possibile implementazione, anche se non necessarie e indispensabili.

@@ -1,17 +1,10 @@
 [0:00] L'orario attuale è 0:00
-[0:00] Il dispositivo Forno_a_microonde si è acceso
+[12:00] L'orario attuale è 12:00
 
-[0:00] L'orario attuale è 0:00
-[0:00] Il dispositivo Forno_a_microonde si è spento
+[12:00] L'orario attuale è 12:00
+[12:00] Impostato un timer per il dispositivo Pompa_di_calore_+_termostato dalle 5:00 alle 2:00
 
-[0:00] L'orario attuale è 0:00
-[0:00] Impostato un timer per il dispositivo Televisore dalle 5:00 alle 6:00
+[12:00] L'orario attuale è 12:00
+[12:00] Impostato un timer per il dispositivo Pompa_di_calore_+_termostato dalle 3:00 alle 2:00
 
-[0:00] L'orario attuale è 0:00
-[0:02] Il dispositivo Forno_a_microonde è già spento
-[5:00] Il dispositivo Televisore si è acceso
-[6:00] Il dispositivo Televisore si è spento
-[23:59] L'orario attuale è 23:59
-
-Il sistema ha raggiunto le 23:59 e si è arrestato correttamente
-
+comando sconosciuto
