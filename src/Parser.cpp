@@ -8,7 +8,19 @@
 #include <sstream>
 
 namespace domotic_home {
+
 	const std::string DEVICE_NAME_SEPARATOR = "_";
+
+	std::string getDevName(const std::vector<std::string>& commandLines, size_t start, size_t end) {
+        std::ostringstream devname;
+        for (int i=start; i<end; ++i) {
+            if (i != start)
+                devname << DEVICE_NAME_SEPARATOR;
+            devname << commandLines[i];
+        }
+        return devname.str();
+    }
+
 	std::string parser(const std::string &s, domotic_home::Home &h) {
 		std::vector<std::string> commandLines;
 		std::istringstream stream(s);
@@ -22,67 +34,37 @@ namespace domotic_home {
 		std::string out = "";
 
 		// comando set
-		if (commandLines[0] == "set") {
+		if (commandLines[0] == "set" && commandLines.size() > 2) {
 			// -- set time ...
-			if (commandLines[1] == "time") {
+			if (commandLines[1] == "time" && commandLines.size() == 3) {
 				out = h.set_time(commandLines[2]);
 			}
 		
 			// --- set devicename on
 			else if (commandLines[commandLines.size()-1] == "on") {
-				std::string devname = "";
-				for (int i=1 ; i<commandLines.size()-1 ; i++){
-					if(i != 1)
-						devname += DEVICE_NAME_SEPARATOR;
-					devname += commandLines[i];
-				}
-				out = h.set(devname, true);
+				out = h.set(getDevName(commandLines,1,commandLines.size()-1), true);
 			}
 			
 			// --- set devicename off
 			else if (commandLines[commandLines.size()-1] == "off") {
-				std::string devname = "";
-				for (int i=1 ; i<commandLines.size()-1 ; i++){
-					if(i != 1)
-						devname += DEVICE_NAME_SEPARATOR;
-					devname += commandLines[i];
-				}
-				out = h.set(devname, false);
+				out = h.set(getDevName(commandLines,1,commandLines.size()-1), false);
 			}
 
 			// --- set devicename start [stop]
-			else {
+			else if(commandLines.size() >= 3){
 				std::string sv = commandLines[commandLines.size()-2];
-				bool ifOnlyStart = !sv.empty() && std::find_if(sv.begin(), sv.end(), [](unsigned char c) { return !std::isdigit(c); }) == sv.end();
-				if (!ifOnlyStart){ // solo start
-					std::string devname = "";
-					for (int i=1 ; i<commandLines.size()-1 ; i++){
-						if(i != 1)
-							devname += DEVICE_NAME_SEPARATOR;
-						devname += commandLines[i];
-					}
-					out = h.set(devname, commandLines[commandLines.size()-1]);
+				bool ifOnlyStart = !std::isdigit(commandLines[commandLines.size()-2][0]);
+				if (ifOnlyStart){ // solo start
+					out = h.set(getDevName(commandLines,1,commandLines.size()-1), commandLines[commandLines.size()-1]);
 				}else{ // start e stop
-					std::string devname = "";
-					for (int i=1 ; i<commandLines.size()-1 ; i++){
-						if(i != 1)
-							devname += DEVICE_NAME_SEPARATOR;
-						devname += commandLines[i];
-					}
-					out = h.set(commandLines[1], commandLines[commandLines.size()-2], commandLines[commandLines.size()-1]);
+					out = h.set(getDevName(commandLines,1,commandLines.size()-2), commandLines[commandLines.size()-2], commandLines[commandLines.size()-1]);
 				}
 			}
 		}
 
 		// comando rm
-		else if (commandLines[0] == "rm") {
-			std::string devname = "";
-			for (int i=1 ; i<commandLines.size()-1 ; i++){
-				if(i != 1)
-					devname += DEVICE_NAME_SEPARATOR;
-				devname += commandLines[i];
-			}
-			out = h.rm(devname);
+		else if (commandLines[0] == "rm" && commandLines.size() > 1) {
+			out = h.rm(getDevName(commandLines,1,commandLines.size()));
 		}
 
 		// comando show
@@ -90,7 +72,7 @@ namespace domotic_home {
 			if (commandLines.size() == 1) // show
 				out = h.show();
 			else // show devicename
-				out = h.show(commandLines[1]);
+				out = h.show(getDevName(commandLines,1,commandLines.size()));
 		}
 
 		// comando reset
@@ -104,6 +86,9 @@ namespace domotic_home {
 			else {
 				out = h.reset_all();
 			}
+		}
+		else{
+			out += "comando sconosciuto";
 		}
 
 		return out;
