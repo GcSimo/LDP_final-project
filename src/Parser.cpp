@@ -9,7 +9,7 @@
 
 namespace domotic_home {
 	const std::string DEVICE_NAME_SEPARATOR = "_";
-	void parser(const std::string &s, domotic_home::Home &h) {
+	std::string parser(const std::string &s, domotic_home::Home &h) {
 		std::vector<std::string> commandLines;
 		std::istringstream stream(s);
 		std::string line;
@@ -53,8 +53,7 @@ namespace domotic_home {
 			// --- set devicename start [stop]
 			else {
 				std::string sv = commandLines[commandLines.size()-2];
-				bool ifOnlyStart = !sv.empty() && std::find_if(sv.begin(), 
-					sv.end(), [](unsigned char c) { return !std::isdigit(c); }) == sv.end();
+				bool ifOnlyStart = !sv.empty() && std::find_if(sv.begin(), sv.end(), [](unsigned char c) { return !std::isdigit(c); }) == sv.end();
 				if (!ifOnlyStart){ // solo start
 					std::string devname = "";
 					for (int i=1 ; i<commandLines.size()-1 ; i++){
@@ -107,6 +106,6 @@ namespace domotic_home {
 			}
 		}
 
-		std::cout << out << std::endl;
+		return out;
 	}
 }

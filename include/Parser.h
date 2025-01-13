@@ -10,7 +10,7 @@
 #include <string>
 
 namespace domotic_home {
-	void parser(const std::string &s, Home &h);
+	std::string parser(const std::string &s, Home &h);
 }
 
 #endif // PARSER_H

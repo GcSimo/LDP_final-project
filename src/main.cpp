@@ -4,51 +4,53 @@
 */
 
 #include <iostream>
-#include <vector>
-#include <string>
+#include <fstream>
 #include "Home.h"
 #include "Parser.h"
 
 int main () {
+	// dichiarazioni e inizializzazioni
+	std::ofstream log("../log/main.txt"); // creazione file di sola scrittura nella cartella log
+	std::string in; // stringa per memorizzare comando inserito dall'utente
+	std::string out; // stringa per memorizzare messaggi di output
+	domotic_home::Home h; // creazione casa
+
 	std::cout << "Programma Domotic-Home del gruppo ~BankAccount()" << std::endl << std::endl;
-	
-	// creazione casa
-	domotic_home::Home h;
-
-	std::vector<std::string> inputs = {
-		"show",
-		"set Impianto_fotovoltaico 6:00 12:00",
-		"set Pompa_di_calore_+_termostato 1:20 7:20",
-		"set time 6:00",
-		"show",
-		"set Televisore 10:00",
-		"set time 12:00",
-		"set Lavatrice 12:30",
-		"set Lavastoviglie 12:31",
-		"set Televisore 12:32",
-		"set time 13:00",
-		"set Televisore on",
-		"set time 14:30",
-		//"set time 300",
-		//"set Frigorifero on",
-		//"set time 600",
-		//"set Frigorifero off",
-		//"set time 660",
-		//"set Frigorifero on",
-		//"set time 1260",
-		//"set Frigorifero off",
-		//"set Televisore 1300",
-		//"set time 1400",
-		"show"
-	};
-
-	/* while(true){
-		std::string str;
-		std::getline(std::cin,str);
-		h.listen(str);
-	} */
-
-	for(std::string s : inputs) {
-		domotic_home::parser(s,h);
+	if (!log.is_open()) {
+		std::cout << "Errore nell'apertura del file all'indirizzo ../log/main.txt" << std::endl;
+		return 1;
 	}
+
+	// ciclo che riceve comandi da eseguire
+	while(!h.isDayEnded()){
+		std::cout << "> ";
+		std::getline(std::cin, in);
+		try {
+			out = domotic_home::parser(in, h);
+			std::cout << out << std::endl;
+			log << out << std::endl;
+		}
+		catch(const domotic_home::Clock::HourRangeError& e) {
+			std::cout << e.what() << '\n';
+		}
+		catch(const domotic_home::Clock::MinuteRangeError& e) {
+			std::cout << e.what() << '\n';
+		}
+		catch(const domotic_home::Clock::StringFormatError& e) {
+			std::cout << e.what() << '\n';
+		}
+		catch(const domotic_home::Home::InvalidDeviceName& e) {
+			std::cout << e.what() << '\n';
+		}
+		catch(const domotic_home::Home::InvalidDeviceType& e) {
+			std::cout << e.what() << '\n';
+		}
+		catch(const domotic_home::Home::TimeRangeError& e) {
+			std::cout << e.what() << '\n';
+		}
+	}
+
+	out = "Il sistema ha raggiunto le 23:59 e si è arrestato correttamente\n";
+	std::cout << out << std::endl;
+	log << out << std::endl;
 }
