@@ -54,3 +54,7 @@ Durante dei test, abbiamo notato che i confronti tra double possono dare problem
 
 ### Libreria ``Parser``
 
+
+### Altre scelte implementative
+- se riaccendo un dispositivo CP, faccio ripartire il timer
+- se imposto un timer che prevede l'attivazione del dispositivo all'orario corrente, accendo il dispositivo

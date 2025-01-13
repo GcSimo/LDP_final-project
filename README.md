@@ -68,17 +68,19 @@
 - [x] implementare politica di spegnimento
 - [x] verificare memory leak per deviceList e indipendenza dispositivi per due case diverse
 - [x] controllare confronti tra double e in caso definire eventuali errore/epsilon
-- [x] prevedere costruttore/assegnamento di copy e move?
+- [x] prevedere costruttore/assegnamento di copy e move
+- [ ] verifico orari quando imposto timer ai dispositivi
+- [ ] accendo i dispositivi se il timer impostato comprende l'orario del sistema -> l'orario di spegnimento dei CP verrebbe sovrascritto, come si fa??
 
 **Parser**
 - [ ] ultimare parser con comandi mancanti
 - [ ] gestire eventuali errori nel parser (boundary check / mancanze / parametri in eccesso)
 
 **Main**
-- [ ] sviluppare main che riceve comandi inseriti dall'ultente
-- [ ] gestire eventuali eccezioni di Parser e Home (es. comandi errati, nome non valido, ...)
-- [ ] salvare l'output del programma su file oltre che stamparlo a stdout
-- [ ] terminare il programma all'arrivo delle 23:59 con ``if (home.isDayEnded()) -> end program``
+- [x] sviluppare main che riceve comandi inseriti dall'ultente
+- [x] gestire eventuali eccezioni di Parser e Home (es. comandi errati, nome non valido, ...)
+- [x] salvare l'output del programma su file oltre che stamparlo a stdout
+- [x] terminare il programma all'arrivo delle 23:59 con ``if (home.isDayEnded()) -> end program``
 
 ## REGEX
 Alcune espressioni regex che possono tornare utili in una possibile implementazione, anche se non necessarie e indispensabili.
