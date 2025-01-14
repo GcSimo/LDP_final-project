@@ -32,6 +32,3 @@ target_link_libraries(parser home) # link libreria Home a Parser
 
 # dipendenze tra eseguibili e librerie
 target_link_libraries(main parser)
-#target_link_libraries(test_clock clock)
-#target_link_libraries(test_device deviceM deviceCP)
-#target_link_libraries(test_home parser)
