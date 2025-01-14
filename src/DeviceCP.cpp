@@ -35,9 +35,10 @@ namespace domotic_home {
 	void DeviceCP::turnOn(const Clock & t) {
 		// se in precedenza il dispositivo era spento, si aggiorna l'orario dell'ultimo aggiornamento del consumo / produzione
 		// infatti se prima era spento, il consumo / produzione non è cambiato dall'ultima volta in cui è stato aggiornato.
-		if (!status)
+		if (!status) {
 			lastEnergyUpdate = t;
-		status = 1;
+			status = 1;
+		}
 
 		// si imposta (o aggiorna) l'orario di spegnimento
 		offTime = t + cycle;
