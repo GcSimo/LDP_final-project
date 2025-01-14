@@ -26,7 +26,7 @@ namespace domotic_home {
 		private:
 			// Costanti private per i valori di default
 			static constexpr int DEFAULT_VALUE = 0;		// Valore di default per ORA e MINUTI
-			static constexpr int MAX_HOUR = 23;			// Valore massimo dell'ORA ammesso
+			static constexpr int MAX_HOUR = 23;		// Valore massimo dell'ORA ammesso
 			static constexpr int MAX_MINUTE = 59;		// Valore massimo dei MINUTI ammesso
 			static constexpr int INVALID_HOUR = 24;		// Ora invalida
 
@@ -36,9 +36,9 @@ namespace domotic_home {
 
 		public:
 			// Costruttori
-			Clock();				// Costruttore di default
-			Clock(int, int);		// Costruttore con ORE e MINUTI
-			Clock(std::string);		// Costruttore con orario fornito tramite stringa formattata
+			Clock();		// Costruttore di default
+			Clock(int, int);	// Costruttore con ORE e MINUTI
+			Clock(std::string);	// Costruttore con orario fornito tramite stringa formattata
 			Clock(const char *);	// Costruttore con orario fornito tramite const char (utile in alcuni contesti)
 
 			// Accessors / get functions
