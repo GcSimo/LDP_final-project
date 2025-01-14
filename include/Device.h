@@ -29,13 +29,13 @@ namespace domotic_home {
 
 			// Variabili membro private
 			std::string name;		// Nome del dispositivo
-			int id;					// Codice ID del dispositivo
+			int id;				// Codice ID del dispositivo
 			bool status;			// Stato del dispositivo: 1 --> ON, 0 --> OFF
 			double energy;			// Valore di consumo / produzione energetica istantanea del dispositivo
 			double totalEnergy;		// Valore di consumo / produzione energetica complessiva del dispositivo
 			Clock onTime;			// Orario di accensione del dispositivo
 			Clock offTime;			// Orario di spegnimento del dispositivo
-			Clock lastEnergyUpdate;	// Orario dell'ultimo aggiornamento del consumo complessivo
+			Clock lastEnergyUpdate;		// Orario dell'ultimo aggiornamento del consumo complessivo
 
 		public:
 			// Funzioni deputate all'accensione e allo spegnimento del dispositivo (--> viene modificata variabile booleana "status")
@@ -55,13 +55,13 @@ namespace domotic_home {
 			void resetTotalEnergy();
 
 			// Funzioni per accesso ai dati del dispositivo
-			std::string get_name() const { return name; }			// Funzione per ottenere il nome del dispositivo
-			int get_id() const { return id; }						// Funzione per ottenere il codice ID del dispositivo
-			bool get_status() const { return status; }				// Funzione per ottenere lo stato attuale del dispositivo
-			double get_energy() const { return energy; }			// Funzione per ottenere il valore di consumo / produzione energetica istantanea del dispositivo 
+			std::string get_name() const { return name; }		// Funzione per ottenere il nome del dispositivo
+			int get_id() const { return id; }			// Funzione per ottenere il codice ID del dispositivo
+			bool get_status() const { return status; }		// Funzione per ottenere lo stato attuale del dispositivo
+			double get_energy() const { return energy; }		// Funzione per ottenere il valore di consumo / produzione energetica istantanea del dispositivo 
 			double get_totalEnergy() const { return totalEnergy; }	// Funzione per ottenere il valore di consumo / produzione energetica complessiva del dispositivo
-			Clock get_onTime() const { return onTime; }				// Funzione per ottenere l'orario di accensione del dispositivo
-			Clock get_offTime() const { return offTime; }			// Funzione per ottenere l'orario di spegnimento del dispositivo
+			Clock get_onTime() const { return onTime; }		// Funzione per ottenere l'orario di accensione del dispositivo
+			Clock get_offTime() const { return offTime; }		// Funzione per ottenere l'orario di spegnimento del dispositivo
 	};
 }
 
