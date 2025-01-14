@@ -1,6 +1,10 @@
 /*
 	FILE HEADER HOME.H
-	Autore:     Andrea Visonà
+	Autore:     Giacomo Simonetto
+
+	La classe Home implementa una casa che contiene i dispositivi specificati
+	nel testo e fornisce delle fuzioni per maneggiare i diversi dispositivi
+	come indicato nelle specifiche del progetto.
 */
 
 #ifndef HOME_H
@@ -32,13 +36,14 @@ namespace domotic_home {
 			std::string turn_off_policy(const Clock &, double); // funzione ausiliaria per spegnere i dispositivi se si supera assorbimento massimo
 
 		public:
-			// costruttore
+			// costruttori
 			Home(); // costruttore di defult
 			Home(double); // costruttore con massima potenza prelevabile passata come parametro
 			Home(const Home &); // costruttore di copia
 			Home(Home &&); // costruttore di move
-			~Home(); // dealloca i dispositivi
+			~Home(); // distruttore
 
+			// assegnamenti di copy e move
 			Home &operator=(const Home &); // assegnamento di copia
 			Home &operator=(Home &&); // assegnamento di move
 
@@ -57,6 +62,13 @@ namespace domotic_home {
 			bool isDayEnded() const; // true time == 23:59, false altrimenti
 
 			// classi per lancio di eccezioni
+			// quando si inserisce una potenza massima prelevabile dalla rete nulla o negativa
+			class NonPositiveMaxPower : public std::logic_error {
+				public:
+					NonPositiveMaxPower() : std::logic_error("") {}
+					const char *what() const noexcept override { return "Errore: la potenza massima prelevabile dalla rete deve essere strettamente positiva!"; }
+			};
+
 			// se il dispositivo non è presente nella casa
 			class InvalidDeviceName : public std::logic_error {
 				public:
@@ -77,19 +89,6 @@ namespace domotic_home {
 					TimeRangeError() : std::logic_error("") {}
 					const char *what() const noexcept override { return "Errore: l'ora passata come parametro è precedente all'orario del sistema!"; }
 			};
-	};
-
-	// struct evento da memorizzare nella priority queue per funzione set_time()
-	struct event {
-		Clock time; // orario dell'evento
-		Device *dev; // puntatore al dispositivo su cui agire
-		bool command; // true -> turnOn, false -> turnOff
-	};
-
-	// funciton object per ordinamento eventi nella priority queue per funzione set_time()
-	// l'orario minore è quello con priorità più alta
-	struct eventCompare {
-		bool operator()(const event &e1, const event &e2) const { return e1.time > e2.time; }
 	};
 }
 

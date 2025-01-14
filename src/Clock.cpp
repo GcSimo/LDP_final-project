@@ -2,7 +2,7 @@
 	FILE SORGENTE CLOCK.CPP
 	Autore:     Giovanni Bordignon
 
-	Implementazione delle funzioni della classe Clock e delle ridefinizione degli operatori disponibili.
+	Implementazione delle funzioni della classe Clock e delle ridefinizioni degli operatori disponibili.
 */
 
 #include "Clock.h"
@@ -77,10 +77,13 @@ namespace domotic_home {
 
 	/**
 	 * @brief Funzione per il settaggio di dell'ora invalida (24:00).
+	 * @return Clock oggetto appena modificato -> così si può fare t = Clock().setInvalid();
 	 */
-	void Clock::setInvalid() {
+	Clock Clock::setInvalid() {
 		hour = INVALID_HOUR;
 		minute = DEFAULT_VALUE;
+
+		return *this;
 	}
 
 	/**
@@ -102,16 +105,17 @@ namespace domotic_home {
 	Clock Clock::operator+(const Clock &t) const {
 		int h = this->hour + t.hour;
 		int m = this->minute + t.minute;
+		
+		// se c'è riporto
 		if (m > 59) {
 			h++;
 			m -= 60;
 		}
 
-		if (h > MAX_HOUR) {
-			Clock temp;
-			temp.setInvalid();
-			return temp;
-		}
+		// se c'è overflow
+		if (h > MAX_HOUR)
+			return Clock().setInvalid();
+		
 		return Clock(h, m);
 	}
 
@@ -124,16 +128,17 @@ namespace domotic_home {
 	Clock Clock::operator-(const Clock &t) const {
 		int h = this->hour - t.hour;
 		int m = this->minute - t.minute;
+		
+		// se c'è riporto
 		if (m < 0) {
 			h--;
 			m += 60;
 		}
 		
-		if (h < DEFAULT_VALUE) {
-			Clock temp;
-			temp.setInvalid();
-			return temp;
-		}
+		// se c'è underflow
+		if (h < DEFAULT_VALUE)
+			return Clock().setInvalid();
+		
 		return Clock(h, m);
 	}
 

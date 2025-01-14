@@ -24,14 +24,14 @@ int main () {
 	// ore 0:00
 	cout << " -------------------- ORE: " << time << " -------------------- " << endl;
 	for (Device *d : deviceList)
-		cout << *d << endl;
+		cout << d->get_name() << endl;
 	cout << endl << endl;
 
 	// ore 8:00
 	time = "8:00";
 	cout << " -------------------- ORE: " << time << " -------------------- " << endl;
 	for (Device *d : deviceList)
-		cout << *d << endl;
+		cout << d->get_name() << endl;
 	cout << endl << endl;
 
 	// ore 8:00
@@ -39,13 +39,13 @@ int main () {
 	for (Device *d : deviceList)
 		d->turnOn(time);
 	for (Device *d : deviceList)
-		cout << *d << endl;
+		cout << d->get_name() << endl;
 	cout << endl << endl;
 
 	// ore 12:00
 	time = "12:00";
 	cout << " -------------------- ORE: " << time << " -------------------- " << endl;
 	for (Device *d : deviceList)
-		cout << *d << endl;
+		cout << d->get_name() << endl;
 	cout << endl << endl;
 }

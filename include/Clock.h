@@ -52,7 +52,7 @@ namespace domotic_home {
 			double toHours() const;
 
 			// Imposta l'ora invalida 24:00 all'oggetto
-			void setInvalid();
+			Clock setInvalid();
 			// Controllo validità della funzione
 			bool isValid() const;
 

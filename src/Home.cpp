@@ -1,6 +1,8 @@
 /*
-	FILE HEADER HOME.CPP
-	Autore:     Andrea Visonà
+	FILE SORGENTE HOME.CPP
+	Autore:     Giacomo Simonetto
+
+	Implementazione delle funzioni della classe Home
 */
 
 #include "Home.h"
@@ -9,20 +11,25 @@
 namespace domotic_home {
 	// elenco dispositivi con relativi consumi e durata cicli
 	constexpr int nDevices = 10;
-	std::string deviceName[nDevices]  = {"Impianto_fotovoltaico", "Lavatrice", "Lavastoviglie", "Pompa_di_calore_+_termostato", "Tapparelle_elettriche", "Scaldabagno", "Frigorifero", "Forno_a_microonde", "Asciugatrice", "Televisore" };
+	std::string deviceName[nDevices]  = {"Impianto fotovoltaico", "Lavatrice", "Lavastoviglie", "Pompa di calore + termostato", "Tapparelle elettriche", "Scaldabagno", "Frigorifero", "Forno a microonde", "Asciugatrice", "Televisore" };
 	std::string deviceCycle[nDevices] = {         "0:00",            "1:50",       "3:15",                  "0:00",                     "0:01",              "0:00",       "0:00",           "0:02",           "1:00",        "1:00"     };
 	double devicePower[nDevices]      = {          1.5,               -2,           -1.5,                    -2,                         -0.3,                -1,           -0.4,             -0.8,             -0.5,          -0.2      };
 
 	/**
-	 * @brief Costruttore vuoto della classe Home
+	 * @brief Costruttore di default della classe Home
 	 */
 	Home::Home() : Home(DEFAULT_MAX_POWER_ABSORPTION) {};
 
 	/**
 	 * @brief Costruttore della classe Home con massima potenza prelevabile passata come parametro
 	 * @param max_power_absorption massima potenza prelevabile dalla rete
+	 * @throw NonPositiveMaxPower se la potenza massima passata come parametro è nulla o negativa
 	 */
 	Home::Home(double max_power_absorption) {
+		// controllo che la potenza non sia negatica
+		if (max_power_absorption <= 0)
+			throw NonPositiveMaxPower();
+
 		// inizializzazioni
 		this->time = Clock();
 		this->power_absorption = DEFAULT_POWER_ABSORPTION;
@@ -214,14 +221,20 @@ namespace domotic_home {
 	 * @param start orario di accensione
 	 * @return std::string messaggio di output
 	 * @throw InvalidDeviceName se devicename non è presente nella casa
+	 * @throw TimeRangeError se start è precedente all'orario della casa
 	 */
 	std::string Home::set(const std::string &devicename, const Clock &start) {
 		// verifico presenza dispositivo nella mappa
 		if (!devices.count(devicename))
 			throw InvalidDeviceName();
+		
+		// verifico che l'orario non sia nel passato
+		if(start < time)
+			throw TimeRangeError();
 
-		// imposto orario di accensione
+		// imposto orario di accensione dopo aver rimosso gli orari vecchi
 		std::string log = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
+		devices[devicename]->resetTime();
 		devices[devicename]->set_onTime(start);
 		log += "[" + time.toString() + "] Impostato un timer per il dispositivo " + devicename + " dalle " + devices[devicename]->get_onTime().toString();
 		log += (devices[devicename]->get_offTime().isValid() ? " alle " + devices[devicename]->get_offTime().toString() : " in poi") + "\n";
@@ -262,6 +275,7 @@ namespace domotic_home {
 	 * @return std::string messaggio di output
 	 * @throw InvalidDeviceName se devicename non è presente nella casa
 	 * @throw InvalidDeviceType se si tenta di impostare un orario di spegnimento programmato ad un dispositivo CP
+	 * @throw TimeRangeError se start è precedente all'orario di sistema o se stop è precedente a start
 	 */
 	std::string Home::set(const std::string &devicename, const Clock &start, const Clock &stop) {
 		// verifico presenza dispositivo nella mappa e che sia di tipo manuale
@@ -271,10 +285,14 @@ namespace domotic_home {
 		if (!dynamic_cast<DeviceM *>(devices[devicename]))
 			throw InvalidDeviceType();
 
-
-		// imposto orari accensione e spegnimento
+		// verifico validità orari
+		if(start < time || stop < start)
+			throw TimeRangeError();
+		
+		// imposto orari accensione e spegnimento dopo aver rimosso gli orari vecchi
 		std::string log = "[" + time.toString() + "] L'orario attuale è " + time.toString() + "\n";
 		DeviceM *temp = dynamic_cast<DeviceM *>(devices[devicename]);
+		temp->resetTime();
 		temp->set_onTime(start);
 		temp->set_offTime(stop);
 		log += "[" + time.toString() + "] Impostato un timer per il dispositivo " + devicename + " dalle " + devices[devicename]->get_onTime().toString();
@@ -356,6 +374,19 @@ namespace domotic_home {
 
 		return log;
 	}
+
+	// struct evento da memorizzare nella priority queue per funzione set_time()
+	struct event {
+		Clock time; // orario dell'evento
+		Device *dev; // puntatore al dispositivo su cui agire
+		bool command; // true -> turnOn, false -> turnOff
+	};
+
+	// funciton object per ordinamento eventi nella priority queue per funzione set_time()
+	// l'orario minore è quello con priorità più alta
+	struct eventCompare {
+		bool operator()(const event &e1, const event &e2) const { return e1.time > e2.time; }
+	};
 
 	/**
 	 * @brief Funzione per far avanzare l'orario della casa e accendere/spegnere i dispositivi in base agli orari programmati

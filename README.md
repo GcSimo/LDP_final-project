@@ -7,14 +7,14 @@
 ## TO-DO List
 **Generale**
 - [x] creare un unico namespace per tutte le classi della casa
-- [ ] uniformare lingua di variabili e classi in inglese
+- [x] uniformare lingua di variabili e classi in inglese
 
 **MyClock**
 - [x] limite MAX_HOUR a 23 al posto che a 24
 - [x] bug quando si inserisce orario invalido del tipo ``:56`` o ``08:`` -> utilizzare le regex? ``^([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])$``
 - [x] ereditarietà eccezioni
-- [ ] verificare comportamenti inattesi quando si passa un Invalid alle diverse funzioni (es. orarioValido + orarioInvalid, orarioValido - orarioInvalid)
-- [ ] inserire sempre doppia cifra nelle ore da stampare es. 00:00 e non 0:00
+- [x] inserire sempre doppia cifra nelle ore da stampare es. 00:00 e non 0:00
+- [x] verificare comportamenti inattesi quando si passa un Invalid alle diverse funzioni (es. orarioValido + orarioInvalid, orarioValido - orarioInvalid)
 
 **Dispostivi**
 - [x] aggiungere ``toString`` e ``operator<<`` a ``Device.h``, eventualmente virtual
@@ -42,8 +42,8 @@
   - [x] funzione per resettare i consumi
   - [x] funzione per eliminare i timers programmati
 - [x] alla fine di tutto eliminare funzioni non utilizzate come il toString, chageStatus, operator<<
-- [ ] eliminare valore di ritorno bool su turnOn e turnOff
-- [ ] se status == true e viene chiamata turnOn, ricalcolare orario di spegnimento dei CP
+- [x] eliminare valore di ritorno bool su turnOn e turnOff
+- [x] se status == true e viene chiamata turnOn, ricalcolare orario di spegnimento dei CP
 - [ ] rendere le funzioni get_... inline come per la classe Clock?
 
 **Casa**
@@ -69,21 +69,20 @@
 - [x] verificare memory leak per deviceList e indipendenza dispositivi per due case diverse
 - [x] controllare confronti tra double e in caso definire eventuali errore/epsilon
 - [x] prevedere costruttore/assegnamento di copy e move
-- [ ] verifico orari quando imposto timer ai dispositivi
-- [ ] accendo i dispositivi se il timer impostato comprende l'orario del sistema -> l'orario di spegnimento dei CP verrebbe sovrascritto, come si fa??
-- [ ] quando imposto un nuovo timer di sola accensione per i dispositivi M, elimino il vecchio orario di spegnimento / resetto il timer del dispositivo
+- [x] verifico orari quando imposto timer ai dispositivi
+- [x] quando imposto un nuovo timer di sola accensione per i dispositivi M, elimino il vecchio orario di spegnimento / resetto il timer del dispositivo
 
 **Parser**
-- [ ] ultimare parser con comandi mancanti
-- [ ] gestire eventuali errori nel parser (boundary check / mancanze / parametri in eccesso)
+- [x] ultimare parser con comandi mancanti
+- [x] gestire eventuali errori nel parser (boundary check / mancanze / parametri in eccesso)
 
 **Main**
 - [x] sviluppare main che riceve comandi inseriti dall'ultente
 - [x] gestire eventuali eccezioni di Parser e Home (es. comandi errati, nome non valido, ...)
 - [x] salvare l'output del programma su file oltre che stamparlo a stdout
 - [x] terminare il programma all'arrivo delle 23:59 con ``if (home.isDayEnded()) -> end program``
-- [ ] aggiungere controllo stringa vuota
-- [ ] verificare descrizione errori
+- [x] aggiungere controllo stringa vuota
+- [x] verificare descrizione errori
 
 ## REGEX
 Alcune espressioni regex che possono tornare utili in una possibile implementazione, anche se non necessarie e indispensabili.

@@ -50,4 +50,6 @@ int main() {
 	catch(Clock::StringFormatError) {
 		cout << "errore 56:233" << endl;
 	}
+
+	cout << "+: " << Clock("22:00") + Clock("12:00") << endl;
 }

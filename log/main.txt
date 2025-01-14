@@ -1,10 +1,5 @@
-[0:00] L'orario attuale è 0:00
-[12:00] L'orario attuale è 12:00
+[00:00] L'orario attuale è 00:00
+[00:00] RESET-ALL -> L'orario attuale è 00:00
 
-[12:00] L'orario attuale è 12:00
-[12:00] Impostato un timer per il dispositivo Pompa_di_calore_+_termostato dalle 5:00 alle 2:00
+Il sistema si è arrestato correttamente
 
-[12:00] L'orario attuale è 12:00
-[12:00] Impostato un timer per il dispositivo Pompa_di_calore_+_termostato dalle 3:00 alle 2:00
-
-comando sconosciuto

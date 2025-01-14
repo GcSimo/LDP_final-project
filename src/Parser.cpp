@@ -1,6 +1,8 @@
 /*
-	FILE HEADER PARSER.CPP
+	FILE SORGENTE PARSER.CPP
 	Autore:     Andrea Visonà
+
+	Implementazione delle funzioni della libreria Parser e delle ridefinizione degli operatori disponibili.
 */
 
 #include "Parser.h"
@@ -9,18 +11,34 @@
 
 namespace domotic_home {
 
-	const std::string DEVICE_NAME_SEPARATOR = "_";
-
+	/**
+	 * @brief funzione ausiliaria per estrarre i nomi dei dipositivi dal comando
+	 * il nome si trova in commandLines[start, end)
+	 * 
+	 * @param commandLines comando sottoforma di vettori di stringhe
+	 * @param start indice da cui inizia il nome del dispositivo
+	 * @param end indice appena successivo alla fine del nome del dispositivo
+	 * @return std::string nome del dispositivo
+	 */
 	std::string getDevName(const std::vector<std::string>& commandLines, size_t start, size_t end) {
         std::ostringstream devname;
         for (int i=start; i<end; ++i) {
             if (i != start)
-                devname << DEVICE_NAME_SEPARATOR;
+                devname << " ";
             devname << commandLines[i];
         }
         return devname.str();
     }
 
+	/**
+	 * @brief Funzione che interpreta i comandi inseriti dall'utente e invoca le
+	 * corrispettive funzioni sull'oggetto casa
+	 * 
+	 * @param s stringa con comando inserito dall'utente
+	 * @param h oggetto casa su cui invocare i comandi
+	 * @return std::string 
+	 * @throw ParserError se il comando inserito è errato
+	 */
 	std::string parser(const std::string &s, domotic_home::Home &h) {
 		std::vector<std::string> commandLines;
 		std::istringstream stream(s);
@@ -30,6 +48,7 @@ namespace domotic_home {
 		while (std::getline(stream, line, ' ')) {
 			commandLines.push_back(line);
 		}
+
 		// stringa per messaggio di output
 		std::string out = "";
 
@@ -51,12 +70,12 @@ namespace domotic_home {
 			}
 
 			// --- set devicename start [stop]
-			else if(commandLines.size() >= 3){
+			else if (commandLines.size() >= 3){
 				std::string sv = commandLines[commandLines.size()-2];
 				bool ifOnlyStart = !std::isdigit(commandLines[commandLines.size()-2][0]);
-				if (ifOnlyStart){ // solo start
+				if (ifOnlyStart) { // solo start
 					out = h.set(getDevName(commandLines,1,commandLines.size()-1), commandLines[commandLines.size()-1]);
-				}else{ // start e stop
+				} else { // start e stop
 					out = h.set(getDevName(commandLines,1,commandLines.size()-2), commandLines[commandLines.size()-2], commandLines[commandLines.size()-1]);
 				}
 			}
@@ -87,10 +106,12 @@ namespace domotic_home {
 				out = h.reset_all();
 			}
 		}
-		else{
-			out += "comando sconosciuto";
-		}
 
+		// comando non valido
+		else
+			throw ParserError();
+
+		// restituisco output delle invocazioni effettuate
 		return out;
 	}
 }
