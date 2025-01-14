@@ -41,7 +41,7 @@ namespace domotic_home {
 	}
 
 	/**
-	 * @brief Funzione per il reset degli orari di accensione e spegnimento impostati ad un dispositivo
+	 * @brief Funzione per il reset degli orari di accensione e spegnimento impostati del dispositivo
 	 */
 	void Device::resetTime() {
 		onTime.setInvalid();
