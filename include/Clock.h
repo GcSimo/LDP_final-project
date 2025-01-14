@@ -75,7 +75,7 @@ namespace domotic_home {
 					const char *what() const noexcept override { return "Errore: i minuti passati come parametro non rientrano nell'intervallo corretto!"; }
 			};
 
-			// Eccezione da lanciare se stringa fornita non è formattata correttamente
+			// Eccezione da lanciare se la stringa fornita non è formattata correttamente
 			class StringFormatError : public std::logic_error {
 				public:
 					StringFormatError() : std::logic_error("") {}
