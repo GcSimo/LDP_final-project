@@ -22,8 +22,8 @@ namespace domotic_home {
 		if (status) {
 			totalEnergy += (t - lastEnergyUpdate).toHours() * energy;
 			lastEnergyUpdate = t;
+			status = 0;
 		}
-		status = 0;
 	}
 
 	/**
