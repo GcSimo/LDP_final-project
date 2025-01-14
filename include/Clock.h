@@ -1,6 +1,6 @@
 /*
 	FILE HEADER CLOCK.H
-	Autore:     Giovanni Bordignon
+	Autore:     Andrea Visonà
 
 	Nel progettare la classe "Device", si è valutata la realizzazione di una classe, appositamente
 	studiata per le esigenze del progetto, atta ad astrarre il concetto di orologio. Sono state dunque
@@ -79,7 +79,7 @@ namespace domotic_home {
 			class StringFormatError : public std::logic_error {
 				public:
 					StringFormatError() : std::logic_error("") {}
-					const char *what() const noexcept override { return "Errore: la stringa non e' formattata correttamente!"; }
+					const char *what() const noexcept override { return "Errore: la stringa dell'orario non e' formattata correttamente!"; }
 			};
 	};
 

@@ -1,5 +1,0 @@
-[00:00] L'orario attuale è 00:00
-[00:00] RESET-ALL -> L'orario attuale è 00:00
-
-Il sistema si è arrestato correttamente
-

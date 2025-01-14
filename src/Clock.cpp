@@ -1,6 +1,6 @@
 /*
 	FILE SORGENTE CLOCK.CPP
-	Autore:     Giovanni Bordignon
+	Autore:     Andrea Visonà
 
 	Implementazione delle funzioni della classe Clock e delle ridefinizioni degli operatori disponibili.
 */

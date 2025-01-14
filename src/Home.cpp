@@ -286,7 +286,7 @@ namespace domotic_home {
 			throw InvalidDeviceType();
 
 		// verifico validità orari
-		if(start < time || stop < start)
+		if(start < time || stop <= start)
 			throw TimeRangeError();
 		
 		// imposto orari accensione e spegnimento dopo aver rimosso gli orari vecchi
@@ -382,10 +382,27 @@ namespace domotic_home {
 		bool command; // true -> turnOn, false -> turnOff
 	};
 
-	// funciton object per ordinamento eventi nella priority queue per funzione set_time()
-	// l'orario minore è quello con priorità più alta
+	/**
+	 * @brief funciton object per ordinamento eventi nella priority queue per funzione set_time()
+	 * Interpretazione risultato:
+	 * - true:  e2 ha priorità maggiore  -  e2 viene prima di e1
+	 * - false: e1 ha priorità maggiore  -  e1 viene prima di e2
+	 * 
+	 * Calcolo del risultato:
+	 * - l'orario minore è quello con priorità più alta
+	 *   - se e1.time > e2.time -> prima e2 -> return true
+	 *   - se e1.time < e2.time -> prima e1 -> return false
+	 * 
+	 * - a parità di orario, ha priorità maggiore l'evento di spegnimento:
+	 *   - se e1 accensione, e2 spegnimento -> prima e2 -> return true
+	 *   - se e1 spegnimento, e2 accensione -> prima e1 -> return false
+	 *   - se sono due accensioni -> stessa priorità    -> return false
+	 *   - se sono due spegnimenti -> stesa priorità    -> return false
+	 */
 	struct eventCompare {
-		bool operator()(const event &e1, const event &e2) const { return e1.time > e2.time; }
+		bool operator()(const event &e1, const event &e2) const {
+			return e1.time == e2.time ? e1.command && !e2.command : e1.time > e2.time;
+		}
 	};
 
 	/**
