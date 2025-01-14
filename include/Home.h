@@ -87,7 +87,7 @@ namespace domotic_home {
 			class TimeRangeError : public std::logic_error {
 				public:
 					TimeRangeError() : std::logic_error("") {}
-					const char *what() const noexcept override { return "Errore: l'ora passata come parametro è precedente all'orario del sistema!"; }
+					const char *what() const noexcept override { return "Errore: l'ora passata come parametro non è valida!"; }
 			};
 	};
 }

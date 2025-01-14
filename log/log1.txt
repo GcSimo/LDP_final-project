@@ -1,0 +1,192 @@
+ --- Progetto Domotic-Home del gruppo ~BankAccount() ---
+
+> TEST ACCENSIONE SPEGNIMENTO
+Errore: comando sconosciuto!
+
+> set Televisore on
+[00:00] L'orario attuale è 00:00
+[00:00] Il dispositivo Televisore si è acceso
+
+> set Lavatrice on
+[00:00] L'orario attuale è 00:00
+[00:00] Il dispositivo Lavatrice si è acceso
+
+> set Frigorifero on
+[00:00] L'orario attuale è 00:00
+[00:00] Il dispositivo Frigorifero si è acceso
+
+> set time 2:00
+[00:00] L'orario attuale è 00:00
+[01:00] Il dispositivo Televisore si è spento
+[01:50] Il dispositivo Lavatrice si è spento
+[02:00] L'orario attuale è 02:00
+
+> set Frigorifero off
+[02:00] L'orario attuale è 02:00
+[02:00] Il dispositivo Frigorifero si è spento
+
+> set time 3:00
+[02:00] L'orario attuale è 02:00
+[03:00] L'orario attuale è 03:00
+
+> show
+[03:00] L'orario attuale è 03:00
+[03:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 4.666667 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno a microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.800000 kWh
+ - il dispositivo Impianto fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 0.000000 kWh
+ - il dispositivo Lavatrice ha consumato 3.666667 kWh
+ - il dispositivo Pompa di calore + termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 0.000000 kWh
+ - il dispositivo Tapparelle elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.200000 kWh
+
+> TEST TIMER DISPOSITIVI
+Errore: comando sconosciuto!
+
+> set Scaldabagno 4:00 5:00
+[03:00] L'orario attuale è 03:00
+[03:00] Impostato un timer per il dispositivo Scaldabagno dalle 04:00 alle 05:00
+
+> set Televisore 4:30
+[03:00] L'orario attuale è 03:00
+[03:00] Impostato un timer per il dispositivo Televisore dalle 04:30 alle 05:30
+
+> set time 6:00
+[03:00] L'orario attuale è 03:00
+[04:00] Il dispositivo Scaldabagno si è acceso
+[04:30] Il dispositivo Televisore si è acceso
+[05:00] Il dispositivo Scaldabagno si è spento
+[05:30] Il dispositivo Televisore si è spento
+[06:00] L'orario attuale è 06:00
+
+> TEST RIMOZIONE TIMER
+Errore: comando sconosciuto!
+
+> set Scaldabagno 6:10 6:20
+[06:00] L'orario attuale è 06:00
+[06:00] Impostato un timer per il dispositivo Scaldabagno dalle 06:10 alle 06:20
+
+> set Tapparelle elettriche 6:15
+[06:00] L'orario attuale è 06:00
+[06:00] Impostato un timer per il dispositivo Tapparelle elettriche dalle 06:15 alle 06:16
+
+> set time 6:30
+[06:00] L'orario attuale è 06:00
+[06:10] Il dispositivo Scaldabagno si è acceso
+[06:15] Il dispositivo Tapparelle elettriche si è acceso
+[06:16] Il dispositivo Tapparelle elettriche si è spento
+[06:20] Il dispositivo Scaldabagno si è spento
+[06:30] L'orario attuale è 06:30
+
+> set Scaldabagno 6:40 6:50
+[06:30] L'orario attuale è 06:30
+[06:30] Impostato un timer per il dispositivo Scaldabagno dalle 06:40 alle 06:50
+
+> set Tapparelle elettriche 6:45
+[06:30] L'orario attuale è 06:30
+[06:30] Impostato un timer per il dispositivo Tapparelle elettriche dalle 06:45 alle 06:46
+
+> rm Scaldabagno
+[06:30] L'orario attuale è 06:30
+[06:30] Rimosso il timer dal dispositivo Scaldabagno
+
+> rm Tapparelle elettriche
+[06:30] L'orario attuale è 06:30
+[06:30] Rimosso il timer dal dispositivo Tapparelle elettriche
+
+> set time 7:00
+[06:30] L'orario attuale è 06:30
+[07:00] L'orario attuale è 07:00
+
+> TEST CONSUMO MASSIMO
+Errore: comando sconosciuto!
+
+> set Frigorifero on
+[07:00] L'orario attuale è 07:00
+[07:00] Il dispositivo Frigorifero si è acceso
+
+> set Lavastoviglie on
+[07:00] L'orario attuale è 07:00
+[07:00] Il dispositivo Lavastoviglie si è acceso
+
+> set Lavatrice on
+[07:00] L'orario attuale è 07:00
+[07:00] Il dispositivo Lavatrice non si è acceso perché si supererebbe la potenza massima prelevabile dalla rete
+[07:00] Il dispositivo Frigorifero si è spento per ridurre il consumo del sistema
+[07:00] Il dispositivo Lavatrice si è acceso
+
+> set Tapparelle elettriche on
+[07:00] L'orario attuale è 07:00
+[07:00] Il dispositivo Tapparelle elettriche non si è acceso perché si supererebbe la potenza massima prelevabile dalla rete
+[07:00] Il dispositivo Lavastoviglie si è spento per ridurre il consumo del sistema
+[07:00] Il dispositivo Tapparelle elettriche si è acceso
+
+> set Asciugatrice on
+[07:00] L'orario attuale è 07:00
+[07:00] Il dispositivo Asciugatrice si è acceso
+
+> set Televisore on
+[07:00] L'orario attuale è 07:00
+[07:00] Il dispositivo Televisore si è acceso
+
+> set Forno a microonde on
+[07:00] L'orario attuale è 07:00
+[07:00] Il dispositivo Forno a microonde non si è acceso perché si supererebbe la potenza massima prelevabile dalla rete
+[07:00] Il dispositivo Lavatrice si è spento per ridurre il consumo del sistema
+[07:00] Il dispositivo Forno a microonde si è acceso
+
+> set Impianto fotovoltaico on
+[07:00] L'orario attuale è 07:00
+[07:00] Il dispositivo Impianto fotovoltaico si è acceso
+
+> set Lavastoviglie on
+[07:00] L'orario attuale è 07:00
+[07:00] Il dispositivo Lavastoviglie si è acceso
+
+> set Frigorifero on
+[07:00] L'orario attuale è 07:00
+[07:00] Il dispositivo Frigorifero si è acceso
+
+> set Lavatrice on
+[07:00] L'orario attuale è 07:00
+[07:00] Il dispositivo Lavatrice non si è acceso perché si supererebbe la potenza massima prelevabile dalla rete
+[07:00] Il dispositivo Tapparelle elettriche si è spento per ridurre il consumo del sistema
+[07:00] Il dispositivo Asciugatrice si è spento per ridurre il consumo del sistema
+[07:00] Il dispositivo Lavatrice si è acceso
+
+> set Impianto fotovoltaico off
+[07:00] L'orario attuale è 07:00
+[07:00] Il dispositivo Impianto fotovoltaico non si è spento perché si supererebbe la potenza massima prelevabile dalla rete
+[07:00] Il dispositivo Televisore si è spento per ridurre il consumo del sistema
+[07:00] Il dispositivo Forno a microonde si è spento per ridurre il consumo del sistema
+[07:00] Il dispositivo Lavastoviglie si è spento per ridurre il consumo del sistema
+[07:00] Il dispositivo Impianto fotovoltaico si è spento
+
+> set time 23:59
+[07:00] L'orario attuale è 07:00
+[07:01] Il dispositivo Tapparelle elettriche è già spento
+[07:02] Il dispositivo Forno a microonde è già spento
+[08:00] Il dispositivo Asciugatrice è già spento
+[08:00] Il dispositivo Televisore è già spento
+[08:50] Il dispositivo Lavatrice si è spento
+[10:15] Il dispositivo Lavastoviglie è già spento
+[23:59] L'orario attuale è 23:59
+
+[23:59] L'orario attuale è 23:59
+[23:59] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 16.498333 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno a microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 7.593333 kWh
+ - il dispositivo Impianto fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 0.000000 kWh
+ - il dispositivo Lavatrice ha consumato 7.333333 kWh
+ - il dispositivo Pompa di calore + termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 1.166667 kWh
+ - il dispositivo Tapparelle elettriche ha consumato 0.005000 kWh
+ - il dispositivo Televisore ha consumato 0.400000 kWh
+
+Il sistema ha raggiunto le 23:59 e si è arrestato correttamente
+

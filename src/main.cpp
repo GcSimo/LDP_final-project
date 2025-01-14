@@ -98,7 +98,7 @@ int main (int argc, char** argv) {
 	}
 
 	// stampo stato finale della casa e messaggio di terminazione del programma
-	out = h.show();
+	out = h.show() + "\n";
 	if (h.isDayEnded())
 		out += "Il sistema ha raggiunto le 23:59 e si è arrestato correttamente\n";
 	else

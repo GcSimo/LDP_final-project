@@ -71,3 +71,22 @@ Il ``main`` si occupa di gestire l'input, l'output e l'interfacciamento con l'ut
 
 
 Abbiamo scelto di salvare il file di log chiamato ``log.txt`` nella cartella ``log`` situata nella cartella principale del progetto. Si suppone che il progetto venga compilato all'interno della cartella ``build`` e che l'eseguibile finale ``main`` si trovi in quella cartella. Ci aspettiamo che il file venga eseguito dalla cartella ``build`` per cui il path relativo al file di log è ``../log/log.txt``. Il file eseguibile viene spostato, il file di log potrà non trovarsi nella cartella di log.
+
+## Errore non gestito
+Ci siamo accorti all'ultimo di un problema dovuto ad un mancato aggiornamento della priority queue durante l'estrazione ed esecuzione degli eventi in set_time:
+```
+> ⁠set Asciugatrice 12:00
+[11:30] L'orario attuale è 11:30
+[11:30] Impostato un timer per il dispositivo Asciugatrice dalle 12:00 alle 13:00
+
+> ⁠set Asciugatrice on
+[11:30] L'orario attuale è 11:30
+[11:30] Il dispositivo Asciugatrice si è acceso
+
+> ⁠set time 13:30
+[11:30] L'orario attuale è 11:30
+[12:00] Il dispositivo Asciugatrice è già acceso
+[12:30] Il dispositivo Asciugatrice si è spento
+[13:30] L'orario attuale è 13:30
+```
+In pratica l'accensione dell'asciugatrice delle 12:00 dovrebbe impostare il timer di spegnimento alle 13:00 come effettivamente fa, soltanto che l'evento non viene caricato nella priority queue e di conseguenza non viene eseguito. Viene eseguito, invece l'evento di spegnimento precedente che andrebbe rimosso. Non siamo riusciti a trovare una soluzione semplice perché ce ne siamo accorti troppo tardi per sistemare in sicurezza senza provocare altri danni.

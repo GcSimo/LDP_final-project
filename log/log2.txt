@@ -1,0 +1,91 @@
+ --- Progetto Domotic-Home del gruppo ~BankAccount() ---
+
+> TEST ECCEZIONI
+Errore: comando sconosciuto!
+
+> set
+Errore: comando sconosciuto!
+
+> set time 24:78
+Errore: la stringa dell'orario non e' formattata correttamente!
+
+> set time 2:00
+[00:00] L'orario attuale è 00:00
+[02:00] L'orario attuale è 02:00
+
+> set time 1:00
+Errore: l'ora passata come parametro non è valida!
+
+> set Scaldabagno 1:00 1:30
+Errore: l'ora passata come parametro non è valida!
+
+> set Scaldabagno 3:00 2:30
+Errore: l'ora passata come parametro non è valida!
+
+> set Televisore 12:00 13:00
+Errore: non è possiblie impostare un orario di spegnimento programmato ad un dispositivo CP!
+
+> set banana on
+Errore: il dispositivo non è presente nella casa!
+
+> TEST RESET
+Errore: comando sconosciuto!
+
+> set Scaldabagno off
+[02:00] L'orario attuale è 02:00
+[02:00] Il dispositivo Scaldabagno è già spento
+
+> set Scaldabagno 2:10 2:20
+[02:00] L'orario attuale è 02:00
+[02:00] Impostato un timer per il dispositivo Scaldabagno dalle 02:10 alle 02:20
+
+> reset timers
+[02:00] L'orario attuale è 02:00
+[02:00] RESET-TIMERS per tutti i dispositivi
+
+> set time 2:30
+[02:00] L'orario attuale è 02:00
+[02:30] L'orario attuale è 02:30
+
+> set Scaldabagno 2:40 2:50
+[02:30] L'orario attuale è 02:30
+[02:30] Impostato un timer per il dispositivo Scaldabagno dalle 02:40 alle 02:50
+
+> reset time
+[00:00] L'orario attuale è 00:00
+[00:00] RESET-TIME -> L'orario attuale è 00:00
+
+> set time 4:00
+[00:00] L'orario attuale è 00:00
+[02:40] Il dispositivo Scaldabagno si è acceso
+[02:50] Il dispositivo Scaldabagno si è spento
+[04:00] L'orario attuale è 04:00
+
+> set Scaldabagno 4:10 4:20
+[04:00] L'orario attuale è 04:00
+[04:00] Impostato un timer per il dispositivo Scaldabagno dalle 04:10 alle 04:20
+
+> reset all
+[00:00] L'orario attuale è 00:00
+[00:00] RESET-ALL -> L'orario attuale è 00:00
+
+> set time 5:00
+[00:00] L'orario attuale è 00:00
+[05:00] L'orario attuale è 05:00
+
+> exit
+[05:00] L'orario attuale è 05:00
+[05:00] Attualmente il sistema ha prodotto 0.000000 kWh e consumato 0.000000 kWh. Nello specifico:
+ - il dispositivo Asciugatrice ha consumato 0.000000 kWh
+ - il dispositivo Forno a microonde ha consumato 0.000000 kWh
+ - il dispositivo Frigorifero ha consumato 0.000000 kWh
+ - il dispositivo Impianto fotovoltaico ha consumato 0.000000 kWh
+ - il dispositivo Lavastoviglie ha consumato 0.000000 kWh
+ - il dispositivo Lavatrice ha consumato 0.000000 kWh
+ - il dispositivo Pompa di calore + termostato ha consumato 0.000000 kWh
+ - il dispositivo Scaldabagno ha consumato 0.000000 kWh
+ - il dispositivo Tapparelle elettriche ha consumato 0.000000 kWh
+ - il dispositivo Televisore ha consumato 0.000000 kWh
+
+Il sistema si è arrestato correttamente
+
