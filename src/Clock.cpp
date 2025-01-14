@@ -28,7 +28,7 @@ namespace domotic_home {
 	}
 
 	/**
-	 * @brief Costruttore della classe Clock con parametro stringa, rappresentante un'orario opportunamente formattato.
+	 * @brief Costruttore della classe Clock con parametro stringa, rappresentante un orario opportunamente formattato.
 	 * Il costruttore procede alla verifica della stringa fornita come parametro, verificando la corretta formattazione
 	 * e la presenza del carattere ' : ', necessario come separatore fra ore e minuti.
 	 * 
@@ -76,7 +76,7 @@ namespace domotic_home {
 	}
 
 	/**
-	 * @brief Funzione per il settaggio di dell'ora invalida (24:00).
+	 * @brief Funzione per il settaggio dell'ora invalida "24:00".
 	 */
 	void Clock::setInvalid() {
 		hour = INVALID_HOUR;
@@ -84,7 +84,7 @@ namespace domotic_home {
 	}
 
 	/**
-	 * @brief Funzione per il la verifica se l'oggetto orario è invalido, cioè se è l'ora 24:00.
+	 * @brief Funzione per il la verifica se l'ora impostata è valida, cioè se è diversa dall'orario "24:00".
 	 * 
 	 * @return bool true se hour è diverso da 24 (ora invalida)
 	 * @return bool false se hour è uguale a 24 (ora invalida)
@@ -155,8 +155,8 @@ namespace domotic_home {
 	 * 
 	 * @param t1 primo oggetto Clock
 	 * @param t2 secondo oggetto Clock
-	 * @return true se t1 è maggiore t2
-	 * @return false se t1 non è maggiore a t2
+	 * @return true se t1 è maggiore di t2
+	 * @return false se t1 non è maggiore di t2
 	 */
 	bool operator>(const Clock &t1, const Clock &t2) {
 		return !operator<=(t1, t2);
@@ -167,8 +167,8 @@ namespace domotic_home {
 	 * 
 	 * @param t1 primo oggetto Clock
 	 * @param t2 secondo oggetto Clock
-	 * @return true se t1 è minore t2
-	 * @return false se t1 non è minore a t2
+	 * @return true se t1 è minore di t2
+	 * @return false se t1 non è minore di t2
 	 */
 	bool operator<(const Clock &t1, const Clock &t2) {
 		if (t1.get_hour() < t2.get_hour()) return true;
@@ -206,7 +206,7 @@ namespace domotic_home {
 	 * 
 	 * @param os stream di output del sistema
 	 * @param t oggetto Clock
-	 * @return ostream al sistema
+	 * @return ostream
 	 */
 	std::ostream &operator<<(std::ostream &os, const Clock &t) {
 		return os << t.toString();
