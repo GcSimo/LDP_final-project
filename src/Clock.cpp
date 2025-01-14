@@ -2,7 +2,7 @@
 	FILE SORGENTE CLOCK.CPP
 	Autore:     Giovanni Bordignon
 
-	Implementazione delle funzioni della classe Clock e delle ridefinizione degli operatori disponibili.
+	Implementazione delle funzioni della classe Clock e delle ridefinizioni degli operatori disponibili.
 */
 
 #include "Clock.h"
